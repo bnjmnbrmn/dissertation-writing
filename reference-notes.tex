@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{epstopdf}
+\usepackage{natbib}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \title{Reference Notes}
@@ -19,9 +20,9 @@
 
 These will be some notes on the various references I'm collecting.
 
-Test citation: \cite{Anderson92}
+Test citation: \citep{Anderson92}
 
-\bibliographystyle{plain}
+\bibliographystyle{apalike}
 \bibliography{refs}
 
 \end{document}  
