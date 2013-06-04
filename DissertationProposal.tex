@@ -18,20 +18,21 @@
 \section{Introduction}
 %=======================================================================================
 
-A long time ago my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to figure out how to make playing those notes easy.  The major goal of the proposed dissertation is to reapply the same idea in the context of interactive theorem proving with Coq:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving usability problems for an important and powerful tool, many of the techniques I am developing and testing are widely applicable to other forms of coding.
+A long time ago my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to figure out how to make playing those notes easy.  The major goal of the proposed dissertation is to reapply the same idea in the context of theorem proving with Coq proof assistant:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving usability problems for an important and powerful tool, many of the techniques I am developing and testing are widely applicable to other forms of coding.
 
-The research involved in this proposed dissertation, described more fully below, breaks down into two related main parts.  Part one is the development of ``CoqEdit'', a new theorem proving environment for Coq, based on the jEdit text editor.  CoqEdit will mimic the main features of the existing environments for Coq, but will have the important property of being easily extended using Java.  Part two is the development and testing of such extensions.
+The research involved in this proposed dissertation, described more fully below, breaks down into two related main parts.  Part one is the development of ``CoqEdit'', a new theorem proving environment for Coq, based on the jEdit text editor.  CoqEdit will mimic the main features of the existing environments for Coq, but will have the important property of being easily extended using Java.  Part two is the development and testing of several such extensions.
 
 There are several points that I hope will become clear as I describe the proposed research below.  First is that the research will make a significant positive contribution to society.  While Coq is a powerful tool, and is already being used for important work, its power has come at the cost of complexity, which makes the tool difficult to learn and use.  Finding and implementing better ways to deal with this complexity in the user interface of the tool can allow more users to perform a greater number, and a greater variety, of tasks.  
 	
-In addition, the research will contribute to our notions of how user interfaces can be used to help people use theorem provers, write computer programs, and code at the computer in general.  
-%The complexities of the tool in fact provide greater opportunities to such general research on user interfaces for coding in general.  
-This is because a) the complexities are partly the result of the variety of tool features and tasks for which the tool may be used and b) the difficulties caused by the complexity may make the effects of good user interface designs more apparent.  Furthermore, although Coq has properties that make it very appealing for developing programs (in particular, programs that are free of bugs), it also pushes at the boundaries of languages that programmers may consider practical.  However, if, as in the proposed research, we design user interfaces that address the specific problems associated with using a language, perhaps making the user interface as integral to using a language itself as its syntax, these boundaries may shift outward.  In other words, 
+In addition, the research will contribute to our notions of how user interfaces can be used to help people use theorem provers, program, and write code at the computer in general.  The complexities of the tool in fact help make it suitable for such research, since a) they are partly the result of the variety of features of the tool and tasks for which the tool may be used (each of which provides an opportunity for design) and b) the difficulties caused by the complexity may make the effects of good user interface design more apparent.  Furthermore, although Coq has properties that make it very appealing for developing programs (in particular, programs that are free of bugs), it also pushes at the boundaries of languages that programmers may consider practical for the time-constrained software development of the ``real world''.  However, if, as in the proposed research, we design user interfaces that address the specific problems associated with using a language, perhaps making the user interface as integral to using the language as its syntax, these boundaries may shift outward.  This means that not only are we improving the usability of languages in which people already are coding, we are also expanding the range of languages in which coding is actually possible.
 
- Furthermore, one of the fundamental questions that general research on user interfaces for coding asks
-
-
---opportunities that would not be available were the research to be done with a simpler tool.
+The second point I hope will become clear is that this research will be an intellectual contribution.  User interface design is sometimes a matter of selecting some buttons and other widgets, laying them out in a window, and connecting them to code from the ``back end''.
+	--more than just widgets
+	--new widgets
+	--challenge of understanding the system
+	--challenge of finding things that could be improved upon
+	--novel ideas
+	--clarification of existing ideas
 
 In writing this proposal, I seek to make clear several points.
 
