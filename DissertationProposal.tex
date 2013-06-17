@@ -32,6 +32,14 @@ The third and final point is that this work is actually doable.  Some of it has 
 
 In the remainder of this proposal I will first give a description of Coq, including its significance, a description of current user interfaces, some examples of theorem proving using the tool, and some usability problems that I find particularly striking.  I will continue with a description of a survey, and its results, on user interfaces for Coq that was sent to subscribers to the Coq-Club mailing list.    Then, in the heart of this proposal, I will describe jEdit, CoqEdit, three experimental extensions to CoqEdit, and several associated user studies.  I will conclude with an overview of related work and a timeline for completing the remaining work.
 
+\section{Coq and the Need for Improved User Interfaces}
+
+\subsection{Theorem Proving in Coq}
+
+Basic theorem proving in Coq can be thought of as the process of creating a tree of inferences.  The user first enters the lemma (or theorem) he or she wishes to prove.  The system responds by printing out the lemma (generally in essentially the same form) as the root ``goal'' of the tree.  The user then enters a ``tactic''--a short command like ``apply some_more_general_lemma''--into the system, and the system will respond by producing either an error message (to indicate that the tactic may not be applied to the goal) or by producing zero or more new child goals, and proving all of these will prove the parent goal (if zero new child goals are produced, the goal is proved).  To prove each child, the user enters additional tactics, which may produce new child goals (there is a ``current'' goal that changes automatically as tactics introduce and eliminate child goals).  The original lemma is proved if tactics have successfully been used to create a finite tree of descendants--i.e. when there are no new children to prove.
+
+
+
 %%=======================================================================================
 %\section{Ideas}
 %%=======================================================================================
