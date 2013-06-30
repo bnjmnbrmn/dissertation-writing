@@ -8,6 +8,8 @@
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+\newcommand{\ra}{\ensuremath{\rightarrow}}
+
 \title{Dissertation Proposal}
 \author{Benjamin Berman}
 %\date{}                                           % Activate to display a given date or no date
@@ -36,7 +38,29 @@ In the remainder of this proposal I will first give a description of Coq, includ
 
 \subsection{Theorem Proving in Coq}
 
-Basic theorem proving in Coq can be thought of as the process of creating a tree of inferences.  The user first enters the lemma (or theorem) he or she wishes to prove.  The system responds by printing out the lemma (generally in essentially the same form) as the root ``goal'' of the tree.  The user then enters a ``tactic''--a short command like ``apply some_more_general_lemma''--into the system, and the system will respond by producing either an error message (to indicate that the tactic may not be applied to the goal) or by producing zero or more new child goals, and proving all of these will prove the parent goal (if zero new child goals are produced, the goal is proved).  To prove each child, the user enters additional tactics, which may produce new child goals (there is a ``current'' goal that changes automatically as tactics introduce and eliminate child goals).  The original lemma is proved if tactics have successfully been used to create a finite tree of descendants--i.e. when there are no new children to prove.
+Basic theorem proving in Coq can be thought of as the process of creating a ``proof tree'' of inferences.  The user first enters the lemma (or theorem) he or she wishes to prove.  The system responds by printing out the lemma again, generally in essentially the same form; this response is the root ``goal'' of the tree.  The user then enters a ``tactic''--a short command like ``apply more\_general\_lemma''--into the system, and the system will respond by producing either an error message (to indicate that the tactic may not be applied to the goal) or by replacing the goal with zero or more new child goals, one of which will be ``in focus'' as the ``current'' goal.  Proving all of these new child goals will prove the parent goal (if zero new child goals were produced, the goal is proved immediately).  Proving the current goal may be done using the same technique used with its parent, i.e. entering a tactic to replace the goal with a (possibly empty) set of child goals to prove, and which goal is the current goal changes automatically as goals are introduced and eliminated.  The original lemma is proved if tactics have successfully been used to create a finite tree of descendants--i.e. when there are no more goals to prove.
+
+One example useful in making this more clear can be found in a Coq tutorial \cite{huet1997coq}.  Consider a lemma, call it \texttt{SimpleLemma} that states
+\begin{quote}
+\texttt{(A -> B -> C) -> (A -> B) -> A -> C}
+\end{quote}
+where \texttt{A}, \texttt{B}, and \texttt{C} are propositions (abbreviated in Coq as ``\texttt{Prop}''), and \texttt{->} is interpreted as ``implies'' and is right associative (so the lemma may equivalently be written 
+\begin{quote}
+\texttt{(A -> (B -> C)) -> ((A -> B) -> (A -> C))}
+\end{quote}
+I discuss later how improved user interfaces may assist users, particularly novice users, in dealing with operator associativities and precedences).  Coq users generally think of this lemma as the sequent
+\[A : Prop, B : Prop, C : Prop \vdash (A \ra B \ra C) \ra (A \ra B) \ra A \ra C\]
+
+In general, the statements to the left of the turnstile ($\vdash$), separated by commas, give the ``context'' in which the provability statement to the right of the turnstile is to be considered.\footnote{Another list of statements, Coq's ``environment,'' is implicitly to the left of the turnstile.  The distinction between environment and context is that statements in the context are considered true only locally, i.e. only for either the current ``section'' of lemmas being proved or for the particular goal being proved.  Generally, the environment is large, and contains many irrelevant statements, so displaying it is considered impractical.}  Another way to think about the sequent is that the statements to the left of the turnstile entail the statement to the right.  In this example sequent's context, the colon indicates type, so for instance ``$A : Prop$'' just means ``$A$ is a variable of type $Prop$'' or, equivalently, ``$A$ is a proposition.''
+
+\textit{This is only a very simple example}--theorems and lemmas in Coq typically involve many types and operators besides propositions and implications.  Other standard introductory examples involve natural numbers and lists, along with their associated operators and the other usual operators for propositions (e.g. negation).  In fact, Coq allows users to define their own types and add axioms regarding those types, allowing users to model and reason about, for instance, the possible effects of statements in a programming language, or more general mathematics like points and lines in geometry.
+
+The sequence of tactics, ``\texttt{intro H}'', \texttt{intros H', HA}'', ``\texttt{apply H}, ``\texttt{exact HA}'', ``\texttt{apply H'}'', and ``\texttt{exact HA}'' can be used to prove the sequent above (\texttt{H}, \texttt{H'}, and \texttt{HA} are arguments given to \texttt{intro}, \texttt{intros}, \texttt{apply}, and \texttt{exact}).  The first tactic, ``\texttt{intro H}'', moves the left side of the outermost implication into the context.  The new subgoal is
+\[A : Prop, B : Prop, C : Prop, H : A \ra B \ra C \vdash (A \ra B) \ra A \ra C\]
+The colon in the statement ``$H : A \ra B \ra C$'' is generally interpreted differently, by the user, than the colons in ``$A : Prop, B : Prop, C : Prop$''.  Instead of stating that ``$H$ \textit{is of type} $A \ra B \ra C$'', the user should likely interpret the statement as ``$H$ \textit{is proof of} $A \ra B \ra C$''.  However, for theoretical reasons, namely the Curry-Howard correspondence between proofs and formulas, on the one hand, and terms and types on the other\footnote{``Terms,'' when discussing Coq, are roughly the same as terminating programs or subcomponents thereof.  A likely subcomponent of a program dealing with propositions would be a variable of type Prop. Generally we equate terminating programs with functions, which are terms with $\ra$ symbols in their types.  A non-function terminating program would be pretty boring, since it would always produce the same result}, Coq is allowed to ignore this distinction and interpret the colon uniformly.
+
+
+
 
 
 
