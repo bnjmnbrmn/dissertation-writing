@@ -21,7 +21,7 @@
 \section{Introduction}
 %=======================================================================================
 
-A long time ago my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to figure out how to make playing those notes easy.  The major goal of the proposed dissertation is to reapply the same idea in the context of interactive theorem proving with the Coq proof assistant\cite{Coq}:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving serious usability problems for an important and powerful tool for creating machine-checked proofs, many of the techniques I am developing and testing are widely applicable to other forms of coding.
+A long time ago my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to also figure out how to make playing those notes easy.  The major goal of the proposed dissertation is to reapply the same idea in the context of interactive theorem proving with the \textit{Coq} proof assistant\cite{Coq}\footnote{``Proof assistant'' and ``interactive theorem prover'' are synonymous}:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving serious usability problems for an important and powerful tool for creating machine-checked proofs, many of the techniques I am developing and testing are widely applicable to other forms of coding.
 
 The research involved in this proposed dissertation, described more fully below, breaks down into two related main parts.  Part one is the development of ``CoqEdit'', a new theorem proving environment for Coq, based on the jEdit text editor.  CoqEdit will mimic the main features of the existing environments for Coq, but will have the important property of being easily extended using Java.  Part two is the development and testing of several such extensions.
 
@@ -35,9 +35,13 @@ The third and final point is that this work is actually doable.  Some of it has 
 
 In the remainder of this proposal I will first give a description of Coq, including its significance, a description of current user interfaces, some examples of theorem proving using the tool, and some usability problems that I find particularly striking.  I will continue with a description of a survey, and its results, on user interfaces for Coq that was sent to subscribers to the Coq-Club mailing list.    Then, in the heart of this proposal, I will describe jEdit, CoqEdit, three experimental extensions to CoqEdit, and several associated user studies.  I will conclude with an overview of related work and a timeline for completing the remaining work.
 
+%%=======================================================================================
 \section{Coq and the Need for Improved User Interfaces}
+%%=======================================================================================
 
+%%================================
 \subsection{Basic Theorem Proving in Coq}
+%%================================
 
 Basic theorem proving in Coq can be thought of as the process of creating a ``proof tree'' of inferences.  The user first enters the lemma (or theorem) he or she wishes to prove.  The system responds by printing out the lemma again, generally in essentially the same form; this response is the root ``goal'' of the tree.  The user then enters a ``tactic''--a short command like ``apply more\_general\_lemma''--into the system, and the system will respond by producing either an error message (to indicate that the tactic may not be applied to the goal) or by replacing the goal with zero or more new child goals, one of which will be ``in focus'' as the ``current'' goal.  Proving all of these new child goals will prove the parent goal (if zero new child goals were produced, the goal is proved immediately).  Proving the current goal may be done using the same technique used with its parent, i.e. entering a tactic to replace the goal with a (possibly empty) set of child goals to prove, and which goal is the current goal changes automatically as goals are introduced and eliminated.  The original lemma is proved if tactics have successfully been used to create a finite tree of descendants--i.e. when there are no more goals to prove.
 
@@ -71,7 +75,7 @@ For the purposes of this example, I will write such ``sequents'' using the stand
 
 In general, the statements to the left of the $\vdash$, separated by commas, give the ``context'' in which the provability of the statement to the right of the turnstile is to be considered.\footnote{Another list of statements, Coq's ``environment,'' is implicitly to the left of the turnstile.  The distinction between environment and context is that statements in the context are considered true only locally, i.e. only for either the current section of lemmas being proved or for the particular goal being proved.  Generally, the environment is large, and contains many irrelevant statements, so displaying it is considered impractical.}  Another way to think about the sequent is that the statements to the left of the turnstile entail the statement to the right (or, at least, that is what we would like to prove).  In this example sequent's context, the colon indicates type, so for instance ``$A : Prop$'' just means ``$A$ is a variable of type $Prop$'' or, equivalently, ``$A$ is a proposition.''
 
-Note that this is an extremely simple example; one could actually use Coq's \texttt{auto} tactic to prove it automatically.  Theorems and lemmas in Coq typically involve many types and operators besides propositions and implications.  Other standard introductory examples involve natural numbers and lists, along with their associated operators and the other usual operators for propositions (e.g. negation).  In fact, Coq allows users to define their own types and add axioms regarding those types, allowing users to model and reason about, for instance, the possible effects of statements in a programming language, or more general mathematics like points and lines in geometry.
+Note that this is an extremely simple example; one could actually use Coq's \texttt{auto} tactic to prove it automatically.  Theorems and lemmas in Coq typically involve many types and operators besides propositions and implications.  Other standard introductory examples involve natural numbers and lists, along with their associated operators and the other usual operators for propositions (e.g. negation).  In fact, Coq's \textit{Gallina} language allows users to declare or define variables, functions, types, constructors for types, axioms, etc., allowing users to model and reason about, for instance, the possible effects of statements in a programming language, or more general mathematics like points and lines in geometry.
 
 The sequence of tactics, ``\texttt{intro H}'', ``\texttt{intros H' HA}'', ``\texttt{apply H}'', ``\texttt{exact HA}'', ``\texttt{apply H'}'', and finally ``\texttt{exact HA}'' can be used to prove the sequent above (\texttt{H}, \texttt{H'}, and \texttt{HA} are arguments given to \texttt{intro}, \texttt{intros}, \texttt{apply}, and \texttt{exact}).  The first tactic, ``\texttt{intro H}'', operates on \eqref{initialGoal}, moving the left side of the outermost implication (to the right of the turnstile) into the context (i.e. the left side of the turnstile).  The new subgoal, replacing \eqref{initialGoal}, is
 \begin{equation}\label{introHResult}A : Prop, B : Prop, C : Prop, H : A \ra B \ra C \vdash (A \ra B) \ra A \ra C\end{equation}
@@ -98,7 +102,9 @@ This successful use of ``\texttt{apply H}'' says that the proof $H$, that $A \ra
 
 The next tactic, ``\texttt{exact HA},'' eliminates \eqref{applyHresult1}, not replacing it with any new goal (if there is already proof of \texttt{A}, in this case \texttt{HA} in the context, then there is nothing left to do;  ``\texttt{apply HA}'' would have the same effect), and focus moves automatically to \eqref{applyHresult2}.  The tactic ``\texttt{apply H'}'' replaces \eqref{applyHresult2} with a new goal, but this new goal is identical to \eqref{applyHresult1} (we can use $A \ra B$ to prove $B$ if we can prove $A$), and so ``\texttt{exact HA}'' can be used again to to eliminate it.  Since there are no more goals, the proof is complete.
 
+%%================================
 \subsection{Coq's Significance}
+%%================================
 
 The example above is intended to give some sense of what interactive theorem proving with Coq is all about, and the complexities that novice users face, but it barely scratches the surface of Coq's full power and complexity.  It also does little to suggest Coq's significance.    Most of the applications accounting for this importance can be divided into those relating (more directly) to computer science and those relating to mathematics.\footnote{See the categorization of user contributions on the Coq website:  http://coq.inria.fr/pylons/pylons/contribs/bycat/v8.4}
 
@@ -108,8 +114,52 @@ On the mathematics side, Coq is being used to formalize and check proofs of a va
 
 The potential for transparency also helps make interactive theorem provers, like Coq, a potentially useful tool in mathematics, logic, and computer science education.  Rather than simply giving students the answers to homework problems, interactive theorem provers might be used to to check students' work, find the precise location of errors and correct misconceptions early.  Interest in adapting theorem provers for educational purposes can be seen in many references listed later in this document; Benjamin Pierce et al.'s \textit{Software Foundations}\cite{pierce2010software}, a textbook, written mostly as comments in files containing Coq code and which includes exercises having solutions that may be checked by Coq, serves as an example of how the tool can be effectively used in education.  More general interest in educational systems that check student work can be seen in logic tutorial systems such as ``P-Logic Tutor'' \cite{lukins2002tutorial}, ``Logic Tutor'' \cite{lesta2002intelligent}, ``Fitch'' (software accompanying the textbook \textit{Language, Proof, and Logic} \cite{barwise2000language}), and ``ProofMood''\cite{ProofMood}.
 
-Why Coq over other ITPs? ...
+The part of the case for Coq's significance that is presented above is more a case for interactive theorem provers in general than Coq in particular; after reading it one may wonder, why try to improve Coq usability instead of usability for some other proof assistant?  The answer is that it is already one of the most powerful and successful such tools.  Adam Chlipala, in the introduction to his book \textit{Certified Programming with Dependent Types} \cite{chlipala2011certified}, presents a list of major advantages over other proof assistants in use:  its use of a higher-order language with dependent types, the fact that it produces proofs that can be checked by a small program (i.e. it satisfies the ``de Bruijn criterion''), its proof automation language, and its support for ``proof by reflection.''
+\footnote{Basically, this is proof by providing a procedure to get a proof.  Coq allows one to prove that these procedures produce correct proofs.}  As evidence of its resulting success, note that Coq was awarded the 2013 ACM SIGPLAN Programming Languages Software Award \cite{CoqSIGPLANAward}.
 
+%%================================
+\subsection{Current User Interfaces and Problems They Present to Novice Users}
+%%================================
+
+The example presented earlier can be used to illustrate some more of the common challenges for users.  For novice users, one of the biggest challenges is to discover exactly what Coq's tactics do when applied to various arguments and goals.   Only four tactics were used in the example, but many more are standard (the Coq Reference Manual\cite{Coq:manual} lists almost 200 in its tactics index), and Coq allows new tactics to be defined.  Other challenges, for both novice and expert users, will be discussed below, but the lack of support for users trying to understand tactic effects is, by itself, probably sufficient justification for the development of new user interfaces.
+
+The two major user interfaces for Coq are currently \textit{Proof General}\cite{ProofGeneral,aspinall2000proof} and \textit{CoqIDE} (which is available from the Coq website\cite{Coq}, and is bundled with Coq).  Interacting with Coq using one is quite similar to interacting with Coq using the other, the main difference being that Proof General is actually an Emacs mode (and so has the advantages and disadvantages of the peculiarities of the Emacs text editor, e.g. numerous shortcuts and arguably a steep learning curve).
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{simple1_1.jpg}
+  \caption{CoqIde, displaying the result of entering the tactic ``\texttt{apply H}'' in the top-right panel within the proof of \texttt{(A -> B -> C) -> (A -> B) -> A -> C}.}
+  \label{fig:simple1_1}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{simple1_2.jpg}
+  \caption{CoqIde after moving the end of the evaluated portion of the script forward by one sentence from the state shown in \autoref{fig:simple1_1}.}
+  \label{fig:simple1_2}
+\end{figure}
+
+
+\autoref{fig:simple1_1} and \autoref{fig:simple1_2} show the CoqIde user interface as it appears while entering the proof from the the earlier example, that $(A \ra B \ra C) \ra (A \ra B) \ra A \ra C$,  into Coq.\footnote{Note that ``\texttt{simple1}'', in ``\texttt{Lemma simple1 : (A -> B -> C) -> (A -> B) -> A -> C.}'', is the identifier we are binding to the \textit{proof} of the lemma, and not to the lemma itself.  Without recognizing this, the fact that the keyword ``\texttt{Lemma}'' could have been replaced by the keyword ``\texttt{Definition}'' may be yet another source of confusion since it suggests that Coq thinks lemmas and definitions are basically the same thing!  As one might expect, we could also bind an identifier to the lemma itself.  If we were to bind the identifier ``\texttt{SimpleLemma}'' to this lemma, we would most likely use the \texttt{Definition} keyword in combination with ``\texttt{:=}'', and write \\``\texttt{Definition (SimpleLemma : Prop) := (A -> B -> C) -> (A -> B) -> A -> C.}''}  
+The larger panel on the left shows a script that will, in general, contain definitions, theorems, and the sequences of tactics used to create proofs of these theorems.\footnote{Here the declaration of A, B, and C, and the definition of the proof of the lemma are within a section that has been named ``\texttt{SimpleExamples}.''  This sets the scope A, B, and C to just the section.  Outside of the section, reference to simple1 is allowed.  However, simple1 is changed to a proof that $\forall (A : Prop), (\forall (B : Prop), (\forall (C : Prop), ((A \ra B \ra C) \ra (A \ra B) \ra A \ra C)))$, generally written \texttt{forall A B C : Prop, (A -> B -> C) -> (A -> B) -> A -> C}.}
+A portion of this script, starting at the beginning, may be highlighted in green to show that it has been successfully processed by Coq. A portion of the script following this green highlighting, or starting at the beginning if there is no green highlighting, may be highlighted in blue to show where the ``sentences'' of the script are either being evaluated or have been queued for evaluation (sentences in the script are separated by periods followed by whitespace, as in English).  Whenever Coq is not already processing a sentence, and there are queued sentences, the first sentence is in the queue is automatically dequeued and sent to Coq.  If this sentence is successfully processed, its highlighting changes to green and the output resulting from the successful processing is printed in one of the two panels on the right side of the window.  Assuming the system is in ``proof mode'' (e.g. after processing ``\texttt{Lemma simple1}...'' in \autoref{fig:simple1_1} and \autoref{fig:simple1_2}),
+
+In general, processing a sentence is not guaranteed to produce a result of any kind (error or otherwise) in any specified amount of time (some sentences are semi-decision procedures), so CoqIde allows users to interrupt the processing of a sentence.  This has the effect of removing all sentences from the processing queue and removing all blue highlighting. 
+
+
+highlighting may be extended further with blue highlighting to show the portion of the script that is being processed or has been queued for processing.  Moving the highlighting ``forward'', i.e. really means extending the queued section.  (Frequently, though by no means always, processing is fast enough that the blue highlighting is not actually visible to the user.)  The user may move the end of the highlighting portion (which may be either blue or green) backwards or forwards by a single sentence (sentences are separated in the script by periods followed by whitespace; going forwards really), to the sentence at the cursor, or to the beginning or end of the script.  
+
+The output resulting from the (successful) processing of the last sentence highlighted in green appears in one of the two panels on the right side of the window.  Assuming a proof has been started, the top panel displays the current goal (including its context), followed by just the consequents any remaining goals. The bottom panel displays various messages, e.g. error messages and acknowledgements of successful definitions.
+
+When processing of a sentence results in an error, all sentences queued for processing are removed from the queue, the blue highlighting representing that queue is removed, and the font of the offending part of the offending sentence is changed to bold underlined red. When processing is successful, the highlighting is changed from blue to green (i.e. the green section is extended into the blue section).
+
+
+
+
+
+%%================================
+\subsection{Coq User Interface Survey}
+%%================================
 
 %%=======================================================================================
 %\section{Ideas}
