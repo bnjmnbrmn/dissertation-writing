@@ -201,7 +201,7 @@ The survey consisted of 19 questions, of which 13 were multiple choice and the r
 
 The responses to the first group of questions showed a full range of (self-reported) Coq expertise levels, although a majority of responses indicated a high degree of expertise (on a scale going from 1=“novice” to 5=”expert”, 2 respondents rated themselves at level 1, 12 at level 2, 9 at level 3, 17 at level 4, and 8 at level 5).  9 respondents indicated they had been using Coq for less than 1 year, 27 for 1-5 years, 7 for 5-10 years, and 5 for more than 10 years.  Users of Proof General outnumbered users of CoqIDE 31 to 16.  24 respondents indicated using Coq for programming language or program verification research, 10 indicated using Coq for formalization of mathematics, and 8 indicated “teaching.” (There were 47 responses total to this free-response question.)
 
-In the second group, to the question ``How satisfied are you with the interface you typically use?'', respondents gave a slightly positive average response (4.6 on a 1 to 7 point scale).  This was somewhat surprising to us at first, but it may have been an artifact of how the the question was asked.  For one thing, we did not present any sort of alternative interface, and current interfaces are a significant improvement over the basic command prompt.  A second factor may be that many respondents have become accustomed to their current interface and may have viewed the question as asking how willing they would be to learn to use a new interface.  More than 25\% of respondents, however, did indicate some level of dissatisfaction.  Furthermore, answers to four questions revealed difficult tasks for users.  These questions asked users how difficult it is, using the interface they typically use, to 
+In the second group, to the question ``How satisfied are you with the interface you typically use?'', respondents gave a slightly positive average response (4.6 on a 1 to 7 point scale).  This was somewhat surprising to us at first, but it may have been an artifact of how the the question was asked.  For one thing, we did not present any sort of alternative interface, and current interfaces are, in fact, a significant improvement over the basic command prompt.  A second factor may be that many respondents have become accustomed to their current interface and may have viewed the question as asking how willing they would be to learn to use a new interface.  More than 25\% of respondents, however, did indicate some level of dissatisfaction.  Furthermore, answers to four questions revealed difficult tasks for users.  These questions asked users how difficult it is, using the interface they typically use, to 
 \begin{itemize}
 \item understand the relationships between subgoals, 
 \item switch back and forth between potential proofs of a subgoal, 
@@ -218,79 +218,69 @@ In the third group, we received almost 4,500 words (total) in response to the qu
 \end{itemize}
 Because of this volume, I categorized the responses to each question.
 
-For the first question, the first category was ``library documentation.'' Respondents noted that Coq's ``\texttt{SearchAbout}'' command is a little hard to use, that they would like more simple examples of using Coq commands, that theorem names are not very readable, and that they would like integration of documentation, a la the Eclipse IDE's javadoc support.  The second category was ``available tactics''/``relevant lemmas, relevant definitions'': respondents wanted the names of previously proved statements they could apply and, additionally, whether a tactic could be used to automatically prove either the the current goal or its negation.  The third category was information on terms, e.g. the type of a term, the value to which it reduces, or other implicit information (such information can already be made available by using commands like ``\texttt{Check}'' and ``\texttt{Print}'').  The fourth category was proof structure, including information on the relationships both between goals within a proof and between theorems and definitions.  Miscellaneous responses included similarities between terms, differences between terms and expected terms, and tactic debugging with custom breakpoints.
-  
+For the first question, the first category was ``library documentation.'' Respondents noted that Coq's ``\texttt{SearchAbout}'' command is a little hard to use, that they would like more simple examples of using Coq commands, that theorem names are not very readable, and that they would like integration of documentation, a la the Eclipse IDE's javadoc support.\footnote{For the reader not familiar with Integrated Development Environments, which are essentially text editors with features specialized to programming in various languages.  Eclipse\cite{Eclipse} is one of the more popular IDEs for Java programming.}  The second category was ``available tactics''/``relevant lemmas, relevant definitions'': respondents wanted the names of previously proved statements they could apply and, additionally, whether a tactic could be used to automatically prove either the the current goal or its negation.  The third category was information on terms, e.g. the type of a term, the value to which it reduces, or other implicit information (such information can already be made available by using commands like ``\texttt{Check}'' and ``\texttt{Print}'').  The fourth category was proof structure, including information on the relationships both between goals within a proof and between theorems and definitions.  Miscellaneous responses included similarities between terms, differences between terms and expected terms, and tactic debugging with custom breakpoints.
 
-Many of the answers to the first question could be categorized as “library documentation”, “available tactics”, type information, and information on proof structure.  
+For the question ``What do you think are the hardest parts of learning interactive theorem proving with Coq?'', the first category of response was type theory-- that learning the type theory behind Coq is one of the hardest parts.  The second category had to do with lack of good tutorials.  The third category was that there are numerous poorly documented commands (again, the need for simple examples was mentioned).  Finally, the fourth category was proof readability, e.g. lack of support for mathematical notation and proof script organization.
 
-Categories of answers to the second question included: a) learning type theory, b) lack of a good tutorial c) dependent types and implicit arguments, d) tactics, Ltac, libraries and dealing with documentation, and e) notation and proof structure.  Answers to the third question emphasized including features found in programming IDEs such as refactoring, along with better handling of notation (LaTeX/MathML/pretty printing), inclusion of more “background automation”, and visualizations.
+For the question ``What advice/requests/ideas do you have for creating better Coq user interfaces?'', the first category was programming IDE features (e.g. auto-indentation, safe and correct renaming of identifiers, refactoring of tactics and groups of tactics, and background automation).  The second category was proof structure--representing proof structure by for instance grouping sibling goals, and allowing more flexibility to the order in which one works on goals.  The third category was syntax, which included having better ways to indicate where one wants to rewrite part of a term or where one wants to unfold a definition and automatic naming of hypotheses.  Some miscellaneous suggestions were to make more use of the mouse, avoid unnecessary re-execution of potentially long-running commands, and to have different editing and presentation tools.   
 
-My conclusions include...
-
+Even given the responses from self-described novice Coq users, the group of respondents is still heavily biased towards acceptance of arcane, complicated software.  The responses summarized above demonstrate that, even by this group, room for improvement is seen.
 
 %%=======================================================================================
-%\section{Ideas}
+\section{Proposed and Completed Research}
 %%=======================================================================================
-%
 %%================================
-%\subsection{jEdit as an Interactive Theorem Proving Environment}
+\subsection{Overview}
 %%================================
-%
-%Harness the power of Java/Piccolo/jEdit.  jEdit also used with Isabelle (CITE).
-%
+
+In this section, I describe CoqEdit, three extensions to CoqEdit, and plans for evaluating two of these extensions with human participants.  As an interlude in the descriptions of the extensions, I include a presentation of the development and testing ``Keyboard-Card Menus'' as these are a component of one of the planned extensions.
+
 %%================================
-%\subsection{Proof Previews}
+\subsection{CoqEdit}
 %%================================
-%
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{coqedit.jpg}
+  \caption{An initial version of}
+  \label{fig:coqedit}
+\end{figure}
+
 %%================================
-%\subsection{Proof Tree Visualization}
+\subsection{CoqEdit Extensions}
 %%================================
-%
+
+\subsubsection{``Proof Previews''}
+
+\subsubsection{``Proof Transitions''}
+
 %%================================
-%\subsection{Proof Transitions}
+\subsection{Interlude: Keyboard-Card Menus}
 %%================================
-%
+
 %%================================
-%\subsection{Syntax Tree Visualization}
+\subsection{CoqEdit Extensions, Continued}
 %%================================
-%
+
+\subsubsection{``Propositional Logic Syntax Shortcuts''}
+
+
 %%================================
-%\subsection{Keyboard-Card Menus}
+\subsection{Extension Testing}
 %%================================
-%
+
 %%=======================================================================================
-%\section{Implementation}
+\section{Timeline for Research}
 %%=======================================================================================
-%
-%%================================
-%\subsection{Current}
-%%================================
-%
-%%================================
-%\subsection{Planned}
-%%================================
-%
-%
+
+
+
 %%=======================================================================================
-%\section{Description of User Studies}
+\section{Related Work}
 %%=======================================================================================
-%
-%
-%%================================
-%\subsection{Keyboard-Card Menu Study Results}
-%%================================
-%
-%%=======================================================================================
-%\section{Literature Review}
-%%=======================================================================================
-%
-%
-%
-%%=======================================================================================
-%\section{Timeline}
-%%=======================================================================================
-%
-%
+
+
+
 
 %=======================================================================================
 \section{Conclusion}
