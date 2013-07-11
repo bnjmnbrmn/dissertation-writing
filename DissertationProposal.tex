@@ -239,10 +239,20 @@ In this section, I describe CoqEdit, three extensions to CoqEdit, and plans for 
 \subsection{CoqEdit}
 %%================================
 
+CoqEdit is a new user interface of Coq, that I, along with Harley Eades and under the supervision of Professors Juan Pablo Hourcade and Aaron Stump, have been developing. CoqEdit is a plugin to the \textit{jEdit}\cite{jEdit} text editor, a free and open source editor editor written in Java.\footnote{Another jEdit plugin, \textit{Isabelle/jEdit}, has been developed to provide support for the Isabelle\cite{Isabelle} interactive theorem prover and is bundled with Isabelle itself; see, for instance, \cite{wenzel2012asynchronous}.  Note that it has a rather different, and arguably more advanced, ``asynchronous'' style of interaction.  While this style of interaction may one day be available to Coq users, for now we are concentrating on other issues.}  For the most part, interaction with CoqEdit, at least in its unextended form, imitates the style seen with Proof General and CoqIde.  
+
+\autoref{fig:coqedit} shows an initial version of the plugin.  This initial version is functional in that one can communicate with the \texttt{coqtop} command prompt by moving the highlighting forwards and backwards (using submenu items not seen in figure 6, or the items' shortcuts) to send messages to \texttt{coqtop}, which can then respond by changing the text printed in the two panels on the right.  It also allows allows \texttt{coqtop} to be interrupted when processing long-running commands, and includes the XML files telling jEdit how to do syntax highlighting for Coq's .v (``Vernacular'') files.  Note that these two panels actually sit within a jEdit ``dockable window'', which may be hidden (i.e. collapsed so that only its labeling tab is showing), undocked (i.e. made to float as a normal window), or docked in some other position (e.g. below the area containing text, instead of to its right).
+
+Although it does not contain some of the language-specific features of IDEs like Eclipse, jEdit does contain several noteworthy ones, besides its support for plugins.  These include syntax highlighting and auto-indentation for numerous languages, word completion, abbreviations, folding and many others (see the jEdit homepage\cite{jEdit}, and the features page to which it links). Particularly important for the development of plugins is its BeanShell scripting language for writing macros, essentially an interpreted version of Java that makes experimentation with the jEdit API relatively easy, especially for Java programmers.  Plugins are, for the most part, actually collections of BeanShell scripts that generally invoke compiled Java code.
+
+One of the features of jEdit's plugin system is that one can specify dependencies between plugins.  If plugin \textit{A} is specified as depending on plugin \textit{B}, then activating\footnote{``Loading'' a plugin does not necessarily ``activate'' it.}  \textit{A} in the plugin manager activates \textit{B}.  This allows code from \textit{B} to be invoked from \textit{A}.  This makes it possible to write extensions to CoqEdit as jEdit plugins that allow features to be added incrementally and in various combinations.  In a nutshell, we can write plugins that plug into our CoqEdit plugin.
+
+Currently, I am working on a major revision of the initial version shown in \autoref{fig:coqedit}.  Although this revision will include bug fixes and implement a few remaining unimplemented features, its main purpose is to improve the software architecture in order to make future CoqEdit extensions easier.  This new, still quite basic, user interface will however improve on Proof General and CoqIde in a couple of different ways.  First, it will cache the output of sentence evaluation and allow a window into this cache using movable dark green highlighting of a sentence within the evaluated region.  Second, it will allow both multiple instances of \texttt{coqtop} to run simultaneously \textit{and} multiple text areas to show multiple areas within a buffer that is being evaluated. 
+
 \begin{figure}
   \center
   \includegraphics[width=\linewidth]{coqedit.jpg}
-  \caption{An initial version of}
+  \caption{An initial version of CoqEdit.}
   \label{fig:coqedit}
 \end{figure}
 
@@ -250,19 +260,92 @@ In this section, I describe CoqEdit, three extensions to CoqEdit, and plans for 
 \subsection{CoqEdit Extensions}
 %%================================
 
+%%============
 \subsubsection{``Proof Previews''}
+%%============
 
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{proofpreviews.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:proofpreviews}
+\end{figure}
+
+%%============
 \subsubsection{``Proof Transitions''}
+%%============
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{pt1.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:pt1}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{pt2.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:pt2}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{pt3.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:pt3}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{pt4.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:pt4}
+\end{figure}
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{ptZoomOut.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:ptZoomOut}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{ptZoomOut.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \label{fig:ptZoomOut}
+\end{figure}
 
 %%================================
 \subsection{Interlude: Keyboard-Card Menus}
 %%================================
 
+In this section, I describe work on ``Keyboard-Card Menus'', which I hope to incorporate into a third extension to CoqEdit.
+
 %%================================
 \subsection{CoqEdit Extensions, Continued}
 %%================================
 
+%%============
 \subsubsection{``Propositional Logic Syntax Shortcuts''}
+%%============
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{PLSS_1.jpg}
+  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts}
+  \label{fig:plss1}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{PLSS_2.jpg}
+  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts, with highlighting moved from \autoref{fig:plss1}}
+  \label{fig:plss2}
+\end{figure}
+
 
 
 %%================================
