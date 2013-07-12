@@ -7,6 +7,7 @@
 \usepackage{amssymb}
 \usepackage{epstopdf}
 \usepackage{hyperref}
+\usepackage{float}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \newcommand{\ra}{\ensuremath{\rightarrow}}
@@ -41,6 +42,7 @@ In the remainder of this proposal I will first give a description of Coq, includ
 
 %%================================
 \subsection{Basic Theorem Proving in Coq}
+\label{examplesection}
 %%================================
 
 Basic theorem proving in Coq can be thought of as the process of creating a ``proof tree'' of inferences.  The user first enters the lemma (or theorem) he or she wishes to prove.  The system responds by printing out the lemma again, generally in essentially the same form; this response is the root ``goal'' of the tree.  The user then enters a ``tactic''--a short command like ``apply more\_general\_lemma''--into the system, and the system will respond by producing either an error message (to indicate that the tactic may not be applied to the goal) or by replacing the goal with zero or more new child goals, one of which will be ``in focus'' as the ``current'' goal.  Proving all of these new child goals will prove the parent goal (if zero new child goals were produced, the goal is proved immediately).  Proving the current goal may be done using the same technique used with its parent, i.e. entering a tactic to replace the goal with a (possibly empty) set of child goals to prove, and which goal is the current goal changes automatically as goals are introduced and eliminated.  The original lemma is proved if tactics have successfully been used to create a finite tree of descendants--i.e. when there are no more goals to prove.
@@ -126,14 +128,14 @@ The example presented earlier can be used to illustrate some more of the common 
 
 The two major user interfaces for Coq are currently \textit{Proof General}\cite{ProofGeneral,aspinall2000proof} and \textit{CoqIDE} (which is available from the Coq website\cite{Coq}, and is bundled with Coq).  Interacting with Coq using one is quite similar to interacting with Coq using the other, the main difference being that Proof General is actually an Emacs mode (and so has the advantages and disadvantages of the peculiarities of the Emacs text editor, e.g. numerous shortcuts and arguably a steep learning curve).
 
-\begin{figure}
+\begin{figure}[h]
   \center
   \includegraphics[width=\linewidth]{simple1_1.jpg}
   \caption{CoqIde, displaying the result of entering the tactic ``\texttt{apply H}'' in the top-right panel within the proof of \texttt{(A -> B -> C) -> (A -> B) -> A -> C}.}
   \label{fig:simple1_1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
   \center
   \includegraphics[width=\linewidth]{simple1_2.jpg}
   \caption{CoqIde after moving the end of the evaluated portion of the script forward by one sentence from the state shown in \autoref{fig:simple1_1}.}
@@ -159,21 +161,30 @@ Proof general does introduce a few features not present in CoqIde.  For instance
 
 ProofWeb's display of the tree follows the convention where inferences are drawn with a horizontal line separating horizontally listed premises, above, from the conclusion below, and where each horizontal line is labeled with the name of the corresponding inference rule (or, in the case of Coq, by the corresponding tactic name) to the right of the line.  These inferences can be chained together so that the root of the proof tree is drawn at the bottom and the leaves are drawn at the top.  As an example, the portion of the proof tree constructed by ProofWeb that corresponds to ``\texttt{apply H}'' is shown in \autoref{fig:applyH} (the ellipses indicate that the child nodes are still unproved), and \autoref{fig:fulldisplaypartialtree} fully displays the partially completed tree.  The user is able to much more directly see the goal to which \texttt{apply H} is applied and the goals this application produces.
 
-\begin{figure}
+\begin{figure}[h]
   \center
   \includegraphics[width=\linewidth]{ProofWeb.jpg}
   \caption{ProofWeb, with a partial proof tree displayed in the bottom right.}
   \label{fig:proofweb}
 \end{figure}
 
-\begin{figure}
+
+
+Unfortunately, as one can probably already tell, this sort of visualization does not scale particularly well.\footnote{Later in this document I provide what I hope is a clearly better alternative.} Contexts may may have dozens of items, many of which may be much longer than ``\texttt{H : A -> B -> C}, and the number of nodes in the proof tree may also be very large.  As a result, to see the effect of a tactic the user may have to pan around the window; this is especially likely if one is looking at a tactic used near the root of the tree, since the width of the tree at its leaves forces apart nodes near the root.  Even if the user does not need to pan (ProofWeb has a feature that allows the tree to be displayed in a separate window, which can sometimes make panning unneccessary), the distances at which nodes with sibling and parent-child relationships must sometimes be placed may make it difficult for the user to compare such sequents and to determine if a direct relationship in fact exists (e.g. determine if two sequents that printed next to one another are siblings or ``cousins'').  The latter task is possibly especially difficult using this visualization since it involves checking for gaps in co-linear line segments and the human brain tends to connect such lines.\footnote{This is the Gestalt law of ``good continuation; see, for instance, \cite{field1993contour}.}  The proof tree visualization, especially if there is a need to pan, is not particularly helpful in showing the location of the current goal (users may have to search the leaves of the tree to find the leftmost ellipsis).
+
+\begin{figure}[h]
   \center
   \includegraphics[width=\linewidth]{applyH.jpg}
   \caption{The portion of ProofWeb's tree visualization corresponding to the tactic ``\texttt{apply H}''.}
   \label{fig:applyH}
 \end{figure}
 
-Unfortunately, as one can probably already tell, this sort of visualization does not scale particularly well.\footnote{Later in this document I provide what I hope is a clearly better alternative.} Contexts may may have dozens of items, many of which may be much longer than ``\texttt{H : A -> B -> C}, and the number of nodes in the proof tree may also be very large.  As a result, to see the effect of a tactic the user may have to pan around the window; this is especially likely if one is looking at a tactic used near the root of the tree, since the width of the tree at its leaves forces apart nodes near the root.  Even if the user does not need to pan (ProofWeb has a feature that allows the tree to be displayed in a separate window, which can sometimes make panning unneccessary), the distances at which nodes with sibling and parent-child relationships must sometimes be placed may make it difficult for the user to compare such sequents and to determine if a direct relationship in fact exists (e.g. determine if two sequents that printed next to one another are siblings or ``cousins'').  The latter task is possibly especially difficult using this visualization since it involves checking for gaps in co-linear line segments and the human brain tends to connect such lines.\footnote{This is the Gestalt law of ``good continuation; see, for instance, \cite{field1993contour}.}  The proof tree visualization, especially if there is a need to pan, is not particularly helpful in showing the location of the current goal (users may have to search the leaves of the tree to find the leftmost ellipsis).
+\begin{figure}[h]
+  \center
+  \includegraphics[width=\linewidth]{fullDisplayPartialTree.jpg}
+  \caption{The partially completed tree from \autoref{fig:proofweb}, fully displayed.}
+  \label{fig:fulldisplaypartialtree}
+\end{figure}
 
 The problems with current user interfaces that are discussed above are with respect to the scenario in which a novice user is inspecting an existing proof in order to determine the effects of various tactics under various conditions.  Many other scenarios with overlapping and related challenges also exist.  Such challenges include, but are not limited to,
 \begin{itemize}
@@ -185,12 +196,7 @@ The problems with current user interfaces that are discussed above are with resp
 	\item doing all these things efficiently. 
 \end{itemize}
 
-\begin{figure}
-  \center
-  \includegraphics[width=\linewidth]{fullDisplayPartialTree.jpg}
-  \caption{The partially completed tree from \autoref{fig:proofweb}, fully displayed.}
-  \label{fig:fulldisplaypartialtree}
-\end{figure}
+
 
 %%================================
 \subsection{Coq User Interface Survey}
@@ -243,18 +249,21 @@ CoqEdit is a new user interface of Coq, that I, along with Harley Eades and unde
 
 \autoref{fig:coqedit} shows an initial version of the plugin.  This initial version is functional in that one can communicate with the \texttt{coqtop} command prompt by moving the highlighting forwards and backwards (using submenu items not seen in figure 6, or the items' shortcuts) to send messages to \texttt{coqtop}, which can then respond by changing the text printed in the two panels on the right.  It also allows allows \texttt{coqtop} to be interrupted when processing long-running commands, and includes the XML files telling jEdit how to do syntax highlighting for Coq's .v (``Vernacular'') files.  Note that these two panels actually sit within a jEdit ``dockable window'', which may be hidden (i.e. collapsed so that only its labeling tab is showing), undocked (i.e. made to float as a normal window), or docked in some other position (e.g. below the area containing text, instead of to its right).
 
-Although it does not contain some of the language-specific features of IDEs like Eclipse, jEdit does contain several noteworthy ones, besides its support for plugins.  These include syntax highlighting and auto-indentation for numerous languages, word completion, abbreviations, folding and many others (see the jEdit homepage\cite{jEdit}, and the features page to which it links). Particularly important for the development of plugins is its BeanShell scripting language for writing macros, essentially an interpreted version of Java that makes experimentation with the jEdit API relatively easy, especially for Java programmers.  Plugins are, for the most part, actually collections of BeanShell scripts that generally invoke compiled Java code.
-
-One of the features of jEdit's plugin system is that one can specify dependencies between plugins.  If plugin \textit{A} is specified as depending on plugin \textit{B}, then activating\footnote{``Loading'' a plugin does not necessarily ``activate'' it.}  \textit{A} in the plugin manager activates \textit{B}.  This allows code from \textit{B} to be invoked from \textit{A}.  This makes it possible to write extensions to CoqEdit as jEdit plugins that allow features to be added incrementally and in various combinations.  In a nutshell, we can write plugins that plug into our CoqEdit plugin.
-
-Currently, I am working on a major revision of the initial version shown in \autoref{fig:coqedit}.  Although this revision will include bug fixes and implement a few remaining unimplemented features, its main purpose is to improve the software architecture in order to make future CoqEdit extensions easier.  This new, still quite basic, user interface will however improve on Proof General and CoqIde in a couple of different ways.  First, it will cache the output of sentence evaluation and allow a window into this cache using movable dark green highlighting of a sentence within the evaluated region.  Second, it will allow both multiple instances of \texttt{coqtop} to run simultaneously \textit{and} multiple text areas to show multiple areas within a buffer that is being evaluated. 
-
-\begin{figure}
+\begin{figure}[h]
   \center
-  \includegraphics[width=\linewidth]{coqedit.jpg}
+  \includegraphics[width=1.1\linewidth]{coqedit.jpg}
   \caption{An initial version of CoqEdit.}
   \label{fig:coqedit}
 \end{figure}
+
+Although it does not contain some of the language-specific features of IDEs like Eclipse, jEdit does contain several noteworthy ones, besides its support for plugins.  These include syntax highlighting and auto-indentation for numerous languages, word completion, abbreviations, folding and many others (see the jEdit homepage\cite{jEdit}, and the features page to which it links).  The fact that jEdit runs on a Java Virtual Machine allows it to be used with Mac OS X, OS/2, Unix, VMS and Windows, and should also make extending CoqEdit support to multiple platforms relatively easy (I am currently developing it just under Mac OS X, but I expect it to immediately work just as well on Linux). Particularly important for the development of plugins is its BeanShell scripting language for writing macros, essentially an interpreted version of Java that makes experimentation with the jEdit API relatively easy, especially for Java programmers.  Plugins are, for the most part, actually collections of BeanShell scripts that generally invoke compiled Java code.
+
+One of the features of jEdit's plugin system is that one can specify dependencies between plugins.  If plugin \textit{A} is specified as depending on plugin \textit{B}, then activating\footnote{``Loading'' a plugin does not necessarily ``activate'' it.}  \textit{A} in the plugin manager automatically activates \textit{B}.  This allows code from \textit{B} to be invoked from \textit{A}.  This makes it possible to write extensions to CoqEdit as jEdit plugins that allow features to be added incrementally and in various combinations.  In a nutshell, we can write plugins that plug into our CoqEdit plugin.
+
+Currently, I am working on a major revision of the initial version shown in \autoref{fig:coqedit}.  Although this revision will include bug fixes and implement a few remaining unimplemented features, its main purpose is to improve the software architecture in order to make future CoqEdit extensions easier.  \textit{This foundation for future user interface research will be one of the major contributions involved in this dissertation.}  It will make taking advantage of the extensive Java libraries, particularly those for 2D graphics, and of the Java development community's expertise, much more straightforward.
+
+This new, still quite basic, user interface will however improve upon Proof General and CoqIde in a couple of different ways.  First, it will cache the output of sentence evaluation and allow a window into this cache using movable dark green highlighting of a sentence within the evaluated region (Proof General caches this output, but requires users to hover over the text with the mouse to make a tooltip with it appear).  Second, it will allow both multiple instances of \texttt{coqtop} to run simultaneously \textit{and} multiple text areas to show multiple areas within a buffer that is being evaluated. 
+
 
 %%================================
 \subsection{CoqEdit Extensions}
@@ -264,54 +273,139 @@ Currently, I am working on a major revision of the initial version shown in \aut
 \subsubsection{``Proof Previews''}
 %%============
 
-\begin{figure}
-  \center
-  \includegraphics[width=\linewidth]{proofpreviews.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+Our first experimental extension, ``Proof Previews'', is shown in \autoref{fig:proofpreviews}.  When the user presses CTRL-SPACEBAR while the system is in proof mode, a popup window containing a list of possible tactic/argument combinations (i.e. ones that do not immediately produce errors or take especially long to run) appears just below the end of the evaluated section.  The user can use the up and down arrow keys change the selected item in the list and the ENTER (or ``return'') key to insert the selected item into the script.  In addition, the output that would result from evaluating the selected item is displayed in the bottom output panel.  The general goal of this plugin is to allow users, novice users in particular, to quickly explore their available options.
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1.1\linewidth]{proofpreviews.jpg}
+  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom output panel.}
   \label{fig:proofpreviews}
 \end{figure}
+
+The tactic list generation capabilities for this plugin are quite limited at the moment:  only tactics used in propositional logic exercises and examples may appear in the list.  While this may still be useful for educational purposes, our implementation is mainly to be used for usability testing and to demonstrate the utility of the general idea.  A more fully developed version of this plugin would be possible, but would likely require some complicated indexing of Coq's standard library.  
 
 %%============
 \subsubsection{``Proof Transitions''}
 %%============
 
-\begin{figure}
+Our second experimental extension, ``Proof Transitions'', evolved from two separate ideas.  The first is proof tree visualization.  Originally, we proposed visualizing Coq's proof trees as in \autoref{fig:prooftreebuild}, where 
+\begin{itemize}
+\item the red half circles represent goals, 
+\item the blue half circles, placed on top of the red half circles to form complete circles, represent tactics successfully used with the goals corresponding to these red half circles, 
+\item child goals are arranged \textit{above} parent nodes (as in \autoref{fig:fulldisplaypartialtree}),
+\item thin red lines connect parent nodes to unproved child branches, 
+\item thick black lines connect parent nodes to proved child nodes, and
+\item the yellow arrow represents the current node.
+\end{itemize}
+(\autoref{fig:prooftreebuild} visualizes the example from section \ref{examplesection}).
+
+In addition to helping users in seeing which child goals are associated with which parent goals and tactics, and potentially in traversing/adding the trees' nodes in arbitrary orderings, this sort of visualization could be enhanced further to provide valuable information.  For instance, \autoref{fig:similarnodes} shows nodes being highlighted based on similarities in the tactics \footnote{...which might be particularly helpful in avoiding loops proofs}.  The information associated with these nodes could be compared side-by-side using an additional output window whose location within the proof tree could be represented by an additional arrow, as in \autoref{fig:nodecomparison}.  
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=1.1\linewidth]{prooftreebuild.jpg}
+  \caption{A series of partial proof tree visualizations of the example of section \ref{examplesection}, in an earlier style.  }
+  \label{fig:prooftreebuild}
+\end{figure}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=0.7\linewidth]{similarnodes.jpg}
+  \caption{Similar nodes being highlighted while the node under the yellow arrow is inspected.}
+  \label{fig:similarnodes}
+\end{figure}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=0.7\linewidth]{nodecomparison.jpg}
+  \caption{The proof tree visualization of \autoref{fig:similarnodes}, with an additional arrow to represent the location of another output window within the proof tree.}
+  \label{fig:nodecomparison}
+\end{figure}
+
+Proof tree visualizations could also be enhanced to support management of different versions of proof tree branches, as in \autoref{fig:versionmanagement}, and to support proof presentation, as in \autoref{fig:} which shows how a branch deemed uninteresting might be removed from the visualization.  These examples suggest the existence of a wide range of possible user interface improvements that may not even have been thought of yet, and that are part of the rationale for making CoqEdit more easily extendable.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=0.35\linewidth]{versionmanagement.jpg}
+  \caption{A user might decide to try an alternate proof of a branch (or the entirety) of the tree, or the entire tree.  A saved copy of the original branch might be represented by a ``shadowing'' blue half-circle, as seen on the right-hand side of this figure.}
+  \label{fig:versionmanagement}
+\end{figure}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=0.7\linewidth]{presentationmanagement.jpg}
+  \caption{The visualization of \autoref{fig:similarnodes}, with a branch hidden.  This sort of hiding might be useful in making the structure of the remaining visible branches more clear.}
+  \label{fig:versionmanagement}
+\end{figure}
+
+
+The second idea from which the Proof Transitions extension evolved was ``Inference Rule Highlighting''.   The idea here is to use highlighting the to show the pattern, or inference rule, being instantiated by a tactic application on a goal.  In \autoref{fig:inferenceruleinstance}, we see an instance of the general rule seen in \autoref{fig:inferencerule}.  The blue box contains a tactics while the red box below contains the old goal and the red box above contains the new goal (in general, one might see several red boxes above).  The goal is for users to be able to clearly see the effects of tactics on particular goals, i.e. which bits of text get moved where, and for novice users to gain an understanding of how the tactic works more generally.
+
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=.45\linewidth]{inferenceruleinstance.jpg}
+  \caption{Inference Rule Highlighting example:  child, parent, and tactic, with highlighting showing where the tactic has moved and added text.}
+  \label{fig:inferenceruleinstance}
+\end{figure}
+
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=.25\linewidth]{inferencerule.jpg}
+  \caption{The general inference rule on which \autoref{fig:inferenceruleinstance} is based.}
+  \label{fig:inferencerule}
+\end{figure}
+
+
+This particular way debugging tactics may work for many of the basic tactics, but it does not scale very well to more complicated tactics, since, for one thing, one eventually runs out of easily-distinguishable colors, and many tactics do not correspond to simple general rules of the like that seen in \autoref{fig:inferencerule} (e.g. the \texttt{auto} tactic that tries to automatically prove a goal).  Proof Transitions will provide an alternative which, in an initial form, can be seen demonstrated in \autoref{fig:pt1}, \autoref{fig:pt2}, \autoref{fig:pt3}, and \autoref{fig:pt4}.  \autoref{fig:pt1} shows the initial goal.  \autoref{fig:pt2} shows how immediately after the tactic \texttt{intros H1 H2} has been processed by the system, a blue box, containing the tactic, is placed immediately on top of the old goal and the new goal, in another red box, is placed further up with a line connecting its red box and the blue box.  As an option, as seen in \autoref{fig:pt3}, highlighting and underlining can be added to the boxes' text according to the following rules:  
+\begin{itemize}
+\item red highlighting in the bottom red box to show text that is deleted altogether, 
+\item green highlighting in the top red box to show text that is entirely new, 
+\item yellow highlighting in any box to show text that is moved (or copied, in the case of identifiers given as the tactic arguments),
+\item red underlining in the bottom red box to show text that is either moved or deleted altogether, and 
+\item green underlining in the top red box to show text that is new (either entirely new or moved/copied into the box)
+\end{itemize}
+In addition, the user can have lines, or arrows, drawn to connect the moved/copied portions of text, as seen in \autoref{fig:pt4}.  Note that within the program the lines are drawn one-by-one in an animation, which makes it easier to see what is connected to what than what might appear to be the case just  looking at \autoref{fig:pt4}
+
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pt1.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \caption{Proof transitions: a goal, pre-transition}
   \label{fig:pt1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pt2.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \caption{After a tactic has been applied to the goal in \autoref{fig:pt1}, stage 1.}
   \label{fig:pt2}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pt3.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \caption{After a tactic has been applied to the goal in \autoref{fig:pt1}, stage 2.}
   \label{fig:pt3}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pt4.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \caption{After a tactic has been applied to the goal in \autoref{fig:pt1}, stage 3.  Note that the lines would be added one at a time.}
   \label{fig:pt4}
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptZoomOut.jpg}
   \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
   \label{fig:ptZoomOut}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptZoomOut.jpg}
   \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
