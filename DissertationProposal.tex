@@ -1,13 +1,17 @@
-\documentclass[11pt]{amsart}
+\documentclass[11pt]{report}
 \usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 \geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
 %\geometry{landscape}                % Activate for for rotated page geometry
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{epstopdf}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{dblfloatfix}
+\usepackage{tabularx}
+\usepackage[nottoc,numbib]{tocbibind}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \newcommand{\ra}{\ensuremath{\rightarrow}}
@@ -18,8 +22,9 @@
 
 \begin{document}
 \maketitle
+\tableofcontents
 %=======================================================================================
-\section{Introduction}
+\chapter{Introduction}
 %=======================================================================================
 
 A long time ago my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to also figure out how to make playing those notes easy.  The major goal of the proposed dissertation is to reapply the same idea in the context of interactive theorem proving with the \textit{Coq} proof assistant\cite{Coq}\footnote{``Proof assistant'' and ``interactive theorem prover'' are synonymous}:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving serious usability problems for an important and powerful tool for creating machine-checked proofs, many of the techniques I am developing and testing are widely applicable to other forms of coding.
@@ -37,7 +42,7 @@ The third and final point is that this work is actually doable.  Some of it has 
 In the remainder of this proposal I will first give a description of Coq, including its significance, a description of current user interfaces, some examples of theorem proving using the tool, and some usability problems that I find particularly striking.  I will continue with a description of a survey, and its results, on user interfaces for Coq that was sent to subscribers to the Coq-Club mailing list.    Then, in the heart of this proposal, I will describe jEdit, CoqEdit, three experimental extensions to CoqEdit, and several associated user studies.  I will conclude with an overview of related work and a timeline for completing the remaining work.
 
 %%=======================================================================================
-\section{Coq and the Need for Improved User Interfaces}
+\chapter{Coq and the Need for Improved User Interfaces}
 %%=======================================================================================
 
 %%================================
@@ -128,14 +133,14 @@ The example presented earlier can be used to illustrate some more of the common 
 
 The two major user interfaces for Coq are currently \textit{Proof General}\cite{ProofGeneral,aspinall2000proof} and \textit{CoqIDE} (which is available from the Coq website\cite{Coq}, and is bundled with Coq).  Interacting with Coq using one is quite similar to interacting with Coq using the other, the main difference being that Proof General is actually an Emacs mode (and so has the advantages and disadvantages of the peculiarities of the Emacs text editor, e.g. numerous shortcuts and arguably a steep learning curve).
 
-\begin{figure}[h]
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{simple1_1.jpg}
   \caption{CoqIde, displaying the result of entering the tactic ``\texttt{apply H}'' in the top-right panel within the proof of \texttt{(A -> B -> C) -> (A -> B) -> A -> C}.}
   \label{fig:simple1_1}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{simple1_2.jpg}
   \caption{CoqIde after moving the end of the evaluated portion of the script forward by one sentence from the state shown in \autoref{fig:simple1_1}.}
@@ -161,7 +166,7 @@ Proof general does introduce a few features not present in CoqIde.  For instance
 
 ProofWeb's display of the tree follows the convention where inferences are drawn with a horizontal line separating horizontally listed premises, above, from the conclusion below, and where each horizontal line is labeled with the name of the corresponding inference rule (or, in the case of Coq, by the corresponding tactic name) to the right of the line.  These inferences can be chained together so that the root of the proof tree is drawn at the bottom and the leaves are drawn at the top.  As an example, the portion of the proof tree constructed by ProofWeb that corresponds to ``\texttt{apply H}'' is shown in \autoref{fig:applyH} (the ellipses indicate that the child nodes are still unproved), and \autoref{fig:fulldisplaypartialtree} fully displays the partially completed tree.  The user is able to much more directly see the goal to which \texttt{apply H} is applied and the goals this application produces.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ProofWeb.jpg}
   \caption{ProofWeb, with a partial proof tree displayed in the bottom right.}
@@ -172,14 +177,14 @@ ProofWeb's display of the tree follows the convention where inferences are drawn
 
 Unfortunately, as one can probably already tell, this sort of visualization does not scale particularly well.\footnote{Later in this document I provide what I hope is a clearly better alternative.} Contexts may may have dozens of items, many of which may be much longer than ``\texttt{H : A -> B -> C}, and the number of nodes in the proof tree may also be very large.  As a result, to see the effect of a tactic the user may have to pan around the window; this is especially likely if one is looking at a tactic used near the root of the tree, since the width of the tree at its leaves forces apart nodes near the root.  Even if the user does not need to pan (ProofWeb has a feature that allows the tree to be displayed in a separate window, which can sometimes make panning unneccessary), the distances at which nodes with sibling and parent-child relationships must sometimes be placed may make it difficult for the user to compare such sequents and to determine if a direct relationship in fact exists (e.g. determine if two sequents that printed next to one another are siblings or ``cousins'').  The latter task is possibly especially difficult using this visualization since it involves checking for gaps in co-linear line segments and the human brain tends to connect such lines.\footnote{This is the Gestalt law of ``good continuation; see, for instance, \cite{field1993contour}.}  The proof tree visualization, especially if there is a need to pan, is not particularly helpful in showing the location of the current goal (users may have to search the leaves of the tree to find the leftmost ellipsis).
 
-\begin{figure}[h]
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{applyH.jpg}
   \caption{The portion of ProofWeb's tree visualization corresponding to the tactic ``\texttt{apply H}''.}
   \label{fig:applyH}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{fullDisplayPartialTree.jpg}
   \caption{The partially completed tree from \autoref{fig:proofweb}, fully displayed.}
@@ -233,23 +238,23 @@ For the question ``What advice/requests/ideas do you have for creating better Co
 Even given the responses from self-described novice Coq users, the group of respondents is still heavily biased towards acceptance of arcane, complicated software.  The responses summarized above demonstrate that, even by this group, room for improvement is seen.
 
 %%=======================================================================================
-\section{Proposed and Completed Research}
+\chapter{Proposed and Completed Research}
 %%=======================================================================================
 %%================================
-\subsection{Overview}
+\section{Overview}
 %%================================
 
 In this section, I describe CoqEdit, three extensions to CoqEdit, and plans for evaluating two of these extensions with human participants.  As an interlude in the descriptions of the extensions, I include a presentation of the development and testing ``Keyboard-Card Menus'' as these are a component of one of the planned extensions.
 
 %%================================
-\subsection{CoqEdit}
+\section{CoqEdit}
 %%================================
 
 CoqEdit is a new user interface of Coq, that I, along with Harley Eades and under the supervision of Professors Juan Pablo Hourcade and Aaron Stump, have been developing. CoqEdit is a plugin to the \textit{jEdit}\cite{jEdit} text editor, a free and open source editor editor written in Java.\footnote{Another jEdit plugin, \textit{Isabelle/jEdit}, has been developed to provide support for the Isabelle\cite{Isabelle} interactive theorem prover and is bundled with Isabelle itself; see, for instance, \cite{wenzel2012asynchronous}.  Note that it has a rather different, and arguably more advanced, ``asynchronous'' style of interaction.  While this style of interaction may one day be available to Coq users, for now we are concentrating on other issues.}  For the most part, interaction with CoqEdit, at least in its unextended form, imitates the style seen with Proof General and CoqIde.  
 
 \autoref{fig:coqedit} shows an initial version of the plugin.  This initial version is functional in that one can communicate with the \texttt{coqtop} command prompt by moving the highlighting forwards and backwards (using submenu items not seen in figure 6, or the items' shortcuts) to send messages to \texttt{coqtop}, which can then respond by changing the text printed in the two panels on the right.  It also allows allows \texttt{coqtop} to be interrupted when processing long-running commands, and includes the XML files telling jEdit how to do syntax highlighting for Coq's .v (``Vernacular'') files.  Note that these two panels actually sit within a jEdit ``dockable window'', which may be hidden (i.e. collapsed so that only its labeling tab is showing), undocked (i.e. made to float as a normal window), or docked in some other position (e.g. below the area containing text, instead of to its right).
 
-\begin{figure}[h]
+\begin{figure}[H]
   \center
   \includegraphics[width=1.1\linewidth]{coqedit.jpg}
   \caption{An initial version of CoqEdit.}
@@ -266,17 +271,17 @@ This new, still quite basic, user interface will however improve upon Proof Gene
 
 
 %%================================
-\subsection{CoqEdit Extensions}
+\section{CoqEdit Extensions}
 %%================================
 
 %%============
-\subsubsection{``Proof Previews''}
+\subsection{``Proof Previews''}
 %%============
 
-Our first experimental extension, ``Proof Previews'', is shown in \autoref{fig:proofpreviews}.  When the user presses CTRL-SPACEBAR while the system is in proof mode, a popup window containing a list of possible tactic/argument combinations (i.e. ones that do not immediately produce errors or take especially long to run) appears just below the end of the evaluated section.  The user can use the up and down arrow keys change the selected item in the list and the ENTER (or ``return'') key to insert the selected item into the script.  In addition, the output that would result from evaluating the selected item is displayed in the bottom output panel.  The general goal of this plugin is to allow users, novice users in particular, to quickly explore their available options.
+Our first experimental extension, ``{\bf Proof Previews}'', is shown in \autoref{fig:proofpreviews}.  When the user presses CTRL-SPACEBAR while the system is in proof mode, a popup window containing a list of possible tactic/argument combinations (i.e. ones that do not immediately produce errors or take especially long to run) appears just below the end of the evaluated section.  The user can use the up and down arrow keys change the selected item in the list and the ENTER (or ``return'') key to insert the selected item into the script.  In addition, the output that would result from evaluating the selected item is displayed in the bottom output panel.  The general goal of this plugin is to allow users, novice users in particular, to quickly explore their available options.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=1.1\linewidth]{proofpreviews.jpg}
   \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom output panel.}
@@ -286,10 +291,10 @@ Our first experimental extension, ``Proof Previews'', is shown in \autoref{fig:p
 The tactic list generation capabilities for this plugin are quite limited at the moment:  only tactics used in propositional logic exercises and examples may appear in the list.  While this may still be useful for educational purposes, our implementation is mainly to be used for usability testing and to demonstrate the utility of the general idea.  A more fully developed version of this plugin would be possible, but would likely require some complicated indexing of Coq's standard library.  
 
 %%============
-\subsubsection{``Proof Transitions''}
+\subsection{``Proof Transitions''}
 %%============
 
-Our second experimental extension, ``Proof Transitions'', evolved from two separate ideas.  The first is proof tree visualization.  Originally, we proposed visualizing Coq's proof trees as in \autoref{fig:prooftreebuild}, where 
+Our second experimental extension, ``{\bf Proof Transitions}'', evolved from two separate ideas.  The first is {\bf proof tree visualization}.  Originally, we proposed visualizing Coq's proof trees as in \autoref{fig:prooftreebuild}, where 
 \begin{itemize}
 \item the red half circles represent goals, 
 \item the blue half circles, placed on top of the red half circles to form complete circles, represent tactics successfully used with the goals corresponding to these red half circles, 
@@ -300,7 +305,7 @@ Our second experimental extension, ``Proof Transitions'', evolved from two separ
 \end{itemize}
 (\autoref{fig:prooftreebuild} visualizes the example from section \ref{examplesection}).
 
-In addition to helping users in seeing which child goals are associated with which parent goals and tactics, and potentially in traversing/adding the trees' nodes in arbitrary orderings, this sort of visualization could be enhanced further to provide valuable information.  For instance, \autoref{fig:similarnodes} shows nodes being highlighted based on similarities in the tactics \footnote{...which might be particularly helpful in avoiding loops proofs}.  The information associated with these nodes could be compared side-by-side using an additional output window whose location within the proof tree could be represented by an additional arrow, as in \autoref{fig:nodecomparison}.  
+In addition to helping users in seeing which child goals are associated with which parent goals and tactics, and potentially in traversing/adding to  f the trees' nodes in arbitrary orderings, this sort of visualization could be enhanced further to provide valuable information.  For instance, \autoref{fig:similarnodes} shows nodes being highlighted based on similarities in the tactics \footnote{...which might be particularly helpful in avoiding loops proofs}.  The information associated with these nodes could be compared side-by-side using an additional output window whose location within the proof tree could be represented by an additional arrow, as in \autoref{fig:nodecomparison}.  
 
 \begin{figure}[H]
   \center
@@ -323,7 +328,7 @@ In addition to helping users in seeing which child goals are associated with whi
   \label{fig:nodecomparison}
 \end{figure}
 
-Proof tree visualizations could also be enhanced to support management of different versions of proof tree branches, as in \autoref{fig:versionmanagement}, and to support proof presentation, as in \autoref{fig:} which shows how a branch deemed uninteresting might be removed from the visualization.  These examples suggest the existence of a wide range of possible user interface improvements that may not even have been thought of yet, and that are part of the rationale for making CoqEdit more easily extendable.
+Proof tree visualizations could also be enhanced to support management of different versions of proof tree branches, as in \autoref{fig:versionmanagement}, and to support proof presentation, as in \autoref{fig:presentationmanagement} which shows how a branch deemed uninteresting might be removed from the visualization.  These examples suggest the existence of a wide range of possible user interface improvements that may not even have been thought of yet, and that are part of the rationale for making CoqEdit more easily extendable.
 
 \begin{figure}[H]
   \center
@@ -336,11 +341,11 @@ Proof tree visualizations could also be enhanced to support management of differ
   \center
   \includegraphics[width=0.7\linewidth]{presentationmanagement.jpg}
   \caption{The visualization of \autoref{fig:similarnodes}, with a branch hidden.  This sort of hiding might be useful in making the structure of the remaining visible branches more clear.}
-  \label{fig:versionmanagement}
+  \label{fig:presentationmanagement}
 \end{figure}
 
 
-The second idea from which the Proof Transitions extension evolved was ``Inference Rule Highlighting''.   The idea here is to use highlighting the to show the pattern, or inference rule, being instantiated by a tactic application on a goal.  In \autoref{fig:inferenceruleinstance}, we see an instance of the general rule seen in \autoref{fig:inferencerule}.  The blue box contains a tactics while the red box below contains the old goal and the red box above contains the new goal (in general, one might see several red boxes above).  The goal is for users to be able to clearly see the effects of tactics on particular goals, i.e. which bits of text get moved where, and for novice users to gain an understanding of how the tactic works more generally.
+The second idea from which the Proof Transitions extension evolved was ``{\bf Inference Rule Highlighting}''.   The idea here is to use highlighting the to show the pattern, or inference rule, being instantiated by a tactic application to a goal.  In \autoref{fig:inferenceruleinstance}, we see an instance of the general rule seen in \autoref{fig:inferencerule}.  The blue box contains a tactics while the red box below contains the old goal and the red box above contains the new goal (in general, one might see several red boxes above).  The goal is for users to be able to clearly see the effects of tactics on particular goals, i.e. which bits of text get moved where, and for novice users to gain an understanding of how the tactic works more generally.
 
 
 \begin{figure}[H]
@@ -359,7 +364,7 @@ The second idea from which the Proof Transitions extension evolved was ``Inferen
 \end{figure}
 
 
-This particular way debugging tactics may work for many of the basic tactics, but it does not scale very well to more complicated tactics, since, for one thing, one eventually runs out of easily-distinguishable colors, and many tactics do not correspond to simple general rules of the like that seen in \autoref{fig:inferencerule} (e.g. the \texttt{auto} tactic that tries to automatically prove a goal).  Proof Transitions will provide an alternative which, in an initial form, can be seen demonstrated in \autoref{fig:pt1}, \autoref{fig:pt2}, \autoref{fig:pt3}, and \autoref{fig:pt4}.  \autoref{fig:pt1} shows the initial goal.  \autoref{fig:pt2} shows how immediately after the tactic \texttt{intros H1 H2} has been processed by the system, a blue box, containing the tactic, is placed immediately on top of the old goal and the new goal, in another red box, is placed further up with a line connecting its red box and the blue box.  As an option, as seen in \autoref{fig:pt3}, highlighting and underlining can be added to the boxes' text according to the following rules:  
+This particular way debugging tactics may work for many of the basic tactics, but it does not scale very well to more complicated tactics, since, for one thing, one eventually runs out of easily-distinguishable colors and, furthermore, many tactics do not correspond to simple general rules like that seen in \autoref{fig:inferencerule} (e.g. the \texttt{auto} tactic that tries to automatically prove a goal).  Proof Transitions will provide an alternative which, in an initial form, can be seen demonstrated in \autoref{fig:pt1}, \autoref{fig:pt2}, \autoref{fig:pt3}, and \autoref{fig:pt4}.  \autoref{fig:pt1} shows the initial goal.  \autoref{fig:pt2} shows how immediately after the tactic \texttt{intros H1 H2} has been processed by the system, a blue box, containing the tactic, is placed immediately on top of the old goal and the new goal, in another red box, is placed further up with a line connecting its red box and the blue box.  As an option, as seen in \autoref{fig:pt3}, highlighting and underlining can be added to the boxes' text according to the following rules:  
 \begin{itemize}
 \item red highlighting in the bottom red box to show text that is deleted altogether, 
 \item green highlighting in the top red box to show text that is entirely new, 
@@ -419,28 +424,266 @@ Please note that this design of this extension is likely to change significantly
 \subsection{Interlude: Keyboard-Card Menus}
 %%================================
 
-In this section, I describe work on ``Keyboard-Card Menus'', which I hope to incorporate into a third extension to CoqEdit.
+In this section, I describe work on ``Keyboard-Card Menus'', which I hope to incorporate into a third extension to CoqEdit.  The contents of this section is to be presented at the Interacci—n 2013 conference and published in its proceedings under the title \textit{Keyboard-Card Menus: Faster Learning of Many Fast Commands}.  It was written by myself and my advisor, Professor Juan Pablo Hourcade, at the University of Iowa.
 
-%%================================
-\subsection{CoqEdit Extensions, Continued}
-%%================================
+\subsubsection{Abstract}  We present a study comparing ``keyboard-card'' menus' presentation of non-traditional shortcuts with a presentation of these same shortcuts that uses dropdown menus.  Keyboard-card menus are a new type of menu system in which potentially hundreds of menu items are arranged in sets of keyboard patterns that are designed to be navigated using only a computer keyboard's character keys, for fast access.  In selecting items from these menus, novice users physically rehearse the same actions that an expert would use.  The data from our study shows that keyboard-card menus have significant advantages over dropdown menus in making the transition to expert use faster.
+
+\subsubsection{Introduction}
+
+Keyboard-card menus are a new type of menu we have developed which present menu items in a computer-keyboard shaped arrangements.  They are designed to be navigated using the keyboard, and in doing so users end up learning shortcuts. Our testing shows significant advantages over a presentation of these same shortcuts that uses dropdown menus.   Our ultimate goal in working on keyboard-card menus  is to develop a system that avoids making tradeoffs between three properties:  how easy the system is to learn, how efficiently experts are able to select menu items, and how many menu items are easily accessible.  
+
+While widely-used interaction techniques often support two of these three properties, they do so at the expense of the third, which can be considerably limiting for certain tasks and people.  Consider an example we had in mind while developing the menu:  undergraduate college students writing and manipulating mathematics.  Many of these students do not have the time to learn an unfamiliar, non-WYSIWYG (what-you-see-is-what-you-get) system like \textit{LaTeX}, but also need an efficient system since they are asked to write many equations in homework assignments (especially if they are asked to ``show their work"), \textit{and} they need to be able to access many mathematical symbols.  Handwriting recognition systems might be much easier to learn, but even if the system's recognition accuracy is 100\%, in our opinion handwriting speed is a low bar for efficiency (14 to 15 year old students' handwriting, when copying, has been measured as averaging only 118 characters per minute or, at 5 characters per word, 24 words per minute \cite{graham1998development}).  WYSIWYG systems like \textit{Mathematica} and Microsoft \textit{Word}'s equation editor allow use of either the mouse or keyboard shortcuts to select symbols from menus and toolbars.  While this might be seen as supporting both novice and expert users, since keyboard shortcuts can provide speed advantages once learned, it has been shown that, in general, many users never make the transition to using shortcuts, even in heavily used applications like \textit{Word} \cite{Lane05}.
+
+Writing and manipulating mathematics is not the only application where the users would need to be quickly trained to efficiently select from a large number of menu items.  Novice writers of other sorts of code could benefit as well; for instance, novice HTML coders must spend considerable time learning which tags to select from the large number available.  We suspect that there are many other sorts of activities, particularly in data entry, classification, and retrieval, that could be made more practical by supporting a better balance between efficiency and learnability in applications where items must be selected from a large pool. 
+
+In the next section, we describe how keyboard-card menus present menu items, how they are navigated, and some related work.  We go on to describe our study, which compared keyboard-card menus with dropdown menus, and discuss its results, which show significant advantages for keyboard-card menus. 
+Keyboard navigation for keyboard-card menus (and keyboard navigation for the dropdown menus in our study) is unusual in that users are required to press and hold character keys (i.e. to use the character keys themselves as modifier keys); we call these interactions ``rolled-chords,'' or ``rolled-chord shortcuts''.  We therefore include a discussion of the advantages and disadvantages of this approach relative to other ways the keyboard might be used in navigating the menus.
+
+\subsubsection{Keyboard-Card Menu Design:  Keyboard-Card Menus}
+
+Inspired in part by work on keyboard-based menus for wearable computers, seen in \cite{Lyons03}, we have developed keyboard-card menus which lay out menu items in keyboard patterns that \textit{show} users what keys to press, instead of simply listing menu items with shortcut key names; in principle, at least, users do not even need to know the name of the key they want to press.  (An example keyboard-card menu--one used in the study described below--is shown in the lower half of \autoref{fig:kcmidahooxford}, and in \autoref{fig:kcmoxfordzoom}).   
+
+More specifically, the menu system consists of colored ``keyboard-cards'', each of which serves as a submenu (except for one card that serves as a root menu).  Each keyboard-card has printed on it a set of squares arranged in a keyboard pattern.  Printed on top of some (potentially all) of these squares are the menu items that can be selected by pressing the corresponding keys.  To make the affordances of the menu system more obvious to users, squares with menu items are also a lighter color than the rest of the card and each square corresponding to a submenu has an arrow in the bottom right corner.  As a secondary mechanism for associating the menu item with the key, and to make it even more obvious to users that they should use the keyboard rather than the mouse, each square with a menu item also has the corresponding key's character printed in white in a large font, behind the menu item text.
+
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{KCMIdahoOxford.jpg}
+  \caption{One of the two keyboard-card menu root cards used in the study, with a prompt for the participant.  A small arrow in the corner of each key indicates that there is a submenu associated with that key.  Participants in the study did not have to rely on this design detail.}
+  \label{fig:kcmidahooxford}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+  \includegraphics[width=\textwidth]{KCMOxfordZoom.jpg}
+  \caption{The keyboard-card menu from \autoref{fig:kcmidahooxford} with the S key pressed.  Note how a hole has been ``punched out'' of the card.}
+  \label{fig:kcmoxfordzoom}
+  \end{center}
+\end{figure}
+
+Initially, when no keys are pressed, only the root card, with top-level menu items, is visible (as in the lower half of \autoref{fig:kcmidahooxford}).  Whenever a key corresponding to a submenu (rather than a leaf in the hierarchy) is pressed--\textit{and held down}--that submenu's keyboard-card is placed on top of the existing card(s), slightly offset to show the number of keyboard-cards below it (as in \autoref{fig:kcmoxfordzoom}, which would be displayed while the S key is held down).  Releasing that key hides that keyboard-card again. (Although the issue was ignored in our study, since no more than two cards, including the root card, were ``stacked'' at a time, releasing a key to hide a keyboard-card would most likely also just hide any cards on top of it, even if the keys associated with those cards were still pressed).  Holding down a key corresponding to a leaf in the menu hierarchy, in addition to performing whatever action is assigned, thickens the outline of the corresponding square on the fully-visible top card.
+
+Because menu item selection is performed entirely from the keyboard, without the user having to move his hands, it can be very efficient.  In addition, simply by navigating the menu hierarchy, users end up practicing, and thereby learning, shortcuts needed to access menu items, and may actually stop needing the menu altogether. This idea of ``physical rehearsal''--teaching and reinforcing the physical act of using a shortcut during the process of navigating a menu hierarchy--can be found in work on gestures and ``marking menus'' by Kurtenbach and Buxton \cite{Kurtenback94, kurtenbach1993design}.   
+
+\subsubsection{Keyboard-Card Menu Design:  Rolled-Chord Shortcuts}
+
+The term ``rolled-chord'' comes from western classical music and refers to playing several notes together but initiating them at different times.  Here we use the term to refer to pressing multiple computer keys at the same time, but initiating the presses in a particular order.  However, while this term could be used to describe shortcuts involving special modifier keys (e.g. Ctrl-X, Alt-F4, Ctrl-Shift-S, etc.) we use the term to describe shortcuts where the modifier keys may in fact be letter keys.  (In applications where users need to type normal text, we assume that a separate mode would exist, as with the text editor \textit{vi}).    For instance, one might press \textit{and hold} the F key, then press \textit{and hold} the D key, and, finally, press the J key to select some particular menu item.  In this paper, we consider only rolled-chord shortcuts using the letter keys plus the semicolon, comma, period, and forward slash keys on a QWERTY keyboard, since avoiding the use of special modifier keys has the advantage of reducing hand movement and therefore potentially increasing speed.
+
+Rolled-chords are to be contrasted with ``standard'' chording in which the exact order of key presses does not matter because it is assumed that key presses are initiated simultaneously.  Standard chording may be used to achieve high speeds of data entry--on specialized keyboards, text entry speeds of up to 300 words per minute are possible \cite{Shneiderman10}.  While one would expect standard chording to be faster because no time is needed to ensure a particular ordering of key presses, ordering does provide more potential shortcuts and, in particular, more shortcuts that may be accessed without moving one's fingers off the home row of keys.  Furthermore, for sequences of shortcuts where the initial keys are identical, we can allow users to hold down those initial keys while pressing and releasing the final keys; for instance, over the course of entering the sequence of shortcuts ``F-J, F-K, F-J", the F key does not need to be released.
+
+Rolled-chord shortcuts may also be contrasted with the use of short sequences of typed characters (e.g. ``: q ENTER'' is used to quit in \textit{vi}).  While such sequences remove limitations on the numbers of shortcuts that can be provided, rolled-chords, even using only two-key sequences, still provide hundreds of possible shortcuts (we suspect that having more than three, and possibly more than two, keys per shortcut would be impractical for many users) and, if absolutely needed, sequences of rolled-chords could still be treated as shortcuts.
+
+Rolled-chords also have several important advantages over simple key sequences.  First, in sequences like ``F-J, F-K, F-J" we have reduced the number of keystrokes needed, as explained above.  Second, rolled-chord shortcuts enforce the rule, when assigning shortcuts to commands, that the keys pressed in a shortcut never use the same finger twice.  We suspect that following this rule increases speed; it also, as pointed out in \cite{PurdyJuly112012}, removes the possibility of accidentally entering a repeated letter sequence like ``F-F'' because of an operating system's key press repeater.  Third, when mistakes are made in selecting an initial key of a shortcut, no additional keystroke (e.g. "Backspace" or "Delete" key press) is needed to undo the mistake--the user simply releases the key.  This feature is especially important not only because it makes mistakes more preventable, but because it means that \textit{when the available shortcuts are displayed in a navigable hierarchy, as with keyboard-card menus, users can ``peek'' into submenus without having to press an additional key to back out again}.  We expect that this will help novice users considerably in exploring hierarchies and in searching for items that have non-obvious locations within the menu hierarchy.
+
+\subsubsection{Related Work}
+
+Encouraging shortcut use within graphical user interfaces is an active area of research.    A theoretical explanation of the problem of low levels of shortcut usage can be found in \textit{Paradox of the Active User} \cite{Carroll1987} which notes that people are biased towards using software to solve their immediate problems, rather than towards exploring what the software can do, and also generally prefer to use known solutions rather than new ones.  The severity of the problem has been empirically verified in \cite{Lane05}, and in trying to solve it researchers have gone so far as suggesting that the option to click on a dropdown menu item should be disabled when a keyboard shortcut is available \cite{Grossman07}.  
+
+Our general approach--graphically supporting users in entering commands from the keyboard--has been taken before in a several alternate ways.  ``GEKA'' \cite{Hendy10} populates a list of command names and shortcuts, refining the list as users type, allowing a command line-like experience with a graphical user interface.  ``HotKeyCoach'' \cite{Krisler2008} uses a transparent popup window to inform and remind users of available (traditional) shortcut alternatives in a non-disruptive way as they work with an application.  ``Blur'' \cite{scarr2011dips} combines features seen in ``GEKA'' and ``HotKeyCoach'', notifying users when a command could be invoked by pressing escape and then typing ``hot commands'' (e.g. ``align left'') into a transparent popup window; it also provides lists of command recommendations.  ``ExposeHK'' shows users available (traditional) keyboard shortcuts when a user presses a modifier key; it replaces toolbar icons with printed shortcuts, expands all dropdown menus at once (with shortcuts printed next to the menu item name), and uses tooltips to show shortcuts for icons in a Microsoft \textit{Office 2007}-style ribbon \cite{malacria2013promoting}.
+
+The line of work by Kurtenbach et al. on ``marking menus'' (which extend ``pie menus'' by allowing expert users to select items without looking at the menu) is in many ways parallel to ours, a major difference simply being the intended set of applications:  they assume a context in which users need some sort of pointing device most of the time (e.g. technical drawing), while we assume a context where most of the time users want to have both hands on the keyboard (e.g. text editing).  In particular, the design of keyboard-card menus follows three principles used in the design of marking menus  \cite{kurtenbach1993design}:  
+\begin{itemize}
+\item \textit{Self-revelation}:  interactively telling users what commands are available and what these commands do
+\item \textit{Guidance}: showing users how to invoke commands during the process of self-revelation
+\item \textit{Rehearsal}: guiding novice users through the same physical motions that an expert would use
+\end{itemize}
+A more recent alternative to marking menus, but still following these design principles, is ``OctoPocus'' \cite{Bau2008}.  Kurtenbach et al. also address the issue of providing large numbers of quickly accessible menu items in work on the ``HotBox'' \cite{Kurtenbach1999}.  
+
+Work that most closely relates to ours may be explorations of interaction with multi-touch surfaces, since these provide a new opportunity for computer chording.  Relevant work includes ``Multi-finger Chorded Toolglass'' \cite{malik2007exploration}, ``Multi-Touch Menu'' \cite{Bailly2008}, ``Finger-count shortcuts'' \cite{Bailly2010}, ``Multi-touch Marking Menus'' \cite{Lepinski2010}, and, perhaps most significantly, ``Arpege'' \cite{bau2010arpege}. An advantage of using a multitouch surface is that thumb mobility may be exploited, as seen in \cite{Bailly2008} and \cite{malik2007exploration}. However, physical keyboards appear to be faster to type with than virtual keyboards on a multi-touch surface \cite{Varcholik2012657}, and using them in presenting chords does not create occlusion problems (involving the hands) which, as highlighted in \cite{bau2010arpege}, would likely make the presentation rolled chords much more complicated.
+
+\subsubsection{Study Description:  Study Motivation}
+
+Keyboard-card menus are one of many possible ways to present rolled-chord shortcuts.  Using dropdown menus with menu items marked with letters, as in \autoref{fig:rcddmzoom}, as a baseline for comparison makes sense because of their advantages over keyboard-card menus and other types of menus, including that
+\begin{itemize}
+\item most existing applications already use dropdown menus, making the incorporation of rolled-chord shortcuts into the design of these applications somewhat more straightforward for software developers
+\item users may feel more comfortable with them, since they are almost certainly more familiar with them
+\item they do not hide submenu siblings (e.g. ``Massachusetts - F'' and ``Utah -T'' are still visible in \autoref{fig:rcddmzoom})
+\item they are more compact (at least for relatively small hierarchies)
+\end{itemize}
+
+Reducing the advantage of compactness, screen resolutions have improved dramatically over the past decade \cite{BrowserDisplayStatistics} and secondary monitors are often available.  Some advantages of keyboard-card menus are that
+\begin{itemize}
+\item since the size and shape of keyboard-card menus is relatively constant, the content being manipulated could never possibly be covered up by the menu
+\item since dropdown menus typically have only a single row of items at the root level, they may allow for broader overall menu hierarchies, which have advantages over deep hierarchies \cite{Norman91}
+\item the keyboard pattern makes using of the keyboard rather than the mouse the obvious choice
+\end{itemize}
+
+The last point may be the most important, though it is unclear how many users would decide to use the mouse rather than the keyboard if presented with labeled dropdown menus.  Finally, there is our \textit{experiment hypothesis}:
+
+\begin{itemize}
+\item new users are able to learn menu items' shortcuts faster
+\end{itemize}
+
+By this we mean both that the number of selections needed to memorize a shortcut is low and that the time to enter a shortcut that has not been memorized is low.  
+
+There are several reasons to think that keyboard-card menus might help users learn shortcuts faster.  First, although the size of each menu item's text is the same in both the keyboard-card and dropdown menu presentations, the character used to access the menu item is bigger, and therefore may be easier to read.  Second, the greater amount of space between menu items may also make misreading the character associated with a menu item more difficult.  Third, placing menu items in a two-dimensional array might help users exploit approximate information about locations because there are more characteristics that can be remembered.  For instance, given set of menu items, if these menu items are displayed in a one dimensional list, one might be able to remember that menu item ``A'' is above menu item ``B'', but, if the items are displayed in a two-dimensional array, one might be able to remember that ``A'' is above ``B'' \textit{and} one might be able to remember that ``A'' is to the left of ``B''. Fourth, with keyboard-card menus there is an alternate, and possibly faster, way to associate the key with the menu item, since the system could be used without looking at the character printed under the menu item.
+
+\subsubsection{Study Description:  Study Design}
+
+To see if the keyboard-card menu improves rolled-chord shortcut learnability relative to a dropdown menu presentation (i.e. relative to dropdown menus labeled as in \autoref{fig:rcddmzoom} that one navigates by pressing and holding keys), we performed a 20 participant (8 male) within-subjects comparison with adult self-described touch-typists as our participants, based loosely on \cite{Ahlstrom10} and \cite{Grossman07}. Participants were recruited through a mass email and word of mouth at a large state university in the United States.  After a 1 minute typing test (using the ``Space Cowboys'' test on typingtest.com), each participant performed up to 720 selection tasks (``trials'') over the course of at most 50 minutes, using one of the two menu systems, followed by half of a brief questionnaire.  The trials were then repeated, over the course of a second period of at most 50 minutes, using the second menu system with a second hierarchy of menu items, followed by the second half of the questionnaire.  Before each 50-minute period, participants performed 10 warm-up trials.  Participants were told that they could ask questions or take breaks at any point that would not count against the 50 minutes for each menu system, and participants were asked, at the 25-minute mark, if they would like to take a break.  Participants were also told that two thirds of the compensation would be prorated based on how many of the 1440 trials they completed.
+
+In each trial, each participant was first prompted by text on the screen to press SPACEBAR, which started an invisible timer for the trial.  They were then presented with text of the form ``U.S. state -> small town'', e.g. ``Delaware -> Little Creek'' (see \autoref{fig:kcmidahooxford}); while the states were presumably recognizable by participants, the towns were unlikely to be recognized since they were selected from lists of the smallest towns in those states.  The trial ended when the town was correctly selected from the submenu labeled with the state's name, at which point the elapsed time was recorded and the participant was again prompted to press SPACEBAR to start the next trial.  The number of incorrect selections of town names during each trial was also recorded (usually this was zero).
+
+Two non-overlapping hierarchies of states and towns were used.  Each consisted of 6 states and 72 towns, 12 from each state.  The states were assigned the A, S, D, F, G, and T keys and the towns were assigned the Y, U, I, O, P, H, J, K, L, semicolon, N, and M keys (as in \autoref{fig:kcmidahooxford}, \autoref{fig:kcmoxfordzoom}, and \autoref{fig:rcddmzoom}).  From each hierarchy, 14 towns, 2 or 3 from each state, were randomly selected for use in trials.  The 720 trials for each menu system were divided into 12 blocks of 60 trials, and the numbers of occurrences of each town in each block were 12, 12, 6, 6, 4, 4, 3, 3, 2, 2, 2, 2, 1, and 1, with the order varying randomly from block to block.  This organization of hierarchies and trials, and the Zipfian distribution used (``which has been shown to represent command use frequency in real applications''), was used in \cite{Grossman07}. 
+
+While the same 14 towns for each hierarchy were used across participants, the numbers of occurrences were paired, randomly, with different towns for different participants (the pairing did not change across blocks for a given participant).  For instance, participants A and B would both see ``Delaware -> Little Creek'', but participant A might see it 6 times in every block while participant B might only see it 2 times in every block.
+
+The numbers of participants were balanced between the four possibilities determined by whether the keyboard-card or dropdown menu was seen first and by which set of states and towns was used with which menu type.
+
+The software for the experiment was run on a 2.8 GHz Intel Core 2 Duo MacBook Pro with Mac OS X Snow Leopard using Java 1.6.  However, participants viewed the software on an 18 inch, 1280 x 1024 pixel separate monitor (Dell Model No. 1800FP) and used a separate keyboard (Dell Model No. L100).  The experiment was performed in a faculty member's office on a university's campus. 
+
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{HKDDHartvilleZoom.jpg}
+  \caption{Part of a dropdown menu, navigable by pressing and holding keys rather than with the mouse, used in the study; note the letters on each item.  Also note that the text is the same font and size as in the keyboard-card menus.}
+  \label{fig:rcddmzoom}
+\end{figure}
+
+\subsubsection{Study Results}
+
+The average selection times for the two different menu systems can be seen in \autoref{fig:averagetimes}.  Note that while outlier trials were removed (a trial was considered an outlier if its time was greater than 3*(Q3-Q1)+Q3, where Q1 and Q3 were the first and third quartile values; 0.55\% of trials were considered outliers), average times for participants who did not complete all 1440 trials were left in.  Averaged trial completion times for each block  are only complete for all participants and menu types in blocks 1-8.  One participant was only able to complete trials in blocks 1-8 for both menu types.  Two other  participants were only able to complete trials in blocks 1-10 using the dropdown menus, but were able to complete trials in all blocks using the keyboard-card menus.  The remaining 17 participants were able to complete trials in all blocks.
+
+To analyze this data we first fit quadratic equations to the completion time data for each participant (with trial number as the independent variable and completion time as the dependent variable), leaving out times for trials where any participant was missing data, the result of which was complete data for 323 trials over blocks 1-8.  Paired t-tests on the coefficients of the fitted quadratics showed statistically significant (p = 0.0458) differences between the average second-order coefficients for keyboard-card and dropdown menus (i.e. there were statistically significant differences in the ``curviness'' of the data for the keyboard-card and dropdown menus).  In addition, we performed a repeated measures ANOVA on the average completion times for blocks 1-7 (where all participants completed all trials), which showed statistically significant differences between the two menu types (p = .044) as well as between the blocks (p < .001).
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{AverageTimes.jpg}
+  \caption{Average trial completion times, in milliseconds, for the keyboard-navigated dropdown menus and keyboard-card menus in the study.  Note that data is only complete for blocks 1-8}
+  \label{fig:averagetimes}
+\end{figure}
+
+Average error rates for each trial and menu type are shown \autoref{fig:errorrates}.  Overall error rates across blocks 1-7 for the dropdown menus and keyboard-card menus were 10.4\% and 8.4\% respectively, where errors were defined as the incorrect selection of a leaf in the menu hierarchy and the error rate for a block was calculated as $e/(e+t)$ where $e=$ the number of errors in the block's non-outlier trials and $t=$ the number of non-outlier trials in the block.  This difference was not statistically significant.  However, t-tests on the data for the 5th, 9th and 10th block differences did show statistical significance (p-values were .032, .008, and .049 respectively; note that 9th and 10th blocks exclude data for one participant).  Though a repeated measures ANOVA on the error rates for blocks 1-7 also failed to show statistical significance, fitting quadratics to the error rates for each participant at each block where data was available, and then performing t-tests on the coefficients \textit{nearly} showed statistical significance at the 5\% level for the quadratic and linear coefficients (p-values were .0544 and .0624 respectively)
+
+Several interesting correlations can also be seen in the overall (i.e. across blocks) data for each participant.  Error rates for dropdown menus were correlated ($R=$0.718) with the error rates for keyboard-card menus and overall average times for dropdown menus were correlated ($R=$0.911) with overall average times for keyboard-card menus.  However, error rates and average times were negatively correlated for both dropdown menus and keyboard-card menus ($R=$ -0.510 and -0.479, respectively), so it appears that some participants chose to concentrate more on being accurate, at the expense of speed, and some chose to do the opposite.
+
+In addition, the difference between the error rates for dropdown and keyboard-card menus was positively correlated with the error rate for dropdown menus (see \autoref{fig:errorratedifferences}) and the difference between the average times for keyboard-card and dropdown menus was positively correlated with the average times for dropdown menus (see \autoref{fig:timedifferences}).  In other words, participants whose error rates were higher made even more mistakes when using the dropdown menus, and participants whose average times were slow were even slower  when using dropdown menus.
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{ErrorDataFixed.jpg}
+  \caption{Error rates for the keyboard-navigated dropdown menus and keyboard-card menus in the study.  Note that data is only complete for blocks 1-8.}
+  \label{fig:errorrates}
+\end{figure}
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{ErrorRateDifferences.jpg}
+  \caption{The differences between the overall average error rates for dropdown menus and keyboard-card menus, for each participant, plotted against the error rate for dropdown menus.}
+  \label{fig:errorratedifferences}
+\end{figure}
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{OverallAverageTimeDifferences.jpg}
+  \caption{The differences between the overall average times for dropdown menus and keyboard-card menus, for each participant, plotted against the time for dropdown menus.}
+  \label{fig:timedifferences}
+\end{figure}
+
+Results from the questionnaire can be seen in the table, where
+\begin{itemize}
+\item Q1=``How quickly do you feel you were able to become familiar with the menu item locations over the course of performing the trials?''
+\item Q2=``At the beginning of the set of trials for this menu system, how quickly do you feel you were able to select menu items?'', and
+\item Q3=``At the end of the set of trials for this menu system, how quickly do you feel you were able to select menu items?''
+\end{itemize}
+Ratings were given on a scale from 0=``Very Slowly'' to 9=``Very Quickly''.  Though the results were favorable for keyboard-card menus, t-tests did not reveal statistically significant differences between the average ratings (p-values given in the table). These results were not correlated with typing speed.
+
+\begin{table}[h]
+  \centering
+  \begin{tabularx}{\linewidth}{ |X|X|X|X|X|X| }
+  \hline
+   & \bf{KCM Ave.} & \bf{KCM Std. Dev.} & \bf{DDM Ave.} & \bf{DDM Std. Dev.} & \bf{P-values} \\
+  \hline
+  \bf{Q1}  & 6.0  & 1.5  & 4.8 & 2.4 & .165  \\
+  \hline
+  \bf{Q2}  & 3.0  & 1.8  & 2.2 & 1.6 & .119  \\
+  \hline
+  \bf{Q3}  & 7.3  & 1.3  & 6.7 & 2.1 & .525  \\
+  \hline
+  \end{tabularx}  \caption{Questionnaire Results.}
+  \label{tab:myfirsttable}
+\end{table}
+
+\subsubsection{Discussion}
+
+The data supports the hypothesis that the keyboard-card menu's presentation makes rolled-chord shortcuts easier to learn than does the dropdown menu's presentation.  We further hypothesize, first, that the eventual convergence of the two curves in \autoref{fig:averagetimes} means that by the 12th block users memorized the 14 shortcuts (and so were not using either presentation), and second, that the initial divergence of the two curves indicates that the keyboard-card menu's presentation mostly helps users in finding and recalling shortcuts they have seen but not fully memorized.
+
+Although in \autoref{fig:averagetimes} the separation between the curves appears to be small, it may be exaggerated considerably in more realistic applications by two factors.  First, the period in which users have seen menu items but have not yet memorized their locations (i.e. the middle section of \autoref{fig:averagetimes}) may be extended over a greater period of time (e.g. hours or days, rather than tens of minutes) affecting the number of menu selections needed for memorization.  Second, the effect of errors on the average selection times would likely be much greater, since only the time needed to make an error, recognize it, and make a correct selection is included in the \autoref{fig:averagetimes} data;  in realistic applications, the time to undo an error would also have to be included.
+
+The negative correlation seen between error rates and average times shows users making a tradeoff between speed and accuracy.  However, the data seen in \autoref{fig:errorratedifferences} and \autoref{fig:timedifferences} suggests that use of a keyboard-card menu instead of a dropdown menu can help both users who prefer speed to accuracy and users who prefer accuracy to speed.
+
+Many issues surrounding keyboard-card menus remain unexplored.  For instance, some participants disliked the use of bright colors.  Would refining the system improve performance?  Another color-related refinement would be to use different colored/textured cards for each submenu (in the study, all sub-cards in the second level were red).  Other important questions include: Does the menu actually encourage first time users of a system to use the shortcuts? What happens when icons instead of, or in addition to, labels are used? What is the best way to map a hierarchy to the menu? What happens when three finger shortcuts are used?  Can keyboard-card menus' presentation be effective with other sorts of shortcuts?
+
+\subsubsection{Conclusion}
+
+While selecting from a large set of menu items in an efficient manner is certainly possible, expecting users to learn how to do so using traditional shortcuts displayed in dropdown menus is often unrealistic.  In order to open up new realms of computer applications to a wider range of users (college students typing of mathematics at the computer, for instance), we are rethinking shortcuts and, in particular, how to present them.  We have developed keyboard-card menus, and have tested them against dropdown menus as a way of presenting how to enter shortcuts, using rolled-chords as our shortcut choice in the experiment.  Our data shows that keyboard-card menus, taking advantage of increasing amounts of available screen space with their keyboard-shaped presentation, can be more effective than a presentation based on dropdown menus as a method for presenting large numbers of shortcuts in an easy-to-learn way. 
+
+\subsubsection{Acknowledgements}
+
+We would like to thank our participants for their time and effort.  This research was supported by NSF award CCF-1250306.
+
+
 
 %%============
-\subsubsection{``Propositional Logic Syntax Shortcuts''}
+\subsection{``Propositional Logic Syntax Shortcuts''}
 %%============
 
-\begin{figure}
+Like Proof Transitions, the ``{\bf Proposition Logic Syntax Shortcuts}'' CoqEdit extension combines two ideas.  The first idea is keyboard-card menus, described above. One reason I would like to develop Propositional Logic Syntax Shortcuts is to see if keyboard-card menus can be successfully integrated into a real application.
+
+The second idea incorporated into Propositional Logic Syntax Shortcuts is ``{\bf Syntax Tree Highlighting}''.  Syntax Tree Highlighting  is text highlighting of parse-able text document (e.g. program) where
+\begin{itemize}
+\item only text of a node in the concrete syntax tree of the document
+\item the children of the node are shown as distinct sections of highlighting
+\item something, e.g. a line under the highlighting, shows which child nodes are leaf nodes
+\item the highlighting of one of the non-leaf children, if there are any, indicates that it is ``selected''
+\item the user can navigate the syntax tree  by moving the indication of selection from non-leaf node to non-leaf node and by moving the highlighting to the selected non-leaf child node or the parent of the node with highlighting.
+\end{itemize}
+Syntax Tree Highlighting can be useful in understanding the syntax of text (which, of course, is generally a prerequisite for understanding its semantics), and may be particularly helpful in resolving ambiguities that result when the author of the text did not include parentheses.  Ambiguities of this sort can occur in in many languages, which suggests that Syntax Tree Highlighting may be widely useful.  A good example is a math problem that, as noted in \textit{Slate} magazine, has been circulating on \textit{Facebook}.  The problem is to compute
+\begin{equation}
+6 \div 2(1 + 2)
+\end{equation}
+The fact that there even is a \textit{Slate} story on this problem indicates that it really is ambiguous, despite attempts, described in the story, at establishing a standard algorithm.  Computer scientists and programmers encounter such ambiguities frequently when reading and writing programs, especially in languages new to them.  The situation with Coq is especially bad, in part because Coq allows users to define their own ``notations'' and to give them precedence levels and directions of associativity (e.g. ``\texttt{+}'' and ``\texttt{/\\}'' are notations).
+
+Even when there is no real ambiguity that needs to be resolved, Syntax Tree Highlighting could make code more readable.  For instance, given fully parenthesized text, finding matching pairs of parentheses can be difficult, and finding all of the ``next level'' parentheses within a given pair is even harder.  ``Pretty printing'' techniques, involving indentation, can also help make code more readable, but keeping indentation levels straight can still be difficult, if the text file in question is long, and there is only so far over one can indent without having to scroll over.  Furthermore, in many cases coders must deal with code written by other coders or generated by a computer (e.g. the terms generated in Coq by sequences of tactics), and in these cases there are generally no guarantees about parenthesization or pretty printing. 
+
+Syntax Tree Highlighting may also be useful in selecting important sections of text (compare moving its highlighting with selection in the usual character-by-character or line-by-line way) to manipulate (e.g. rewrite, cut, copy, paste over) and ``inspect'' these sections.  In the case of Coq, ``inspecting'' these sections could mean type checking or evaluating them.
+
+\autoref{fig:sth} gives an example of what Syntax Tree Highlighting might look like in Coq.  In (a) through (d), we see the highlighting moving through the nodes of the syntax tree of the term, going first to the right-most child node and then to the left-most.  Along the way, a few things are made clear:
+\begin{itemize}
+\item the scope of ``\texttt{forall x : G,}'' extends all the way to the end of the term.
+\item ``\texttt{=}'' binds more tightly than ``\texttt{/\symbol{92}}''
+\item ``\texttt{X}'' is actually an infix operator (probably declared earlier in the file), not an argument to ``\texttt{x}''
+\end{itemize}
+In (e), we see (d)'s selected child node replaced with a new term, ``\texttt{a}'', demonstrating Syntax Tree Highlighting could be used in manipulating text.  As noted earlier, this highlighting could also be used to inspect nodes so, for instance, in (a) the user might see ``\texttt{Prop}'' displayed in some other window to indicate that ``\texttt{forall x : G, x X inv x = e /\symbol{92} inv x X x =  e}'' has type \texttt{Prop}.
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{syntaxtreehighlighting.jpg}
+  \caption{Example of Syntax Tree Highlighting in Coq.}
+  \label{fig:sth}
+\end{figure}
+
+Propositional Logic Syntax Shortcuts involves, on the one hand, some scaling back of my full ambitions for Syntax Tree Highlighting in Coq, and, on the other hand, an implementation of a generalizable form of coding and perhaps a more effective use of keyboard-card menus than I had originally envisioned.   For this plugin, I will be considering only a subset of Coq's language that may be used in doing ``Fitch-style'' (or ``box-style''.  While ...
+
+\begin{figure} [H]
   \center
   \includegraphics[width=\linewidth]{PLSS_1.jpg}
   \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts}
   \label{fig:plss1}
 \end{figure}
 
-\begin{figure}
+\begin{figure} [H]
   \center
   \includegraphics[width=\linewidth]{PLSS_2.jpg}
   \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts, with highlighting moved from \autoref{fig:plss1}}
   \label{fig:plss2}
+\end{figure}
+
+\begin{figure} [H]
+  \center
+  \includegraphics[width=\linewidth]{PLSS_3.jpg}
+  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts, with highlighting moved from \autoref{fig:plss1}}
+  \label{fig:plss3}
 \end{figure}
 
 
@@ -456,18 +699,19 @@ In this section, I describe work on ``Keyboard-Card Menus'', which I hope to inc
 
 
 %%=======================================================================================
-\section{Related Work}
+\chapter{Related Work}
 %%=======================================================================================
 
-
+The need for effective theorem prover user interfaces has been recognized for over 20 years (e.g. \cite{Thery:1992:RTP:142868.143760}) and a series of conferences has even been organized to address this need specifically.\footnote{See http://www.informatik.uni-bremen.de/uitp/ for more information} Many interesting and helpful ideas have been proposed, both for Coq and for related systems.  These ideas vary widely and include integration of Coq, and other theorem provers, with dynamic geometry software \cite{narboux2007graphical,quaresma2007geothms}, easier-to-read declarative languages for proof scripts \cite{corbineau2008declarative}, using wikis for creating proof repositories \cite{corbineau2007cooperative}, and automating the process of using libraries \cite{asperti2010some}.
 
 
 %=======================================================================================
-\section{Conclusion}
+\chapter{Conclusion and Acknowledgements}
 %=======================================================================================
 
 I hope to have made several points in this proposal.  First, that this is important work, both because the Coq interactive theorem prover is an important tool that could benefit significantly from improved user interfaces and because many of the ideas generalize to other forms of coding.  Second, that as an intellectual challenge this work is non-trivial, not only because of the normal programming problems that must be overcome but because designing good user interfaces for complicated systems, which includes the identification of tractable problems and the testing of potential solutions, is non-trivial.  Finally, that, despite this non-trivial nature, the work can be accomplished.
 
+Much of the work presented has been supported by NSF award CCF-1250306.  I also give special thanks to my advisor, Professor Juan Pablo Hourcade, Professor Aaron Stump, and Harley Eades, for working on this project with me, and to my committee.
 
 %===================================================================================================
 \bibliographystyle{plain}
