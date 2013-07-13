@@ -367,7 +367,7 @@ This particular way debugging tactics may work for many of the basic tactics, bu
 \item red underlining in the bottom red box to show text that is either moved or deleted altogether, and 
 \item green underlining in the top red box to show text that is new (either entirely new or moved/copied into the box)
 \end{itemize}
-In addition, the user can have lines, or arrows, drawn to connect the moved/copied portions of text, as seen in \autoref{fig:pt4}.  Note that within the program the lines are drawn one-by-one in an animation, which makes it easier to see what is connected to what than what might appear to be the case just  looking at \autoref{fig:pt4}
+In addition, the user can have lines drawn to connect the moved/copied portions of text, as seen in \autoref{fig:pt4}.  Note that the lines are actually drawn one-by-one in an animation, which makes it easier to see what is connected to what than might appear to be the case just looking at \autoref{fig:pt4}.  As an alternative to drawing lines, the yellow-highlighted text might be made to float up to the new positions.  Note also that this extends the sorts of visualizations one commonly sees of the \textit{UNIX} \texttt{diff} command\footnote{\texttt{diff} is used to find changes between versions of text files}:  instead of just indicating what text has been added, what removed, and what changed, we also show what has been moved.  Consequently, it would seem likely that variations of the idea might be applied in numerous other coding environments.
 
 \begin{figure}[H]
   \center
@@ -379,14 +379,14 @@ In addition, the user can have lines, or arrows, drawn to connect the moved/copi
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pt2.jpg}
-  \caption{After a tactic has been applied to the goal in \autoref{fig:pt1}, stage 1.}
+  \caption{After a tactic has been applied to the goal in \autoref{fig:pt1}.}
   \label{fig:pt2}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pt3.jpg}
-  \caption{After a tactic has been applied to the goal in \autoref{fig:pt1}, stage 2.}
+  \caption{\autoref{fig:pt2}, with highlighting to show changed text.}
   \label{fig:pt3}
 \end{figure}
 
@@ -397,20 +397,23 @@ In addition, the user can have lines, or arrows, drawn to connect the moved/copi
   \label{fig:pt4}
 \end{figure}
 
+Because development of this plugin is being done using the \textit{Piccolo} library for zoomable user interfaces, it will be relatively easy to also provide support for proof tree visualization.  \autoref{fig:ptZoomOut} shows what zooming out from \autoref{fig:pt2} might look like, assuming the two boxes were the root and its first child and another two lines were leaving the tactic.  \autoref{fig:ptZoomOut2} shows the proof tree of \autoref{fig:ptZoomOut} with the second child node of the root node set as the current node; note how one can automatically adjust the layout of the tree based on the requirement that the current node be centered above its parent (if the current node is not the root, of course) and without a lot of change in the layout of the branches.   
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptZoomOut.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
+  \includegraphics[width=.95\linewidth]{ptZoomOut.jpg}
+  \caption{The boxes of \autoref{fig:pt1}, \autoref{fig:pt2}, \autoref{fig:pt3}, and \autoref{fig:pt4},  as part of a proof tree visualization.}
   \label{fig:ptZoomOut}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptZoomOut.jpg}
-  \caption{CoqEdit with the Proof Previews extension.  The result of the highlighted tactic is displayed in the bottom right panel.}
-  \label{fig:ptZoomOut}
+  \includegraphics[width=.95\linewidth]{ptZoomOut2.jpg}
+  \caption{The tree of \autoref{fig:ptZoomOut}, laid out with the root node's second child, instead of its first, set as the current node}
+  \label{fig:ptZoomOut2}
 \end{figure}
+
+Please note that this design of this extension is likely to change significantly in the future, and that for the purposes of this dissertation I am likely only to produce a ``Wizard of Oz'' version for user testing purposes.  More specifically, I will be producing a pair of plugins that simulate an actual Proof Transitions extension acting on a particular pair of proof scripts. For a real version of the plugin, it would probably make sense to have more support in the \texttt{coqtop} back end for these features beforehand, particularly with regards to determining which portions of goals are moved.  One purpose for developing these plugins is to demonstrate that such support ultimately would be useful.
 
 %%================================
 \subsection{Interlude: Keyboard-Card Menus}
