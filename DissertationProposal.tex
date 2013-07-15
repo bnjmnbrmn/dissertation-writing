@@ -12,9 +12,12 @@
 \usepackage{dblfloatfix}
 \usepackage{tabularx}
 \usepackage[nottoc,numbib]{tocbibind}
+\usepackage{textcomp}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \newcommand{\ra}{\ensuremath{\rightarrow}}
+\newcommand{\bstt}{\symbol{92}}
+\newcommand{\tildett}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
 
 \title{Dissertation Proposal: \\User Interfaces for the Coq Proof Assistant}
 \author{Benjamin Berman}
@@ -29,9 +32,7 @@
 
 The general principle behind the dissertation that I propose in this document is that in order to accomplish difficult tasks, one generally needs to make these tasks easy--to move boulders, try a lever.  The significance of this principle was demonstrated to me when, a long time ago, my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to also figure out how playing those notes could, for instance, be made less physically awkward by changing the position of one's elbow.  In general, when it comes to ``virtuosic'' tasks--tasks that require large amounts of skill--it is easy to ignore this ``making things easy'' principle and focus on putting more time and effort into practicing or studying, even though following the principle is often a requirement for success.  The major goal of the proposed dissertation is to apply the principle in the context of the virtuosic tasks that are involved in interactive theorem proving with the \textit{Coq} proof assistant\cite{Coq}\footnote{``Proof assistant'' and ``interactive theorem prover'' are synonymous}:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving serious usability problems for an important and powerful tool for creating machine-checked proofs, many of the techniques I am developing and testing are widely applicable to other forms of coding.
 
-A long time ago my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to also figure out how to make playing those notes easy.  The major goal of the proposed dissertation is to reapply the same idea in the context of interactive theorem proving with the \textit{Coq} proof assistant\cite{Coq}\footnote{``Proof assistant'' and ``interactive theorem prover'' are synonymous}:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving serious usability problems for an important and powerful tool for creating machine-checked proofs, many of the techniques I am developing and testing are widely applicable to other forms of coding.
-
-The research involved in this proposed dissertation, described more fully below, breaks down into two related main parts.  Part one is the development of ``CoqEdit'', a new theorem proving environment for Coq, based on the jEdit text editor.  CoqEdit will mimic the main features of the existing environments for Coq, but will have the important property of being easily extended using Java.  Part two is the development and testing of several such extensions.
+The research involved in this proposed dissertation, described more fully below, breaks down into two related main parts.  Part one is the development of ``CoqEdit'', a new theorem proving environment for Coq, based on the jEdit text editor.  CoqEdit will mimic the main features of the existing environments for Coq, but will have the important property of being easily extended using Java.  Part two is the development and testing of several such extensions.  The research also draws from and contributes to two generally separate sub-disciplines of computer science, namely programming languages theory and human-computer interaction, and I have Professors Juan Pablo Hourcade and Aaron Stump to thank for facilitating--and involving themselves in--unusual interdisciplinary work.
 
 
 There are several points that I hope will become clear as I describe the research for the proposed dissertation below.  First is that the research will make a significant positive contribution to society.  While Coq is a powerful tool, and is already being used for important work, its power has come at the cost of complexity, which makes the tool difficult to learn and use.  Finding and implementing better ways to deal with this complexity in the user interface of the tool can allow more users to perform a greater number, and a greater variety, of tasks.  At a more general level, the research contributes to a small but growing literature on user interfaces for proof assistants.  The work this literature represents can be viewed as an extension of work on proof assistants, which in turn can be viewed as an extension of work on symbolic logic:  symbolic logic aims to make working with statements easier, proof assistants aim to make working with symbolic logic easier, and user interfaces for proof assistants aim to make working with proof assistants easier.  These all are part of the (positive, I hope we can assume) academic effort to improve argumentative clarity and factual certainty.  
@@ -646,7 +647,7 @@ Syntax Tree Highlighting can be useful in understanding the syntax of text (whic
 \begin{equation}
 6 \div 2(1 + 2)
 \end{equation}
-The fact that there even is a \textit{Slate} story on this problem indicates that it really is ambiguous, despite attempts, described in the story, at establishing a standard algorithm.  Computer scientists and programmers encounter such ambiguities frequently when reading and writing programs, especially in languages new to them.  The situation with Coq is especially bad, in part because Coq allows users to define their own ``notations'' and to give them precedence levels and directions of associativity (e.g. ``\texttt{+}'' and ``\texttt{/\\}'' are notations).
+The fact that there even is a \textit{Slate} story on this problem indicates that it really is ambiguous, despite attempts, described in the story, at establishing a standard algorithm.  Computer scientists and programmers encounter such ambiguities frequently when reading and writing programs, especially in languages new to them.  The situation with Coq is especially bad, in part because Coq allows users to define their own ``notations'' and to give them precedence levels and directions of associativity (e.g. ``\texttt{+}'' and ``\texttt{/\symbol{92}}'' are notations).
 
 Even when there is no real ambiguity that needs to be resolved, Syntax Tree Highlighting could make code more readable.  For instance, given fully parenthesized text, finding matching pairs of parentheses can be difficult, and finding all of the ``next level'' parentheses within a given pair is even harder.  ``Pretty printing'' techniques, involving indentation, can also help make code more readable, but keeping indentation levels straight can still be difficult, if the text file in question is long, and there is only so far over one can indent without having to scroll over.  Furthermore, in many cases coders must deal with code written by other coders or generated by a computer (e.g. the terms generated in Coq by sequences of tactics), and in these cases there are generally no guarantees about parenthesization or pretty printing. 
 
@@ -667,19 +668,51 @@ In (e), we see (d)'s selected child node replaced with a new term, ``\texttt{a}'
   \label{fig:sth}
 \end{figure}
 
-Propositional Logic Syntax Shortcuts involves, on the one hand, some scaling back of my full ambitions for Syntax Tree Highlighting in Coq, and, on the other hand, an implementation of a generalizable form of coding and perhaps a more effective use of keyboard-card menus than I had originally envisioned.   For this plugin, I will be considering only a subset of Coq's language that may be used in doing ``Fitch-style'' proofs in classical propositional logic, as presented in the popular textbook \textit{Logic in Computer Science: Modelling and Reasoning about Systems} by Michael Huth and Mark Ryan \cite{huth2004logic}.  Proofs in this style do not involve turnstiles or colons.  Instead, they are lists of formulas where each formula is either a premise or a hypothesis, or follows, according to an inference rule from a given set of such rules, from zero or more formulas at earlier positions in the list.  In \cite{huth2004logic} the formulas in these lists are generally written no more than one to a line, each with a short justification (e.g. the name of an inference rule and the line numbers formulas used), and with (possibly nested) boxes surrounding formulas to show where it is to be assumed that a hypothesis, at the top of the box, is valid (i.e. to show the scope of the hypothesis).   Although Coq is not really designed for writing proofs in this style, in \autoref{fig:plss1} I show how to imitate it within a Coq .v file.  Note that ``Fact'' is a synonym for ``Lemma'' or ``Theorem'', that the proof/hypothesis names l1, l2, l3, stand for line numbers, and that the simple proofs are applications of axioms or theorems that correspond to natural deduction inference rules given in \cite{huth2004logic}.
+Propositional Logic Syntax Shortcuts involves, on the one hand, some scaling back of my full ambitions for Syntax Tree Highlighting in Coq, and, on the other hand, an implementation of a generalizable form of coding and perhaps a more effective use of keyboard-card menus than I had originally envisioned.   For this plugin, I will be considering only a subset of Coq's language that may be used in doing ``Fitch-style'' proofs in classical propositional logic, as presented in the popular textbook \textit{Logic in Computer Science: Modelling and Reasoning about Systems} by Michael Huth and Mark Ryan \cite{huth2004logic}.  Proofs in this style do not involve turnstiles or colons.  Instead, they are lists of formulas where each formula is either a premise or a hypothesis, or follows, according to an inference rule from a given set of such rules, from zero or more formulas at earlier positions in the list.  In \cite{huth2004logic} the formulas in these lists are generally written no more than one to a line, each with a short justification (e.g. the name of an inference rule and the line numbers formulas used), and with (possibly nested) boxes surrounding formulas to show where it is to be assumed that a hypothesis, at the top of the box, is valid (i.e. to show the scope of the hypothesis).   Although Coq is not really designed for writing proofs in this style, in \autoref{fig:plss1} I show how to imitate it within a Coq .v file.  Note that ``Fact'' is a synonym for ``Lemma'' or ``Theorem'', that the proof/hypothesis names l1, l2, l3, stand for line numbers, that the simple proofs are applications of axioms or theorems that correspond to natural deduction inference rules given in \cite{huth2004logic}, and that Coq's section mechanism, along with indentation, takes the place of boxes.  While restricting Coq in this way restricts Coq's power enormously, it may also make Coq more accessible and useful to the many students studying propositional logic using books like \cite{huth2004logic}. 
+
+The main idea I hope to demonstrate with Propositional Logic Syntax Shortcuts is that, by using a combination of Syntax Tree Highlighting and keyboard-card menus, code can be efficiently written by building it up using the rules of a grammar.  If one just considers a propositional logic formula, the sequence of states that the formula goes through might look like 
+\begin{enumerate}
+\item \texttt{[?]}
+\item \texttt{[?] -> ?}
+\item \texttt{([?] -> ?) -> ?}
+\item \texttt{(A -> [?]) -> ?}
+\item \texttt{(A -> ([?] -> ?)) -> ?}
+\item \texttt{(A -> (B -> [?])) -> ?}
+\item \texttt{(A -> (B -> C)) -> [?]}
+\item \texttt{(A -> (B -> C)) -> [?] -> ?}
+\item \texttt{(A -> (B -> C)) -> ([?] -> ?) -> ?}
+\item \texttt{(A -> (B -> C)) -> (A -> [?]) -> ?}
+\item \texttt{(A -> (B -> C)) -> (A -> B) -> [?]}
+\item \texttt{(A -> (B -> C)) -> (A -> B) -> A -> [?]}
+\item \texttt{[(A -> (B -> C)) -> (A -> B) -> A -> C]}
+\end{enumerate}
+where  ``\texttt{?}'' is a placeholder for text that needs to be added, and the square brackets represent the location of the Syntax Tree Highlighting.\footnote{This process of filling in placeholders is actually what is going on behind the scenes when tactics are used--the displayed goals are the types for placeholders within the term being constructing.}  While the details of exactly which commands to arrange where within a keyboard-card menu for the Propositional Logic Syntax Shortcuts extension remain to be determined, moving through the above states could involve just selecting from four menu items perhaps labeled ``\texttt{A}'', ``\texttt{B}'', ``\texttt{C}'', and ``\texttt{[?] -> ?}'' (deciding on reasonable menu item labels is part of the project).  As a possibly more natural alternative, users could move through a sequence of states
+\begin{enumerate}
+\item \texttt{[?]}
+\item \texttt{[A]}
+\item \texttt{A -> [?]}
+\item \texttt{A -> [B]}
+\item \texttt{A -> (B -> [?])}
+\item \texttt{A -> (B -> [C])}
+\item etc.
+\end{enumerate}
+using additional menu items that might be labeled ``\texttt{[A]}'', ``\texttt{[B]}'', ``\texttt{[C]}'', and ``\texttt{\_ -> [?]}''.  In \autoref{fig:plss1}, \autoref{fig:plss2}, and \autoref{fig:plss3} we see how a user could also use navigate through the file's overall syntax tree to delete a particular formula. The navigation and deletion commands could also be entered using items in the keyboard-card menu.  N.B.: the available menu items (i.e. ones that are not ``grayed out'') can be restricted so that, for instance, users cannot replace the entire expression \\``\texttt{Fact l3 : phi \bstt/ \tildett{}phi. Proof. apply (or\_intro\_l l2). Qed. }''  with \\``\texttt{[?] -> ?}''.
+
+Two final comments.  First, writing code by selecting and combining grammatical components is not particularly new.  A couple of examples are \textit{Scratch}\cite{Scratch}, an environment for developing programs by dragging and dropping interlocking pieces, and the interfaces of various graphical typesetting tools (e.g. that of \textit{Mathematica}\cite{Mathematica}).   What \textit{is} new is its combination with keyboard-card menus to provide a fast, from-the-keyboard, way of creating programs that I hope can smooth the transition from novice to expert programmer.
+
+Second, writing code in this way may be viewed as a continuation of a general effort to stop programming errors early--an effort spearheaded by Coq's advanced type system.    Types and type checking are used to move the detection of errors from run time to compile time.  Integrated development environments nowadays often auto-compile code so that programmers can spot errors almost immediately after they type a character into a buffer.  Coding at the level of grammatical components can stop some errors before they even reach the buffer.  
 
 \begin{figure} [H]
   \center
   \includegraphics[width=\linewidth]{PLSS_1.jpg}
-  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts}
+  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts.  Note how the text corresponds to a Fitch-style proof with the two sections corresponding to boxes, one nested in the other.}
   \label{fig:plss1}
 \end{figure}
 
 \begin{figure} [H]
   \center
   \includegraphics[width=\linewidth]{PLSS_2.jpg}
-  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts, with highlighting moved from \autoref{fig:plss1}}
+  \caption{Syntax Tree Highlighting for Propositional Logic Syntax Shortcuts, with highlighting moved from \autoref{fig:plss1}.}
   \label{fig:plss2}
 \end{figure}
 
@@ -696,11 +729,22 @@ Propositional Logic Syntax Shortcuts involves, on the one hand, some scaling bac
 \subsection{Extension Testing}
 %%================================
 
+Testing the Proof Previews and Proof Transitions extensions with participants (university students) will be combined in a single experiment, already approved by the University of Iowa IRB.  The rough plan for the experiment is to first take participants through a tutorial on proving theorems in propositional and first-order logic with Coq.  Participants will then walk through a pair complicated proofs, using Proof Transitions for one and un-extended CoqEdit for the other, and will be asked to give detailed explanations of what they see.  These explanations will be recorded and graded later.  Finally, participants will be given two sets of lemmas to attempt to prove, one with Proof Previews and the other without, and the amount of time they need (or the number they are able to prove) will be recorded.  For both the Proof Transitions and the Proof Previews, ordering of problems and pairing of problem to extension will be balanced across participants, and informal feedback will be acquired along the way.\footnote{Some informal feedback from Coq users and potential users, indicating that our ideas seem reasonable, has already been acquired.}
+
+For the now at least, I am considering testing of Propositional Logic Syntax Shortcuts with human subject to be beyond the scope of the proposed dissertation.  However, given that it will be developed with Huth and Ryan's textbook in mind (which has been used at the University of Iowa, among other places), the plugin should certainly lend itself to testing in a classroom setting.
+
 %%=======================================================================================
 \section{Timeline for Research}
 %%=======================================================================================
 
-
+A tentative schedule:
+\begin{itemize}
+\item Completion of the revised version of CoqEdit, the Proof Previews plugin, and the Proof Transitions by the end of August 2013.
+\item Experiment with Proof Previews and Proof Transitions in September and October 2013 (I will be acting in a supervisory role here, and in getting the experiment set up).
+\item Development of Propositional Logic Syntax Shortcuts in October 2013 through January 2014
+\item Further refinement of plugins, dissertation writing, February through April 2014
+\item Dissertation defense, May 2014
+\end{itemize}
 
 %%=======================================================================================
 \chapter{Related Work}
@@ -721,6 +765,12 @@ In addition to previous work specifically on theorem prover user interfaces, it 
 In addition to IDEs, we may consider software visualization tools:  \cite{bassil2001software} report on a survey of users of software visualization tools such as \textit{daVinci} (now called \textit{uDraw(Graph)}), \textit{GraphViz}, \textit{Grasp} (now \textit{jGrasp}, and \textit{Tom Sawyer Software}--more than 40 different tools altogether.  Some of the ``functional aspects'' of the software visualization tools that were considered most useful, and that might also have useful analogs in theorem prover user interfaces, were ``search tools for graphical and/or textual elements'', ``hierarchical representations'' and ``navigation across hierarchies'', ``use of colors'', and ``easy access, from the symbol list, to the corresponding source code.''  Among functional aspects considered least useful were ``3D representations and layouts, and virtual reality techniques'' and ``animation effects'', though the later was considered ``quite useful'' when the software was implemented in a declarative language.  Software visualization tools were considered beneficial in increasing productivity and managing complexity, and were considered particularly important in the ``software comprehension process.''
 
 A survey and taxonomy of software visualization is presented in \cite{caserta2011visualization}.  Similar to \cite{bajaj2003interactive}, it divides tools into three groups according to their use at three different levels of abstraction: line, class, and architecture.  They also differentiate between tools used for visualizing code at a particular time and those that allow for visualization of the evolution of software.  Many of the techniques used by these tools could be applied to visualization for interactive theorem provers.  \textit{Seesoft} \cite{eick1992seesoft}, for instance, miniaturizes lines of code with lines of color-coded pixels, and \textit{sv3D} \cite{marcus20033d} extends this idea using three-dimensional arrays of blocks where information about lines of code is encoded in the height and color of the blocks.  Other techniques potentially useful for interactive theorem prover user interfaces include using animation and color gradients to show the direction of relationships between software components \cite{alam2007evospaces,holten2006hierarchical} and using texture and 3D object primitives called ``geons'' to encode additional information \cite{holten2005visual,irani2001using}.
+
+The more general human-computer interaction literature on tree visualization is quite extensive--many techniques have been developed.  Four different ``common layouts'' are listed in \cite{holten2006hierarchical}: rooted tree (the node layout presented, for instance, in \autoref{fig:similarnodes}, with child nodes arranged on a horizontal line above or below their parents), radial trees (nodes of each level of the tree are arranged in concentric circles, with the root node at the center, its children at the first circle out, their children at the next circle out, etc.), balloon trees (each parent's child nodes are arranged radially around the parent), and treemaps (which divide a rectangle into smaller and smaller rectangles with the largest rectangle representing the root of the tree and the smallest representing the leaves, and where division of the rectangles switches between using horizontal and vertical lines when going between tree levels; these were developed in \cite{shneiderman1992tree}).  These common layouts have been extended in various ways.  For instance, \cite{nguyen2002space} describes a space-optimized version of balloon trees and \cite{van1999cushion} describes the the addition of gradients to the rectangles in treemap visualizations, making the structure of the tree easier to see.
+
+\cite{katifori2007ontology} presents an extensive review of tree visualization techniques.  Along with classifying visualizations as 2D or 3D (or 2.5D when no movement in or manipulation of a 3D visualization is allowed), it divides the visualizations into six overlapping categories: indented list, node-link and tree, zoomable, space-filling, focus+context or distortion, and three-dimensional information landscapes.  Indented lists can be seen in file system browsers, e.g. \textit{Microsoft Windows}' \textit{Explorer}, the rooted and radial trees mentioned in \cite{holten2006hierarchical} as common layouts are ``node-line and tree'' type, and treemaps are an example of the space-filling type.  An example of a zoomable visualization is \textit{Grokker} \cite{rivadeneira2003study} which allows users to click and expand nested circles.  An example of the focus+context or distortion category is the \textit{Hyperbolic Browser} \cite{lamping1996hyperbolic} which magnifies and centers on the area around a selected node in a radial layout.  An example of a three-dimensional information landscape is the \textit{Harmony Information Landscape} \cite{eyl1995harmony}.
+
+
 
 %=======================================================================================
 \chapter{Conclusion and Acknowledgements}
