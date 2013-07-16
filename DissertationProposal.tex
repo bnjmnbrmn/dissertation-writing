@@ -568,21 +568,21 @@ In addition, the difference between the error rates for dropdown and keyboard-ca
 
 \begin{figure} [H]
   \center
-  \includegraphics[width=\linewidth]{ErrorDataFixed.jpg}
+  \includegraphics[width=.80\linewidth]{ErrorDataFixed.jpg}
   \caption{Error rates for the keyboard-navigated dropdown menus and keyboard-card menus in the study.  Note that data is only complete for blocks 1-8.}
   \label{fig:errorrates}
 \end{figure}
 
 \begin{figure} [H]
   \center
-  \includegraphics[width=\linewidth]{ErrorRateDifferences.jpg}
+  \includegraphics[width=.80\linewidth]{ErrorRateDifferences.jpg}
   \caption{The differences between the overall average error rates for dropdown menus and keyboard-card menus, for each participant, plotted against the error rate for dropdown menus.}
   \label{fig:errorratedifferences}
 \end{figure}
 
 \begin{figure} [H]
   \center
-  \includegraphics[width=\linewidth]{OverallAverageTimeDifferences.jpg}
+  \includegraphics[width=.80\linewidth]{OverallAverageTimeDifferences.jpg}
   \caption{The differences between the overall average times for dropdown menus and keyboard-card menus, for each participant, plotted against the time for dropdown menus.}
   \label{fig:timedifferences}
 \end{figure}
@@ -635,23 +635,23 @@ We would like to thank our participants for their time and effort.  This researc
 \subsection{``Propositional Logic Syntax Shortcuts''}
 %%============
 
-Like Proof Transitions, the ``{\bf Proposition Logic Syntax Shortcuts}'' CoqEdit extension combines two ideas.  The first idea is keyboard-card menus, described above. One reason I would like to develop Propositional Logic Syntax Shortcuts is to see if keyboard-card menus can be successfully integrated into a real application.
+Like Proof Transitions, the ``{\bf Proposition Logic Syntax Shortcuts}'' CoqEdit extension combines two ideas.  The first idea is keyboard-card menus, described above. One reason I would like to develop Propositional Logic Syntax Shortcuts is to see if keyboard-card menus can be successfully integrated into a real application.  In the Propositional Logic Syntax Shortcut the user would most likely see a keyboard-card menu displayed in a dockable window, docked under the text area displaying the buffer. 
 
-The second idea incorporated into Propositional Logic Syntax Shortcuts is ``{\bf Syntax Tree Highlighting}''.  Syntax Tree Highlighting  is text highlighting of parse-able text document (e.g. program) where
+The second idea incorporated into Propositional Logic Syntax Shortcuts is ``{\bf Syntax Tree Highlighting}''.  Syntax Tree Highlighting  is text highlighting of parse-able text documents (e.g. programs) where
 \begin{itemize}
-\item only text of a node in the concrete syntax tree of the document
+\item only text of a node in the concrete syntax tree of the document is highlighted
 \item the children of the node are shown as distinct sections of highlighting
 \item something, e.g. a line under the highlighting, shows which child nodes are leaf nodes
 \item the highlighting of one of the non-leaf children, if there are any, indicates that it is ``selected''
-\item the user can navigate the syntax tree  by moving the indication of selection from non-leaf node to non-leaf node and by moving the highlighting to the selected non-leaf child node or the parent of the node with highlighting.
+\item the user can navigate the syntax tree  by moving the selection indicator from non-leaf node to non-leaf node and by moving the highlighting to the selected non-leaf child node or the parent of the node with highlighting.
 \end{itemize}
-Syntax Tree Highlighting can be useful in understanding the syntax of text (which, of course, is generally a prerequisite for understanding its semantics), and may be particularly helpful in resolving ambiguities that result when the author of the text did not include parentheses.  Ambiguities of this sort can occur in in many languages, which suggests that Syntax Tree Highlighting may be widely useful.  A good example is a math problem that, according to an article in \textit{Slate} magazine\cite{HaelleMarch122013}, has been circulating on \textit{Facebook}.  The problem is to compute
+Syntax Tree Highlighting could be useful in understanding the syntactic structure of a document (which, of course, is generally a prerequisite for understanding its semantics), and has an advantage, over other tree visualizations of syntactic structure, in that it is directly integrated into the display of the buffer.\footnote{With other visualizations, the user may have to switch his gaze back and forth between the text and the visualization}  It may be particularly helpful in resolving ambiguities that result when the author of the text did not include parentheses.  Ambiguities of this sort can occur in in many languages, which suggests that Syntax Tree Highlighting may be widely useful.  A good example is a math problem that, according to an article in \textit{Slate} magazine\cite{HaelleMarch122013}, has been circulating on \textit{Facebook}.  The problem is to compute
 \begin{equation}
 6 \div 2(1 + 2)
 \end{equation}
 The fact that there even is a \textit{Slate} story on this problem indicates that it really is ambiguous, despite attempts, described in the story, at establishing a standard algorithm.  Computer scientists and programmers encounter such ambiguities frequently when reading and writing programs, especially in languages new to them.  The situation with Coq is especially bad, in part because Coq allows users to define their own ``notations'' and to give them precedence levels and directions of associativity (e.g. ``\texttt{+}'' and ``\texttt{/\symbol{92}}'' are notations).
 
-Even when there is no real ambiguity that needs to be resolved, Syntax Tree Highlighting could make code more readable.  For instance, given fully parenthesized text, finding matching pairs of parentheses can be difficult, and finding all of the ``next level'' parentheses within a given pair is even harder.  ``Pretty printing'' techniques, involving indentation, can also help make code more readable, but keeping indentation levels straight can still be difficult, if the text file in question is long, and there is only so far over one can indent without having to scroll over.  Furthermore, in many cases coders must deal with code written by other coders or generated by a computer (e.g. the terms generated in Coq by sequences of tactics), and in these cases there are generally no guarantees about parenthesization or pretty printing. 
+Even when there is no real ambiguity that needs to be resolved, Syntax Tree Highlighting could make code more readable.  For instance, given fully parenthesized text, finding matching pairs of parentheses can be difficult, and finding all of the ``next level'' parentheses within a given pair is even harder.  ``Pretty printing'' techniques, involving indentation, can also help make code more readable, but keeping indentation levels straight can still be difficult, especially if the text file in question is long, since there is only so far over one can indent without having to scroll over.  Furthermore, in many cases coders must deal with code written by other coders or generated by a computer (e.g. the terms generated in Coq by sequences of tactics), and in these cases there are generally no guarantees about parenthesization or pretty printing. 
 
 Syntax Tree Highlighting may also be useful in selecting important sections of text (compare moving its highlighting with selection in the usual character-by-character or line-by-line way) to manipulate (e.g. rewrite, cut, copy, paste over) and ``inspect'' these sections.  In the case of Coq, ``inspecting'' these sections could mean type checking or evaluating them.
 
@@ -670,7 +670,7 @@ In (e), we see (d)'s selected child node replaced with a new term, ``\texttt{a}'
   \label{fig:sth}
 \end{figure}
 
-Propositional Logic Syntax Shortcuts involves, on the one hand, some scaling back of my full ambitions for Syntax Tree Highlighting in Coq, and, on the other hand, an implementation of a generalizable form of coding and perhaps a more effective use of keyboard-card menus than I had originally envisioned.   For this plugin, I will be considering only a subset of Coq's language that may be used in doing ``Fitch-style'' proofs in classical propositional logic, as presented in the popular textbook \textit{Logic in Computer Science: Modelling and Reasoning about Systems} by Michael Huth and Mark Ryan \cite{huth2004logic}.  Proofs in this style do not involve turnstiles or colons.  Instead, they are lists of formulas where each formula is either a premise or a hypothesis, or follows, according to an inference rule from a given set of such rules, from zero or more formulas at earlier positions in the list.  In \cite{huth2004logic} the formulas in these lists are generally written no more than one to a line, each with a short justification (e.g. the name of an inference rule and the line numbers formulas used), and with (possibly nested) boxes surrounding formulas to show where it is to be assumed that a hypothesis, at the top of the box, is valid (i.e. to show the scope of the hypothesis).   Although Coq is not really designed for writing proofs in this style, in \autoref{fig:plss1} I show how to imitate it within a Coq .v file.  Note that ``Fact'' is a synonym for ``Lemma'' or ``Theorem'', that the proof/hypothesis names l1, l2, l3, stand for line numbers, that the simple proofs are applications of axioms or theorems that correspond to natural deduction inference rules given in \cite{huth2004logic}, and that Coq's section mechanism, along with indentation, takes the place of boxes.  While restricting Coq in this way restricts Coq's power enormously, it may also make Coq more accessible and useful to the many students studying propositional logic using books like \cite{huth2004logic}. 
+Propositional Logic Syntax Shortcuts involves, on the one hand, some scaling back of my full ambitions for Syntax Tree Highlighting in Coq, and, on the other hand, an implementation of a generalizable form of coding and perhaps a more effective use of keyboard-card menus than I had originally envisioned.   For this plugin, I will be considering only a subset of Coq's language that may be used in doing ``Fitch-style'' proofs in classical propositional logic, as presented in the popular textbook \textit{Logic in Computer Science: Modelling and Reasoning about Systems} by Michael Huth and Mark Ryan \cite{huth2004logic}.  Proofs in this style do not involve turnstiles or colons.  Instead, they are lists of formulas where each formula is either a premise or a hypothesis, or follows, according to an inference rule from a given set of such rules, from zero or more formulas at earlier positions in the list.  In \cite{huth2004logic} the formulas in these lists are generally written no more than one to a line, each with a short justification (e.g. the name of an inference rule and the line numbers of formulas used), and with (possibly nested) boxes surrounding formulas to show where it is to be assumed that a hypothesis, at the top of the box, is valid (i.e. to show the scope of the hypothesis).   Although Coq is not really designed for writing proofs in this style, in \autoref{fig:plss1} I show how to imitate it within a Coq .v file.  Note that ``Fact'' is a synonym for ``Lemma'' or ``Theorem'', that the proof/hypothesis names l1, l2, l3, stand for line numbers, that the simple proofs are applications of axioms or theorems that correspond to natural deduction inference rules given in \cite{huth2004logic}, and that Coq's section mechanism, along with indentation, takes the place of boxes.  While restricting Coq in this way restricts Coq's power enormously, it may also make Coq more accessible and useful to the many students studying propositional logic using books like \cite{huth2004logic}. 
 
 The main idea I hope to demonstrate with Propositional Logic Syntax Shortcuts is that, by using a combination of Syntax Tree Highlighting and keyboard-card menus, code can be efficiently written by building it up using the rules of a grammar.  If one just considers a propositional logic formula, the sequence of states that the formula goes through might look like 
 \begin{enumerate}
@@ -700,9 +700,9 @@ where  ``\texttt{?}'' is a placeholder for text that needs to be added, and the 
 \end{enumerate}
 using additional menu items that might be labeled ``\texttt{[A]}'', ``\texttt{[B]}'', ``\texttt{[C]}'', and ``\texttt{\_ -> [?]}''.  In \autoref{fig:plss1}, \autoref{fig:plss2}, and \autoref{fig:plss3} we see how a user could also use navigate through the file's overall syntax tree to delete a particular formula. The navigation and deletion commands could also be entered using items in the keyboard-card menu.  N.B.: the available menu items (i.e. ones that are not ``grayed out'') can be restricted so that, for instance, users cannot replace the entire expression \\``\texttt{Fact l3 : phi \bstt/ \tildett{}phi. Proof. apply (or\_intro\_l l2). Qed. }''  with \\``\texttt{[?] -> ?}''.
 
-Two final comments.  First, writing code by selecting and combining grammatical components is not particularly new.  A couple of examples are \textit{Scratch}\cite{Scratch}, an environment for developing programs by dragging and dropping interlocking pieces, and the interfaces of various graphical typesetting tools (e.g. that of \textit{Mathematica}\cite{Mathematica}).   What \textit{is} new is its combination with keyboard-card menus to provide a fast, from-the-keyboard, way of creating programs that I hope can smooth the transition from novice to expert programmer.
+Two final comments.  First, writing code by selecting and combining grammatical components is nothing new; the terms ``Structure editor'' and ``Syntax-directed editing'' have been used to describe the paradigm (see, for instance, \cite{lunney1988syntax,teitelbaum1981cornell})\footnote{The \textit{Wikipedia} article ``Structure editor'' provides a decent introduction to the literature}.  A couple of modern examples are \textit{Scratch}\cite{Scratch}, an environment for developing programs by dragging and dropping interlocking pieces, and the interfaces of various graphical typesetting tools (e.g. that of \textit{Mathematica}\cite{Mathematica}).   What \textit{is} new is its combination with keyboard-card menus to provide a fast, from-the-keyboard, way of creating programs that I hope can smooth the transition from novice to expert programmer.
 
-Second, writing code in this way may be viewed as a continuation of a general effort to stop programming errors early--an effort spearheaded by Coq's advanced type system.    Types and type checking are used to move the detection of errors from run time to compile time.  Integrated development environments nowadays often auto-compile code so that programmers can spot errors almost immediately after they type a character into a buffer.  Coding at the level of grammatical components can stop some errors before they even reach the buffer.  
+Second, writing code in this way may be viewed as a continuation of a general effort to stop programming errors early--an effort spearheaded by Coq's advanced type system.    Types and type checking are used to move the detection of errors from run time to compile time.  Integrated development environments nowadays often auto-compile code so that programmers can spot errors almost immediately after they type a character into a buffer.  Syntax-directed editing can stop some errors before they even reach the buffer.  
 
 \begin{figure} [H]
   \center
@@ -731,9 +731,25 @@ Second, writing code in this way may be viewed as a continuation of a general ef
 \subsection{Extension Testing}
 %%================================
 
-Testing the Proof Previews and Proof Transitions extensions with participants (university students) will be combined in a single experiment, already approved by the University of Iowa IRB.  The rough plan for the experiment is to first take participants through a tutorial on proving theorems in propositional and first-order logic with Coq.  Participants will then walk through a pair complicated proofs, using Proof Transitions for one and un-extended CoqEdit for the other, and will be asked to give detailed explanations of what they see.  These explanations will be recorded and graded later.  Finally, participants will be given two sets of lemmas to attempt to prove, one with Proof Previews and the other without, and the amount of time they need (or the number they are able to prove) will be recorded.  For both the Proof Transitions and the Proof Previews, ordering of problems and pairing of problem to extension will be balanced across participants, and informal feedback will be acquired along the way.\footnote{Some informal feedback from Coq users and potential users, indicating that our ideas seem reasonable, has already been acquired.}
+Testing the Proof Previews and Proof Transitions extensions with participants (university students) will be combined in a single experiment, already approved by the University of Iowa IRB.\footnote{Some informal feedback from Coq users and potential users, indicating that our ideas seem reasonable, has already been acquired.}\footnote{For the now at least, I am considering the testing of Propositional Logic Syntax Shortcuts with human subject to be beyond the scope of the proposed dissertation.  However, given that it will be developed with Huth and Ryan's textbook in mind (which has been used at the University of Iowa, among other places), the plugin should certainly lend itself to testing in a classroom setting.}  The following briefly summarizes the experiment.
 
-For the now at least, I am considering testing of Propositional Logic Syntax Shortcuts with human subject to be beyond the scope of the proposed dissertation.  However, given that it will be developed with Huth and Ryan's textbook in mind (which has been used at the University of Iowa, among other places), the plugin should certainly lend itself to testing in a classroom setting.
+\paragraph{Research Goal}  Our research goal is to demonstrate the effectiveness of the Proof Transitions and Proof Previews CoqEdit extensions in helping novice Coq users to understand proofs others have written and to write their own proofs.
+
+\paragraph{Materials} Participants will be interacting with Coq, jEdit, CoqEdit, Proof Transitions and Proof Previews on a Mac OS X system in a reserved room in the University of Iowa's MacLean Hall.  The simple examples and exercises they will be working through will come from the textbook \textit{Interactive Theorem Proving and Program Development: Coq'Art: The Calculus of Inductive Constructions} by Yves Bertot and Pierre Cast\'{e}ran \cite{bertot2004interactive}.
+
+\paragraph{Participants} 16 participants will be recruited from amongst students who have taken 22c:019 Discrete Math and 22c:021 Data Structures
+
+\paragraph{Procedures}
+
+\paragraph{Experimental Design}
+
+ materials, participants, procedures, and experimental design.
+
+
+
+  The rough plan for the experiment is to first take participants through a tutorial on proving theorems in propositional and first-order logic with Coq.  Participants will then walk through a pair complicated proofs, using Proof Transitions for one and un-extended CoqEdit for the other, and will be asked to give detailed explanations of what they see.  These explanations will be recorded and graded later.  Finally, participants will be given two sets of lemmas to attempt to prove, one with Proof Previews and the other without, and the amount of time they need (or the number they are able to prove) will be recorded.  For both the Proof Transitions and the Proof Previews, ordering of problems and pairing of problem to extension will be balanced across participants, and informal feedback will be acquired along the way.
+
+
 
 %%=======================================================================================
 \section{Timeline for Research}
