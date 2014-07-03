@@ -45,13 +45,13 @@
 % prelude
 %=============================================================================
 
-\title{Development And User Testing Of New User Interfaces For Mathematics And Programming Tools, Focusing On The Coq Proof}
-\author{Benjamin Berman}
+\title{Format Test for UI Thesis}
+\author{John Doe}
 \dept{Computer Science}
 
 % multipleSupervisors=true for two advisors
 \setboolean{multipleSupervisors}{false}
-\advisor{Associate Professor Juan Pablo Hourcade}
+\advisor{Associate Professor George Washington}
 % for multiple advisors; change <value> to line up the names
 %\setboolean{multipleSupervisors}{true}
 %\advisor{Advisor 1\\\hspace{<value>mm}Advisor 2...}
@@ -59,13 +59,13 @@
 % edit the names below to have your committee members names appear
 % on the signature page.  memberOne should be your advisor.
 %
-\memberOne{Juan Pablo Hourcade}
+\memberOne{George Washington}
 \memberTwo{Member Two}
 \memberThree{Member Three}
 \memberFour{Member Four}
 \memberFive{Member Five}
 \submitdate{July 2012}
-\copyrightyear{2014}
+\copyrightyear{2012}
 
 \Abstract{
 \blindtext
