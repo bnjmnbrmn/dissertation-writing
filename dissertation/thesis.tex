@@ -45,7 +45,7 @@
 % prelude
 %=============================================================================
 
-\title{Development And User Testing Of New User Interfaces For Mathematics And Programming Tools, Focusing On The Coq Proof}
+\title{Development And User Testing Of New User Interfaces For Mathematics And Programming Tools, Focusing On The Coq Proof Assistant}
 \author{Benjamin Berman}
 \dept{Computer Science}
 
@@ -84,17 +84,27 @@
 %=============================================================================
 \chapter{Introduction}
 %=============================================================================
-% \blindtext
-% 
-% \section{The First Section}
-% Hello~\cite{arigon_handling_2008}.
-% 
-% \section{The Second Section}
-% \blindtext
+
+The general principle behind this dissertation is that in order to accomplish difficult tasks, one generally needs to make these tasks easy--for moving boulders you might want some leverage.  The significance of this principle was demonstrated to me when, a long time ago, my cello teacher pointed out that the way to play a difficult passage of music is not simply to grit one's teeth and keep practicing but to also figure out how playing those notes could, for instance, be made less physically awkward by changing the position of one's elbow.  In general, when it comes to ``virtuosic'' tasks--tasks that require large amounts of skill--it is easy to ignore this ``making things easy'' principle and focus on putting more time and effort into practicing or studying, even though following the principle is often a requirement for success.  The major goal of this dissertation is to apply the principle in the context of the virtuosic tasks that are involved in interactive theorem proving with the \textit{Coq} proof assistant\cite{Coq}\footnote{``Proof assistant'' and ``interactive theorem prover'' are synonymous}:  I intend to show ways to make the difficult task of using Coq easier by improving the user interface.  As well as solving serious usability problems for an important and powerful tool for creating machine-checked proofs, many of the techniques I am developing and testing are widely applicable to other forms of coding.
+
+In chapter~\ref{chapter:coqandtheneed}, I first give a description of Coq, including its significance, an example of theorem proving using the tool, a description of current user interfaces,  and some usability problems that I find particularly striking.  I continue with a description of a survey (including its results) on user interfaces for Coq that was sent to subscribers to the Coq-Club mailing list. Chapter~\ref{chapter:relatedwork} gives further motivation by summarizing related work.
+
+The core research involved in this dissertation is described primarily in chapter~\ref{chapter:coqedit} and chapter~\ref{chapter:kcmsth}.  Chapter~\ref{chapter:coqedit} describes ``CoqEdit'', a new theorem proving environment for Coq, based on the jEdit text editor.  CoqEdit mimics the main features of existing environments for Coq, but has the important property of being relatively easy to extend using Java.  Chapter~\ref{chapter:coqedit} continues with a description of prototypes of two potential extensions to CoqEdit.  The chapter concludes with a description of a user study examining how these two extensions help, and potentially hinder, novice Coq users.
+
+Chapter~\ref{chapter:kcmsth} describes a third prototype extension.  Although this extension has not been tested with users, it presents a new, \textit{general} scheme for manipulating text that I hope may be built upon and widely applied.  The scheme involves the combination of two relatively novel ideas: ``Keyboard-Card Menus'' and ``Syntax Tree Highlighting''.  I describe both these two ideas and how they may be combined to help introductory logic students using a particular subset of Coq.
+
+There are several points that I hope will become clear in this dissertation.  First is how the research makes a \textit{positive} contribution to society.  While Coq is a powerful tool, and is already being used for important work, its power has come at the cost of complexity, which makes the tool difficult to learn and use.  Finding and implementing better ways of dealing with this complexity through the user interface of the tool can allow more users to perform a greater number, and a greater variety, of tasks.  At a more general level, the research contributes to a small but growing literature on user interfaces for proof assistants.\footnote{The research draws from and contributes to two generally separate sub-disciplines of computer science, namely programming languages theory and human-computer interaction.  I have Professors Juan Pablo Hourcade and Aaron Stump to thank for facilitating, and being involved with, unusual interdisciplinary work.}  The work this literature represents can be viewed as an extension of work on proof assistants, which in turn can be viewed as an extension of work on symbolic logic:  symbolic logic aims to make working with statements easier, proof assistants aim to make working with symbolic logic easier, and user interfaces for proof assistants aim to make working with proof assistants easier.  These all are part of the (positive, I hope we can assume) academic effort to improve argumentative clarity and factual certainty.  
+	
+In addition, generalized somewhat differently, the research contributes to our notions of how user interfaces can help people write code with a computer.  The complexities of the tool in fact help make it suitable for such research, since a) they are partly the result of the variety of features of the tool and tasks for which the tool may be used (each of which provides an opportunity for design) and b) the difficulties caused by the complexity may make the effects of good user interface design more apparent.  Furthermore, although Coq has properties that make it very appealing for developing programs (in particular, programs that are free of bugs), it also pushes at the boundaries of languages that programmers may consider practical for the time-constrained software development of the ``real world''.  However, if, as in the proposed research, we design user interfaces that address the specific problems associated with using a language, perhaps making the user interface as integral to using the language as its syntax, these boundaries may shift outward.  This means that not only are we improving the usability of languages in which people already are coding, we are also expanding the range of languages in which coding is actually possible.
+
+The second point that I hope will become clear in this dissertation is that this research is an \textit{intellectual} contribution, i.e. that the project requires some hard original thinking.  User interface development is sometimes ``just'' a matter of selecting some buttons and other widgets, laying them out in a window, and connecting them to code from the back end.  While this sort of work can actually be somewhat challenging to do right (just one of the hurdles is that testing is difficult to automate), the project goes well beyond this by identifying specific problems, inventing novel solutions, and testing these solutions with human subjects.
+
+The third and final point to be made clear in this dissertation is simply that developing and testing new user interfaces for mathematics and programming tools is a rich area of research.  Further important and interesting questions can be both raised and answered.
 
 
 %=============================================================================
 \chapter{Coq and the Need for Improved User Interfaces}
+\label{chapter:coqandtheneed}
 %=============================================================================
 % \blindtext
 % 
@@ -103,6 +113,7 @@
 
 %=============================================================================
 \chapter{CoqEdit, Proof Previews, and Proof Transitions}
+\label{chapter:coqedit}
 %=============================================================================
 
 \section{Software Description}
@@ -112,6 +123,7 @@
 
 %=============================================================================
 \chapter{Keyboard-Card Menus + Syntax Tree Highlighting, Applied to Fitch-Style Natural Deduction Proofs}
+\label{chapter:kcmsth}
 %=============================================================================
 
 \section{Keyboard-Card Menus}
@@ -133,6 +145,7 @@
 
 %=============================================================================
 \chapter{Related Work}
+\label{chapter:relatedwork}
 %=============================================================================
 
 %=============================================================================
