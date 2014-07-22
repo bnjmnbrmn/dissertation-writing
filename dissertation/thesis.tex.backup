@@ -45,13 +45,13 @@
 % prelude
 %=============================================================================
 
-\title{Format Test for UI Thesis}
-\author{John Doe}
+\title{Development And User Testing Of New User Interfaces For Mathematics And Programming Tools, Focusing On The Coq Proof}
+\author{Benjamin Berman}
 \dept{Computer Science}
 
 % multipleSupervisors=true for two advisors
 \setboolean{multipleSupervisors}{false}
-\advisor{Associate Professor George Washington}
+\advisor{Associate Professor Juan Pablo Hourcade}
 % for multiple advisors; change <value> to line up the names
 %\setboolean{multipleSupervisors}{true}
 %\advisor{Advisor 1\\\hspace{<value>mm}Advisor 2...}
@@ -59,13 +59,13 @@
 % edit the names below to have your committee members names appear
 % on the signature page.  memberOne should be your advisor.
 %
-\memberOne{George Washington}
+\memberOne{Juan Pablo Hourcade}
 \memberTwo{Member Two}
 \memberThree{Member Three}
 \memberFour{Member Four}
 \memberFive{Member Five}
 \submitdate{July 2012}
-\copyrightyear{2012}
+\copyrightyear{2014}
 
 \Abstract{
 \blindtext
@@ -82,45 +82,82 @@
 \frontmatter
 
 %=============================================================================
-\chapter{The First Chapter}
+\chapter{Introduction}
 %=============================================================================
-\blindtext
-
-\section{The First Section}
-Hello~\cite{arigon_handling_2008}.
-
-\section{The Second Section}
-\blindtext
-
-
-%=============================================================================
-\chapter{The Second Chapter}
-%=============================================================================
-\blindtext
-
-\section{The Third Section}
-\blindtext
+% \blindtext
+% 
+% \section{The First Section}
+% Hello~\cite{arigon_handling_2008}.
+% 
+% \section{The Second Section}
+% \blindtext
 
 
 %=============================================================================
-\appendix
+\chapter{Coq and the Need for Improved User Interfaces}
+%=============================================================================
+% \blindtext
+% 
+% \section{The Third Section}
+% \blindtext
+
+%=============================================================================
+\chapter{CoqEdit, Proof Previews, and Proof Transitions}
+%=============================================================================
+
+\section{Software Description}
+
+\section{Experiment Design, Results, Analysis, and Conclusions}
+
+
+%=============================================================================
+\chapter{Keyboard-Card Menus + Syntax Tree Highlighting, Applied to Fitch-Style Natural Deduction Proofs}
+%=============================================================================
+
+\section{Keyboard-Card Menus}
+
+  \subsection{Motivation}
+
+  \subsection{Software Description}
+
+  \subsection{Experiment Design, Results, Analysis, and Conclusions}
+
+\section{Syntax Tree Highlighting}
+
+  \subsection{Understanding Syntactic Structure}
+
+  \subsection{Structure Editing}
+  
+\section{Combined System Description}
+
+
+%=============================================================================
+\chapter{Related Work}
 %=============================================================================
 
 %=============================================================================
-\chapter{Sample Appendix}
-
-\section{Appendix One}
-\blindtext
-
-\section{Appendix Two}
-\blindtext
+\chapter{Summary and Conclusions}
+%=============================================================================
 
 %=============================================================================
-\chapter{Another Appendix}
-
-\section{Appendix Three}
-\blindtext
-
+% \appendix
+% %=============================================================================
+% 
+% %=============================================================================
+% \chapter{Sample Appendix}
+% 
+% \section{Appendix One}
+% \blindtext
+% 
+% \section{Appendix Two}
+% \blindtext
+% 
+% %=============================================================================
+% \chapter{Another Appendix}
+% 
+% \section{Appendix Three}
+% \blindtext
+% 
 
 %=============================================================================
 % bibliography
