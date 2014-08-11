@@ -329,6 +329,15 @@ Even given the responses from self-described novice Coq users, the group of resp
 
 \section{Software Description}
 
+CoqEdit, shown in \autoref{fig:coqedit}, is a new basic user interface intended to resemble CoqIDE (see \autoref{fig:simple1_1}), Proof General, and ProofWeb (see \autoref{fig:proofweb}) described in \autoref{currentUIproblems}.  A significant difference is the use of two different shades of green.  the sentence highlighted in the darker green has been evaluated and the output of the evaluation is currently being displayed in one of the two smaller windows on the right.  The sentences in the lighter green have also been evaluated, but are not currently being displayed; instead, the results of their evaluation are cached and can be easily be retrieved by moving the dark green sentence forward or backward within the green region.  This is in contrast to user interfaces like CoqIDE where there is only one shade of green, the evaluation output displayed on the right is always that of the last green sentence, and there is no caching of output.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{CoqEdit.jpg}
+  \caption{The basic CoqEdit user interface}
+  \label{fig:coqedit}
+\end{figure}
+
 \section{Experiment Design, Results, Analysis, and Conclusions}
 
 
