@@ -329,7 +329,9 @@ Even given the responses from self-described novice Coq users, the group of resp
 
 \section{Software Description}
 
-CoqEdit is a new ``basic'' user interface intended to resemble CoqIDE (see \autoref{fig:simple1_1}), Proof General, and ProofWeb (see \autoref{fig:proofweb}), described in \autoref{currentUIproblems}.  A significant difference between it and these previous user interfaces is the use of two different shades of green, as seen in \autoref{fig:coqedit}:  all sentences highlighted with (some sort of) green are ones that have been successfully evaluated and cached, but the sentence highlighted with dark green has the result of its evaluation displayed in one of the two sub-windows on the right.  The user can move the dark green sentence around in this cached area.   This is in contrast to user interfaces like CoqIDE where there is only one shade of green, the evaluation result displayed on the right is always that of the last green sentence, and there is no caching of output.  Using CoqIDE, to check the result of an sentence evaluated earlier one must actually undo the evaluation of subsequent sentences (Proof General, like CoqEdit, caches evaluated sentence output, but has users hover over the evaluated sentence to see its result).  CoqIDE gets away with this because, frequently, re-evaluating a sentence is instantaneous.  However, this is not always the case, especially when using tactics that automatically search for proofs for goals (in general these are actually semi-decidable).  
+\subsection{Basic CoqEdit}
+
+The basic version of CoqEdit is a jEdit plugin providing a new user interface to Coq that is intended to imitate CoqIDE (see \autoref{fig:simple1_1}), Proof General, and ProofWeb (see \autoref{fig:proofweb}), described in \autoref{currentUIproblems}.  A significant difference between it and these previous user interfaces, however, is the use of two different shades of green, as seen in \autoref{fig:coqedit}:  all sentences highlighted with (some sort of) green are ones that have been successfully evaluated and cached, but the sentence highlighted with dark green has the result of its evaluation displayed in one of the two sub-windows on the right.  The user can move the dark green sentence around in this cached area.   This is in contrast to user interfaces like CoqIDE where there is only one shade of green, the evaluation result displayed on the right is always that of the last green sentence, and there is no caching of output.  Using CoqIDE, to check the result of an sentence evaluated earlier one must actually undo the evaluation of subsequent sentences (Proof General, like CoqEdit, caches evaluated sentence output, but has users hover over the evaluated sentence to see its result).  CoqIDE gets away with this because, frequently, re-evaluating a sentence is instantaneous.  However, this is not always the case, especially when using tactics that automatically search for proofs for goals (in general these are actually semi-decidable).  
 
 \begin{figure}[H]
   \center
@@ -348,18 +350,37 @@ To move the dark green highlighting forwards or backwards, one can select drop-d
 \item ``Interrupt evaluation''
 \end{itemize}
 
-There are a few details regarding the menu items which may be unclear from the labels.  ``Forward one sentence'' moves the dark green highlighting forward within the light green section \textit{and}, when the dark green sentence is at the end of the green section, extends the purple section forward as seen in \autoref{fig:coqedit}.  This purple section shows the sentence currently being evaluated and the subsequent sentences queued for processing.  
+There are a few details regarding the user interface which may be unclear from the labels.  ``Forward one sentence'' moves the dark green highlighting forward within the light green section \textit{and}, when the dark green sentence is at the end of the green section, extends a purple section forward as seen in \autoref{fig:coqeditpurple}.  This purple section shows the sentence currently being evaluated and the subsequent sentences queued for processing.  
 
 Frequently, evaluation occurs quickly enough that the purple section is invisible, but, as mentioned earlier, long-running and non-terminating commands may be encountered.  For these cases, the ``Interrupt evaluation'' menu item is provided which, in addition to interrupting any current sentence processing, removes all sentences from the queue of sentences to process and removes all purple highlighting.
-
-The ``Interrupt evaluation'' menu item is not strictly necessary; an equivalent result could be achieved by inserting a character into the first purple sentence (and then deleting that character).
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{CoqEditProcessingVisualization.jpg}
   \caption{The basic CoqEdit user interface, when the first sentence highlighted with purple is being evaluated and the subsequent purple-highlighted sentences are queued for processing.  Thanks go to Harley Eades for providing this example of a non-terminating tactic.}
-  \label{fig:coqedit}
+  \label{fig:coqeditpurple}
 \end{figure}
+
+The ``Interrupt evaluation'' menu item is not strictly necessary; an equivalent result could be achieved by inserting a character into the first purple sentence (and then deleting that character).  In general, typing into a highlighted region, green, purple, or red (used to indicate errors--see \autoref{fig:coqeditred}), undoes the evaluation/partial processing/queuing of the sentence into (from) which characters were inserted (deleted), and from all subsequent sentences.  To reflect this, the highlighting from these sentences is removed.\footnote{Typing into the sequence of tactics used to prove an earlier theorem or lemma actually causes the highlighting to be moved to just before the start of the lemma; this reflects the behavior of the underlying command line tool.}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{CoqEditErrorVisualization.jpg}
+  \caption{The basic CoqEdit user interface, with an error-producing sentence highlighted in red.}
+  \label{fig:coqeditred}
+\end{figure}
+
+To try to evaluate all sentences in the buffer, the user can use the ``Go to end'' menu item.  This of course may not always be successful since non-terminating and error sentences may be encountered, as in \autoref{fig:coqeditpurple} and \label{fig:coqeditred}.  Note that when an error is processed, processing stops, the sentences-to-process queue is emptied, and the highlighting is updated to reflect this.  Users are thus informed of incorrect proof attempts.  
+
+``Go to end'' is effectively the same as repeated invoking ``Forward one sentence'' until there are no more sentences that can be queued for evaluation.  Similarly, ``Go to start'' is effectively the same as invoking ``Back one sentence'' repeatedly until the dark green highlighting is at the first sentence of the buffer, and ``Go to cursor'' attempts to move the dark green highlighting forwards or backwards to the sentence containing the cursor by invoking either ``Forward one sentence'' or ``Back one sentence'' repeatedly (when the first purple sentence is evaluated, the dark green highlighting will move to it).  
+
+The navigational commands have the side effect of moving the cursor either to the end of the purple section (if moving forward) or to the end of the dark green sentence.  Moving the cursor in turn has the side effect of automatically scrolling the window so as to keep the cursor (and the most recently changed highlighting) visible.  This turns out to be highly convenient, allowing the user to avoid a large amount of manual scrolling.
+
+As a jEdit plugin, CoqEdit lives in an ecosystem of other plugins which may have specified dependencies on one another.\footnote{If plugin A is specified (in its properties file) as depending on plugin B, then loading plugin A will automatically load plugin B (if it can be found among the downloaded plugins and is not already loaded) and unloading plugin B will (with a warning popup window) unload plugin A.}  One can view jEdit plugins that depend on CoqEdit as plugins to the plugin.  The next subsections describe two ideas for such plugins that were developed, and the next section describes how these ideas were tested with users in an experiment.
+
+\subsection{Proof Transitions}
+
+\subsection{Proof Previews}
 
 \section{Experiment Design, Results, Analysis, and Conclusions}
 
