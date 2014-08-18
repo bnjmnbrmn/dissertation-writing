@@ -331,16 +331,33 @@ Even given the responses from self-described novice Coq users, the group of resp
 
 CoqEdit is a new ``basic'' user interface intended to resemble CoqIDE (see \autoref{fig:simple1_1}), Proof General, and ProofWeb (see \autoref{fig:proofweb}), described in \autoref{currentUIproblems}.  A significant difference between it and these previous user interfaces is the use of two different shades of green, as seen in \autoref{fig:coqedit}:  all sentences highlighted with (some sort of) green are ones that have been successfully evaluated and cached, but the sentence highlighted with dark green has the result of its evaluation displayed in one of the two sub-windows on the right.  The user can move the dark green sentence around in this cached area.   This is in contrast to user interfaces like CoqIDE where there is only one shade of green, the evaluation result displayed on the right is always that of the last green sentence, and there is no caching of output.  Using CoqIDE, to check the result of an sentence evaluated earlier one must actually undo the evaluation of subsequent sentences (Proof General, like CoqEdit, caches evaluated sentence output, but has users hover over the evaluated sentence to see its result).  CoqIDE gets away with this because, frequently, re-evaluating a sentence is instantaneous.  However, this is not always the case, especially when using tactics that automatically search for proofs for goals (in general these are actually semi-decidable).  
 
-To move the dark green highlighting forwards or backwards, one can select drop-down menu items (not shown in \autoref{fig:coqedit}, accessible through the ``CoqEdit'' submenu added to jEdit's top-level ``Plugins'' menu.  However, it is expected that generally users will use shortcuts which can be added and customized through the jEdit options menu (e.g. Ctrl-N for ``Forward one sentence'' and Ctrl-P for ``Back one sentence'').  There are 5 other menu items, which I hope are fairly self-explanatory:
-
-\begin{itemize}
-\item ``Show CoqEdit Output Panel
-\end{itemize}
-
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{CoqEdit.jpg}
   \caption{The basic CoqEdit user interface}
+  \label{fig:coqedit}
+\end{figure}
+
+To move the dark green highlighting forwards or backwards, one can select drop-down menu items (not shown in \autoref{fig:coqedit}, accessible through the ``CoqEdit'' submenu added to jEdit's top-level ``Plugins'' menu.  However, it is expected that generally users will use shortcuts which can be added and customized through the jEdit options menu (e.g. Ctrl-N for ``Forward one sentence'' and Ctrl-P for ``Back one sentence'').  There are 5 other menu items, which I hope are fairly self-explanatory:
+
+\begin{itemize}
+\item ``Show CoqEdit Output Panel,''
+\item ``Go to cursor,''
+\item ``Go to start,''
+\item ``Go to end,'' and
+\item ``Interrupt evaluation''
+\end{itemize}
+
+There are a few details regarding the menu items which may be unclear from the labels.  ``Forward one sentence'' moves the dark green highlighting forward within the light green section \textit{and}, when the dark green sentence is at the end of the green section, extends the purple section forward as seen in \autoref{fig:coqedit}.  This purple section shows the sentence currently being evaluated and the subsequent sentences queued for processing.  
+
+Frequently, evaluation occurs quickly enough that the purple section is invisible, but, as mentioned earlier, long-running and non-terminating commands may be encountered.  For these cases, the ``Interrupt evaluation'' menu item is provided which, in addition to interrupting any current sentence processing, removes all sentences from the queue of sentences to process and removes all purple highlighting.
+
+The ``Interrupt evaluation'' menu item is not strictly necessary; an equivalent result could be achieved by inserting a character into the first purple sentence (and then deleting that character).
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{CoqEditProcessingVisualization.jpg}
+  \caption{The basic CoqEdit user interface, when the first sentence highlighted with purple is being evaluated and the subsequent purple-highlighted sentences are queued for processing.  Thanks go to Harley Eades for providing this example of a non-terminating tactic.}
   \label{fig:coqedit}
 \end{figure}
 
