@@ -391,7 +391,15 @@ As a jEdit plugin, CoqEdit lives in an ecosystem of other plugins which may have
 
 Proof Transitions provides a zoomed-in and a zoomed-out level for viewing proofs. \autoref{fig:ptfirstchildzoomedin} shows the zoomed-in level.  Each node contains two parts:  the bottom box, outlined in red, contains the text of the goal, while the smaller top box, outlined in blue, contains the tactic used on that goal.
 
-At the zoomed-in level two nodes are always visible:  the ``current'' node, which has its top box colored orange, and the current node's parent node. 
+At the zoomed-in level two nodes are always visible:  the ``current'' node, which has its top box colored orange, and the current node's parent node, or, if the current node is the root node, the root node and its left-most child.  As one can see in \autoref{fig:ptfirstchildzoomedin}, the visualization follows the convention where parent nodes are displayed below their children. 
+
+\autoref{fig:ptfirstchildzoomedout} shows how the proof tree is displayed when the user zooms out from the current node in \autoref{fig:ptfirstchildzoomedin}. At the bottom of the window in both \autoref{fig:ptfirstchildzoomedin} and \autoref{fig:ptfirstchildzoomedout} is a ``cheat sheet'' for the key presses used to manipulate the visualization.  From this, the user can learn or be reminded that the I and O keys are used to zoom in and out respectively.  Since there are only two zoom levels, pressing I while zoomed in, or O while zoomed out, does nothing.
+
+\autoref{fig:ptsecondchildzoomedout}, \autoref{fig:ptthirdchildzoomedout}, and \autoref{fig:ptfourthgrandchildzoomedout} show what happens when one uses the arrow keys to move the current node to the sibling directly to right, twice, and then to the left-most child of the third of the three siblings (right arrow key, right arrow key, up arrow key).  Repeatedly using the left and right arrow keys will cycle through the current set of siblings.  
+
+As shown, the visualization moves nodes so as to keep the current node above its parent (so that both the current node and its parent are visible when one zooms in).  To try to keep the shape of the tree relatively stable (i.e. to help users know which nodes are the same in \autoref{fig:ptfirstchildzoomedout}, \autoref{fig:ptsecondchildzoomedout}, \autoref{fig:ptthirdchildzoomedout}, \autoref{ptfourthgrandchildzoomedout}, for instance), the subtrees under the siblings, ``uncles'', ``great uncles'', etc., are each moved as a unit with each subtree getting its own allotment of space horizontally, \textit{and}, except for the parent of the current node, each parent node is kept centered above its left-most child (moving to the parent node from a child node other than the left-most requires shifting the subtree under the parent to the right to maintain this property).   
+
+To make it even more clear that one is looking at the same set of nodes when one moves to a sibling, child, or parent node, the sliding around of nodes is animated over a fraction of a second.  \autoref{fig:ptdestructortransition} shows a snapshot of what moving to a sibling looks like when zoomed in.  Note that this animation does not limit the speed at which one can move from node to node (pressing, say, the right arrow key, while an animation is playing moves the nodes to where they would be at the end of that animation and then starts the new animation).
 
 \begin{figure}[H]
   \center
@@ -400,23 +408,24 @@ At the zoomed-in level two nodes are always visible:  the ``current'' node, whic
   \label{fig:ptfirstchildzoomedout}
 \end{figure}
 
+
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptsecondchildzoomedout.jpg}
+  \includegraphics[width=.6\linewidth]{ptsecondchildzoomedout.jpg}
   \caption{}
   \label{fig:ptsecondchildzoomedout}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptthirdchildzoomedout.jpg}
+  \includegraphics[width=.6\linewidth]{ptthirdchildzoomedout.jpg}
   \caption{}
   \label{fig:ptthirdchildzoomedout}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptfourthgrandchildzoomedout.jpg}
+  \includegraphics[width=.6\linewidth]{ptfourthgrandchildzoomedout.jpg}
   \caption{}
   \label{fig:ptfourthgrandchildzoomedout}
 \end{figure}
@@ -428,6 +437,7 @@ At the zoomed-in level two nodes are always visible:  the ``current'' node, whic
   \label{fig:ptvisitednode}
 \end{figure}
 
+One problem that became evident in initial ``pilot'' testing was that it was hard for users to keep track of which nodes they had inspected.  Users both visited nodes to which they had already been, thinking that they had not been there before, and they missed branches, thinking that explored them when in fact they had not.  To combat this problem, users are given the ability to add a small purple square to the upper right corner of a node to mark it as visited.  This is shown in \autoref{fig:ptvisitednode}; these purple squares are also visible when zoomed out.  Adding a purple square to the current node is accomplished by pressing the V key and removing a purple square (that might accidentally have been added) is a accomplished by pressing the R key.  These marks can be added and removed both while zoomed out and while zoomed in.  
 
 \begin{figure}[H]
   \center
@@ -452,16 +462,16 @@ At the zoomed-in level two nodes are always visible:  the ``current'' node, whic
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptdestructor2.jpg}
+  \includegraphics[width=\linewidth]{ptdestructortransition.jpg}
   \caption{}
-  \label{fig:ptdestructor2}
+  \label{fig:ptdestructortransition}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptdestructortransition.jpg}
+  \includegraphics[width=\linewidth]{ptdestructor2.jpg}
   \caption{}
-  \label{fig:ptdestructortransition}
+  \label{fig:ptdestructor2}
 \end{figure}
 
 \begin{figure}[H]
