@@ -439,6 +439,14 @@ To make it even more clear that one is looking at the same set of nodes when one
 
 One problem that became evident in initial ``pilot'' testing was that it was hard for users to keep track of which nodes they had inspected.  Users both visited nodes to which they had already been, thinking that they had not been there before, and they missed branches, thinking that explored them when in fact they had not.  To combat this problem, users are given the ability to add a small purple square to the upper right corner of a node to mark it as visited.  This is shown in \autoref{fig:ptvisitednode}; these purple squares are also visible when zoomed out.  Adding a purple square to the current node is accomplished by pressing the V key and removing a purple square (that might accidentally have been added) is a accomplished by pressing the R key.  These marks can be added and removed both while zoomed out and while zoomed in.  
 
+In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor6} we see the other major feature of Proof Transitions---transition highlighting and animation.  Pressing the T key has the following effects:
+
+\begin{itemize}
+\item If the user is not already zoomed in, the visualization zooms in as if the I key were pressed.
+\item The view shifts upwards so that the current node (which, recall, has the orange tactic box) is in the bottom half of the window and its left-most child is in the top half; see \autoref{fig:ptdestructand} and \autoref{fig:ptdestructor0}.
+\end{itemize}
+
+
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructand.jpg}
