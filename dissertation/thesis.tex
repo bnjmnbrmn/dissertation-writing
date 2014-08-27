@@ -439,86 +439,84 @@ To make it even more clear that one is looking at the same set of nodes when one
 
 One problem that became evident in initial ``pilot'' testing was that it was hard for users to keep track of which nodes they had inspected.  Users both visited nodes to which they had already been, thinking that they had not been there before, and they missed branches, thinking that explored them when in fact they had not.  To combat this problem, users are given the ability to add a small purple square to the upper right corner of a node to mark it as visited.  This is shown in \autoref{fig:ptvisitednode}; these purple squares are also visible when zoomed out.  Adding a purple square to the current node is accomplished by pressing the V key and removing a purple square (that might accidentally have been added) is a accomplished by pressing the R key.  These marks can be added and removed both while zoomed out and while zoomed in.  
 
-In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor6} we see the other major feature of Proof Transitions---transition highlighting and animation.  Pressing the T key has the following effects:
+In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor5} we see the other major feature of Proof Transitions---transition highlighting and animation.  Pressing the T key has the following effects:
 
 \begin{itemize}
 \item If the user is not already zoomed in, the visualization zooms in as if the I key were pressed.
 \item The view shifts upwards so that the current node (which, recall, has the orange tactic box) is in the bottom half of the window and its left-most child is in the top half; see \autoref{fig:ptdestructand} and \autoref{fig:ptdestructor0}.
-\item In the bottom node, text that disappears completely in every child node is highlighted in red.  In \autoref{fig:ptdestructand} this happens to be a conjunction symbol (``/\textbackslash'') whereas in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} (which all show the same parent and set of children) it is a disjunction symbol (``\textbackslash/'').  This highlighted difference is actually the reason one child node is created by the ``destruct'' tactic seen in \autoref{fig:ptdestructand} in contrast to the the two nodes created by the same destruct tactic (albeit with a different argument) in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6}.
-\item At the same time that the red highlighting is added to the parent node, green highlighting is added to each child node to mark text that is new in the child node (i.e. does not correspond in some way with text in the parent node).  Note that while there is green highlighting in \autoref{fig:ptdestructand}, since ``H7 : '' does not appear anywhere in the bottom node, there is no green highlighting in any of the child nodes in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} since each child is entirely the result of removing and rearranging text from the parent node.
-\item Blinking yellow highlighting is used to show where the tactic is finding or producing matching text.  For the sake of brevity, this is only shown in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} and not in \autoref{fig:ptdestructand}.  Blinking occurs at a rate of two blinks per second and each matching pair gets five blinks.  Pressing T again, or moving to a different node, clears the red and green highlighting and stops the animation.
+\item In the bottom node, text that disappears completely in every child node is highlighted in red.  In \autoref{fig:ptdestructand} this happens to be a conjunction symbol (``/\textbackslash'') whereas in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} (which all show the same parent and set of children) it is a disjunction symbol (``\textbackslash/'').  This highlighted difference is actually the reason one child node is created by the ``destruct'' tactic seen in \autoref{fig:ptdestructand} in contrast to the the two nodes created by the same destruct tactic (albeit with a different argument) in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5}.
+\item At the same time that the red highlighting is added to the parent node, green highlighting is added to each child node to mark text that is new in the child node (i.e. does not correspond in some way with text in the parent node).  Note that while there is green highlighting in \autoref{fig:ptdestructand}, since ``H7 : '' does not appear anywhere in the bottom node, there is no green highlighting in any of the child nodes in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5} since each child is entirely the result of removing and rearranging text from the parent node.
+\item Blinking yellow highlighting is used to show where the tactic is finding or producing matching text.  For the sake of brevity, this is only shown in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5} and not in \autoref{fig:ptdestructand}.  Blinking occurs at a rate of two blinks per second and each matching pair gets five blinks.  Pressing T again, or moving to a different node, clears the red and green highlighting and stops the animation.
 \end{itemize}
 
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructand.jpg}
-  \caption{The red highlighting marks text in the parent that does not occur in the (or, more generally, any) child node.  The green highlighting marks text occuring in the (each) child node that does not match text in the parent.}
+  \caption{The red highlighting marks text in the parent that does not occur in the (or, more generally, any) child node.  The green highlighting marks text occuring in the (each) child node that does not match text in the parent.  Note that the gray background, while perhaps somewhat unpleasing aesthetically, was selected so that all the highlighting colors would be visible.}
   \label{fig:ptdestructand}
 \end{figure}
 
 
-\autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} document how the text-matching works in detail.  In \autoref{fig:ptdestructor0}, the animation ignores the child nodes altogether and uses the blinking yellow text to point out that the ``H0'' argument to the destruct tactic matches the H0 variable in the goal's context.  In \autoref{fig:ptdestructor1}, the blinking points out that the S on the left side of the disjunction in hypothesis H0 \footnote{As noted in the previous chapter, to be (more) pedantic we should say the S on the left side of the formula proved by the hypothesized proof labeled by H0} in the parent matches\footnote{By ``matches'' I really mean ``matches due to the way the destruct tactic works'' and not ``matches, perhaps by coincidence''. The animation does not aim to point out, for instance, that H0 and H8 in the first child's context are hypothesized proofs of the same formula.} the S of hypothesis H0 in the first child.
+\autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5} document how the text-matching works in detail.  In \autoref{fig:ptdestructor0}, the animation ignores the child nodes altogether and uses the blinking yellow text to point out that the ``H0'' argument to the destruct tactic matches the H0 variable in the goal's context.  In \autoref{fig:ptdestructor1}, the blinking points out that the S on the left side of the disjunction in hypothesis H0 \footnote{As noted in the previous chapter, to be (more) pedantic we should say the S on the left side of the formula proved by the hypothesized proof labeled by H0} in the parent matches\footnote{By ``matches'' I really mean ``matches due to the way the destruct tactic works'' and not ``matches, perhaps by coincidence''. The animation does not aim to point out, for instance, that H0 and H8 in the first child's context are hypothesized proofs of the same formula.} the S of hypothesis H0 in the first child.  Similarly, in \autoref{fig:ptdestructor2} the blinking points out that the Rs match.  \autoref{fig:ptdestructortransition} is included to make clear that a fraction of a second is used to animate the movement to the second child node (and back to the first) that occurs between \autoref{fig:ptdestructor1} and \autoref{fig:ptdestructor2}.  \autoref{fig:ptdestructor3} through \autoref{fig:ptdestructor5} simply show the portions of the contexts that are unchanged between parent and children and that the goals also are unchanged (for the sake of brevity, the blinking highlighting used to show matching consequents between the parent and right node are not displayed as a figure in this document).
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructor0.jpg}
-  \caption{}
+  \caption{Blinking yellow text is used to show the context item matching the tactic argument.}
   \label{fig:ptdestructor0}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructor1.jpg}
-  \caption{}
+  \caption{Blinking yellow text is used to show matching (sub)formulas in the parent and left child contexts.}
   \label{fig:ptdestructor1}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructortransition.jpg}
-  \caption{}
+  \caption{The transition between \autoref{fig:ptdestructor1} and \autoref{fig:ptdestructor2} is animated}
   \label{fig:ptdestructortransition}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructor2.jpg}
-  \caption{}
+  \caption{Blinking yellow text is used to show matching (sub)formulas in the parent and right child contexts.}
   \label{fig:ptdestructor2}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptdestructor3.jpg}
-  \caption{}
+  \includegraphics[width=.8\linewidth]{ptdestructor3.jpg}
+  \caption{Blinking yellow text is used to show matching parts of the parent and left child contexts.}
   \label{fig:ptdestructor3}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptdestructor4.jpg}
-  \caption{}
+  \includegraphics[width=.25\linewidth]{ptdestructor4.jpg}
+  \caption{Blinking yellow text to show matching parts of the parent and right child contexts.}
   \label{fig:ptdestructor4}
 \end{figure}
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{ptdestructor5.jpg}
-  \caption{}
+  \includegraphics[width=.8\linewidth]{ptdestructor5.jpg}
+  \caption{Blinking yellow text is used to show matching consequents for parent and left child nodes.  Blinking yellow text is also used to show matching consequents between the parent and the right child nodes.}
   \label{fig:ptdestructor5}
 \end{figure}
 
-\begin{figure}[H]
-  \center
-  \includegraphics[width=\linewidth]{ptdestructor6.jpg}
-  \caption{}
-  \label{fig:ptdestructor6}
-\end{figure}
 
+%Goals/rationale for these designs?
 
+%Proof Tree visualization -- knowing 
 
+What was the rationale for implementing these designs?  First, we wanted to confirm our hypothesis that a zoomable node-link view of a proof tree would help users understand the relationships between nodes and the effects of tactics--did a particular tactic produce two sibling goals or did it only produce one child goal?  We also envision(ed) such visualizations as potentially even more useful when further features are added (e.g. hiding less important branches when presenting a proof, cut/copy/paste of branches, version control for particular branches, bookmarking nodes, filtering nodes, etc.) and wanted to better understand how users deal with basic navigational issues as a preliminary step.
 
+Second, with the transition highlighting and animation (i.e. blinking yellow text), we wanted to explore a potential way to make tactic effects easier to understand.  We were also interested in this feature because of its generalizability: one can think of this feature as a visualization of an extended version of the UNIX ``diff'' command wherein the actual editing commands, including copy as well as insert and delete used to change document A into document B are recorded.\footnote{diff is a commonly used utility for comparing versions of documents, but only makes a best guess at where text was inserted or deleted and does not show where text was cut or copied and then pasted.}
 
 \subsection{Proof Previews}
 
