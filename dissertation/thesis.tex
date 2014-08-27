@@ -504,7 +504,7 @@ In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor5} we see the ot
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=.8\linewidth]{ptdestructor5.jpg}
+  \includegraphics[width=\linewidth]{ptdestructor5.jpg}
   \caption{Blinking yellow text is used to show matching consequents for parent and left child nodes.  Blinking yellow text is also used to show matching consequents between the parent and the right child nodes.}
   \label{fig:ptdestructor5}
 \end{figure}
@@ -512,35 +512,44 @@ In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor5} we see the ot
 
 %Goals/rationale for these designs?
 
-%Proof Tree visualization -- knowing 
-
 What was the rationale for implementing these designs?  First, we wanted to confirm our hypothesis that a zoomable node-link view of a proof tree would help users understand the relationships between nodes and the effects of tactics--did a particular tactic produce two sibling goals or did it only produce one child goal?  We also envision(ed) such visualizations as potentially even more useful when further features are added (e.g. hiding less important branches when presenting a proof, cut/copy/paste of branches, version control for particular branches, bookmarking nodes, filtering nodes, etc.) and wanted to better understand how users deal with basic navigational issues as a preliminary step.
 
 Second, with the transition highlighting and animation (i.e. blinking yellow text), we wanted to explore a potential way to make tactic effects easier to understand.  We were also interested in this feature because of its generalizability: one can think of this feature as a visualization of an extended version of the UNIX ``diff'' command wherein the actual editing commands, including copy as well as insert and delete used to change document A into document B are recorded.\footnote{diff is a commonly used utility for comparing versions of documents, but only makes a best guess at where text was inserted or deleted and does not show where text was cut or copied and then pasted.}
 
 \subsection{Proof Previews}
 
+``Proof Previews'' is probably a more familiar sort of extension than Proof Transitions for most programmers as it is a variant of the standard ``Content Assist'' feature of Eclipse\cite{Eclipse} and other IDEs for programming.  Like Proof Transitions, it is currently quite limited compared to a fully developed plugin, but, unlike Proof Transitions, it is already set up as jEdit/CoqEdit plugin (giving evidence for the general feasibility of the modular interactive theorem prover user interface approach). 
+
+In \autoref{fig:pp0} we see the result of invoking the ``Get Suggestions'' menu item in the jEdit plugin:  a popup listing of tactics that do not (immediately) produce errors when entered at the end of the green section.\footnote{In addition to creating the popup, it moves the dark green highlighting to the end of the green section.}  I expect (and observed in the experiment described in the next section) this to generally be invoked with a keyboard shortcut that, like the basic CoqEdit menu items, can be customized.\footnote{In the experiment, this was set to Ctrl-Space, matching the default for Content Assist in Eclipse.}
+
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pp0.jpg}
-  \caption{}
+  \caption{CoqEdit, with the Proof Previews plugin, after selecting the ``Get Suggestions'' menu item (or using an associated shortcut).  Note the popup window and the bottom-right sub-window showing the result of evaluating the tactic selected in the popup window.}
   \label{fig:pp0}
 \end{figure}
 
+The menu item only produces a popup when the last green sentence has the system in ``proof mode'' (i.e. after one has evaluated ``Lemma ... .'' but before evaluating the corresponding ``Qed.'')  A more fully developed plugin might give users the option of starting a lemma, for instance, outside of proof mode.   The menu item also does not appear if the plugin cannot find any tactics that would not immediately produce errors (which is not a guarantee that the current goal is impossible to prove).
+
+In the bottom-right window in \autoref{fig:pp0} and \autoref{fig:pp1}, a "preview" of the result of entering and evaluating the selected tactic is displayed (hence the name ``Proof Previews'').  Users can use the arrow keys to move between popup menu items, and press the ESC key to close the popup window (using Proof Previews does not preclude normal tactic entry and evaluation).  
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pp1.jpg}
-  \caption{}
+  \caption{The result of pressing the down arrow from the state shown in \autoref{fig:pp0}.  Note that the bottom-right sub-window has changed to reflect the change in the popup window's selected item.}
   \label{fig:pp1}
 \end{figure}
 
+Pressing ENTER when the popup window is displayed will insert the selected tactic into the buffer on a new line at the end of the green region and will evaluate it (thus moving the dark green highlighting to the new tactic and the cursor to the end of the tactic's sentence); this is shown in \autoref{fig:pp2}.  As a result, some proofs can be completed simply by pressing Ctrl-Space (or whatever shortcut is used for the menu item), ENTER, Ctrl-Space, ENTER, Ctrl-Space, ENTER, etc., until there are no more subgoals.
+
+The current version of Proof Previews, while sufficient for the experiment of the next section, is quite limited in its ability to search for potential tactics.  In particular, it does not look for theorems and lemmas from any libraries, or from the environment, to apply (it only tries to apply hypotheses in the context).  More advanced version of the plugin might search over indexed subsets of the standard library, hide any tactics producing goals with automatically provable negations, and/or do parallel searches.  The main goal of the current Proof Previews is to get a sense for how effective the user interface of an advanced
+version might be.  Can Proof Previews improve the speed of text entry, and can it help users, particularly novice users, know their options options and make decisions?
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pp2.jpg}
-  \caption{}
+  \caption{The result of pressing ENTER from the state shown in \autoref{fig:pp1}.  Note that the contents of the bottom-right sub-window in \autoref{fig:pp1} is now in the top-right sub-window and that the tactic that was selected in the popup window of \autoref{fig:pp1} is now inserted on a new line in the buffer and is evaluated.}
   \label{fig:pp2}
 \end{figure}
 
