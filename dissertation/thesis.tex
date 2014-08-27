@@ -335,7 +335,7 @@ The basic version of CoqEdit is a jEdit plugin providing a new user interface to
 
 \begin{figure}[H]
   \center
-  \includegraphics[width=\linewidth]{CoqEdit.jpg}
+  \includegraphics[width=\linewidth]{coqedit.jpg}
   \caption{The basic CoqEdit user interface}
   \label{fig:coqedit}
 \end{figure}
@@ -446,16 +446,19 @@ In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor6} we see the ot
 \item The view shifts upwards so that the current node (which, recall, has the orange tactic box) is in the bottom half of the window and its left-most child is in the top half; see \autoref{fig:ptdestructand} and \autoref{fig:ptdestructor0}.
 \item In the bottom node, text that disappears completely in every child node is highlighted in red.  In \autoref{fig:ptdestructand} this happens to be a conjunction symbol (``/\textbackslash'') whereas in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} (which all show the same parent and set of children) it is a disjunction symbol (``\textbackslash/'').  This highlighted difference is actually the reason one child node is created by the ``destruct'' tactic seen in \autoref{fig:ptdestructand} in contrast to the the two nodes created by the same destruct tactic (albeit with a different argument) in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6}.
 \item At the same time that the red highlighting is added to the parent node, green highlighting is added to each child node to mark text that is new in the child node (i.e. does not correspond in some way with text in the parent node).  Note that while there is green highlighting in \autoref{fig:ptdestructand}, since ``H7 : '' does not appear anywhere in the bottom node, there is no green highlighting in any of the child nodes in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} since each child is entirely the result of removing and rearranging text from the parent node.
-\item Blinking yellow highlighting is used to show where the tactic is finding or producing matching text.  For the sake of brevity, this is only shown in {fig:ptdestructor0} through \autoref{fig:ptdestructor6} and not in \autoref{fig:ptdestructand}.  Blinking occurs at a rate of ... TO DOPressing T again, or moving to a different node, clears the red and green highlighting and stops the animation.
+\item Blinking yellow highlighting is used to show where the tactic is finding or producing matching text.  For the sake of brevity, this is only shown in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} and not in \autoref{fig:ptdestructand}.  Blinking occurs at a rate of two blinks per second and each matching pair gets five blinks.  Pressing T again, or moving to a different node, clears the red and green highlighting and stops the animation.
 \end{itemize}
 
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptdestructand.jpg}
-  \caption{}
+  \caption{The red highlighting marks text in the parent that does not occur in the (or, more generally, any) child node.  The green highlighting marks text occuring in the (each) child node that does not match text in the parent.}
   \label{fig:ptdestructand}
 \end{figure}
+
+
+\autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} document how the text-matching works in detail.  In \autoref{fig:ptdestructor0}, the animation ignores the child nodes altogether and uses the blinking yellow text to point out that the ``H0'' argument to the destruct tactic matches the H0 variable in the goal's context.  In \autoref{fig:ptdestructor1}, the blinking points out that the S on the left side of the disjunction in hypothesis H0 \footnote{As noted in the previous chapter, to be (more) pedantic we should say the S on the left side of the formula proved by the hypothesized proof labeled by H0} in the parent matches\footnote{By ``matches'' I really mean ``matches due to the way the destruct tactic works'' and not ``matches, perhaps by coincidence''. The animation does not aim to point out, for instance, that H0 and H8 in the first child's context are hypothesized proofs of the same formula.} the S of hypothesis H0 in the first child.
 
 \begin{figure}[H]
   \center
