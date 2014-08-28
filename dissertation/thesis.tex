@@ -55,6 +55,7 @@
 \usepackage{tabularx}
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{textcomp}
+\usepackage{caption}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \newcommand{\ra}{\ensuremath{\rightarrow}}
@@ -573,16 +574,76 @@ The each session consisted of the following steps:
 \item Participants were told (after watching the training video) that it would be a good time to take a break (not all did, and most who did took short < 5 minute breaks).
 \item Participants were asked to navigate through two proofs that had already been completed and ``verbally explain how the proof works to the best of your ability''.  These were both presented using either the basic CoqEdit interface or Proof Transitions.  The proofs were both using only propositional logic with the first consisting of eleven nodes and the second consisting of twenty-eight nodes.  These explanations were recorded as screen-casts.
 \item Participants were asked to again explain two (new) completed propositional logic proofs of the same lengths as the previous two.  If the participant had previously used Proof Transitions then in this step he used the basic CoqEdit interface and vice versa.  For this step and the previous, the four combinations (due to the two orders in which the two pairs of proofs were presented and the two orders in which the two interface types were presented) were balanced across participants.
-\item Participants were asked to fill out the first two pages of a four page questionnaire.  On the first page, participants were asked to give ratings for the first user interface they used on scales from 1 to 9 along the following axes:  terrible to wonderful, frustrating to satisfying, dull to stimulating, difficult to easy, inadequate power to adequate power, and rigid to flexible.  On the second page, participants were asked to rate the second interface they used in the same way.  On the second page they were additionally asked to give an overall preference (again on a 1 to 9 scale) between the first and second user interfaces, and a section for comments was given at the bottom of the page.
+\item Participants were asked to fill out the first two pages of a four page satisfaction and preferences questionnaire.  On the first page, participants were asked to give ratings for the first user interface they used on scales from 1 to 9 along the following axes:  terrible to wonderful, frustrating to satisfying, dull to stimulating, difficult to easy, inadequate power to adequate power, and rigid to flexible.  On the second page, participants were asked to rate the second interface they used in the same way.  On the second page they were additionally asked to give an overall preference (again on a 1 to 9 scale) between the first and second user interfaces, and a section for comments was given at the bottom of the page.
 \item Participants were again prompted to take an optional break.
-\item Participants were asked to prove as many of a set of 10 propositional logic lemmas as they could in a 15 minute period, using either just the basic CoqEdit or CoqEdit extended with Proof Previews.  These lemmas all required between 3 and 10 tactics to prove.  Before starting, participants were given a paper ``cheat sheet'' reminder of tactics they could use and what the tactics would do, taken from the video tutorial.  The screen was again recorded during this and the next step.
+\item Participants were asked to prove as many of a set of 10 propositional logic lemmas as they could in a 15 minute period, using either just the basic CoqEdit or CoqEdit extended with Proof Previews.  With Proof Previews, participants were informed that they could press Ctrl-Space to get a popup window.  These lemmas all required between 3 and 10 tactics to prove.  Before starting, participants were given a paper ``cheat sheet'' reminder of tactics they could use and what the tactics would do, taken from the video tutorial.  The screen was again recorded during this and the next step.
 \item Participants were asked to repeat the previous step with the user interface they had not used in the previous step and with a very similar set of ten lemmas.  (In a few cases the same lemmas were given with different variable letters).
-\item Participants were asked to fill out the 
+\item Participants were asked to fill out the the last two pages of the satisfaction and preferences questionnaire.  These contained the same questions as on the first two pages.
 
  
 \end{enumerate}
 
+After the first eight participants, the above steps were refined:  
+
+\begin{itemize}
+\item Before starting the proof explanations, participants were presented with a guide for their explanations.  This stated ``For each tactic, please try to answer the following:  1) What nodes, if any, does the tactic produce from its goal?  2) How is each child node the same as or different from its parent?  3) Which text segments from the parent node get copied into the child nodes and where do they get copied to?''
+\item Before starting the proof explanations, participants were also asked if they would like to set a timer for six minutes (generally sufficient) for each proof to ensure that the session did not last more than two hours.
+\item Before starting the first of the two proof explanations using Proof Transitions, participants were asked to try using each of the features listed at the bottom of the window for at least the first three nodes in the first proof.
+\item Before starting the first of the two proof explanations using the basic CoqEdit, participants were reminded of the shortcuts used to move forward and backward.
+\item Before filling out each half of the satisfaction and preferences questionnaire, participants were given printed ``starter questions'' for the comments section.  Starter questions common to both comment sections were ``Why did you prefer one interface over the other?'', ``Were there any improvements that you think could be made to either interface?  How significant would these improvements be?'', ``Was there anything in particular that was confusing about either interface?'', and ``Were there any features of either interface that you could do without?  Were there any that were especially helpful?''.  Specific to the proof interpretation questions were ``In the interface with the boxes and flashing highlighting, was having to back away from leaves manually, instead of automatically moving to the next branch, something that made a big difference?'' and ``In either interface, did you find yourself getting `lost'?''  Specific to the theorem proving questions was ``When using the popup window, did you find the preview of the result, in the bottom right, helpful?''
+\item Before using Proof Previews, participants were walked through how to use the extension to create a three tactic proof of A \ra (B \ra C) \ra (A \ra C) \ra C.  They were also told to use Proof Previews exclusively.
+\end{itemize}
+
+
 \subsection{Results}
+
+Probably the most disappointing result turned out to be Proof Transitions' transition highlighting and animation, which went largely unused (possibly for the reasons discussed in the next subsection).  However, other results were more positive.
+
+\begin{table}
+\begin{tabularx}{\textwidth}{ |X|X|X| }
+  \hline
+                                                                      & \bf Average & \bf Std Dev \\
+  \hline
+  \bf Terrible to Wonderful                             & 6.1  & 1.5 \\
+  \hline
+  \bf Frustrating to Satisfying                         & 5.4 & 1.5   \\
+  \hline
+  \bf Dull to Stimulating                                  & 6.5  & 1.1   \\
+  \hline
+  \bf Difficult to Easy                                      & 5.9  & 2.5  \\
+  \hline
+  \bf Inadequate Power to Adequate Power  & 6.3  & 2.3  \\
+  \hline
+  \bf Rigid to Flexible                                    & 6.3  & 1.9    \\
+  \hline
+  
+\end{tabularx}
+\caption{Satisfaction and preferences questionnaire average results for proof interpretation using Proof Transitions.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
+\end{table}
+\label{tab:ptratings}
+
+\begin{table}
+\begin{tabularx}{\textwidth}{ |X|X|X| }
+  \hline
+                                                                      & \bf Average & \bf Std Dev \\
+  \hline
+  \bf Terrible to Wonderful                             &   &  \\
+  \hline
+  \bf Frustrating to Satisfying                         &  &    \\
+  \hline
+  \bf Dull to Stimulating                                  &   &    \\
+  \hline
+  \bf Difficult to Easy                                      &  &   \\
+  \hline
+  \bf Inadequate Power to Adequate Power  &   &   \\
+  \hline
+  \bf Rigid to Flexible                                    &   &     \\
+  \hline
+  
+\end{tabularx}
+\caption{Satisfaction and preferences questionnaire average results for proof interpretation using the basic CoqEdit interface.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
+\end{table}
+\label{tab:nonptratings}
 
 \subsection{Analysis, Conclusions and Future Work}
 
