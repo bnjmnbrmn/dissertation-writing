@@ -715,7 +715,7 @@ Comments on Proof Transitions versus basic CoqEdit included:
 \end{table}
 \label{tab:nonppratings}
 
-\autoref{tab:tabptratings} and \autoref{tab:nonptratings} show the questionnaire rating averages for the proof interpretation/explanation with Proof Transitions and the basic CoqEdit interface respectively.  %TO DO
+\autoref{tab:ptratings} and \autoref{tab:nonptratings} show the questionnaire rating averages for the proof interpretation/explanation with Proof Transitions and the basic CoqEdit interface respectively.  %TO DO
 
 %Comments for PP
 
@@ -749,22 +749,501 @@ Comments on Proof Transitions versus basic CoqEdit included:
 \label{chapter:kcmsth}
 %=============================================================================
 
+The following section, with the exception of the ``Future Work'' subsection, is taken from a journal paper\cite{BermanHourcade2014} that my advisor, Professor Juan Pablo Hourcade, and I wrote and which is currently in press.  A shorter version of the same paper also appeared in the Interaccion 2013 conference proceedings\cite{BermanHourcade2013}.  
+
+The second section in this chapter contains a description of a prototype system that uses Keyboard-Card Menus in combination with a structure editing system.  Although the idea can be applied generally, in this case it has been applied to a subset of Coq that might be useful for students studying propositional logic using the widely-used ``Logic in Computer Science'' by Huth and Ryan \cite{huth2004logic}.
+
 \section{Keyboard-Card Menus}
 
-  \subsection{Motivation}
+\subsection{Abstract}
 
-  \subsection{Software Description}
+``Keyboard-card menus'' are a new type of menu system in which potentially hundreds of menu items are arranged in sets of keyboard patterns that are designed to be navigated using only a computer keyboard's character keys, for fast access.  In selecting items from these menus, novice users physically rehearse the same actions that an expert would use.  We describe these menus and their potential applications in further detail, along with a study comparing keyboard-card menus' presentation of what are effectively shortcuts with a presentation of these same shortcuts that uses dropdown menus.    The data from our study shows that keyboard-card menus have significant advantages over dropdown menus in making the transition to expert use faster.
 
-  \subsection{Experiment Design, Results, Analysis, and Conclusions}
+\subsection{Introduction}
 
-\section{Syntax Tree Highlighting}
+Keyboard-card menus are a new type of menu we have developed which present menu items in computer-keyboard shaped arrangements.  They are designed to be navigated using the keyboard, and in doing so users end up learning shortcuts.
+%what might be called ``rolled-chord" shortcuts--shortcuts which use the letter keys themselves as modifier keys (and which we discuss in more detail below).  
+ Our testing shows significant advantages over a presentation of these same shortcuts that uses dropdown menus.   Our ultimate goal in working on keyboard-card menus  is to develop a system that avoids making tradeoffs between three properties:  how easy the system is to learn, how efficiently experts are able to select menu items, and how many menu items are easily accessible.  
 
-  \subsection{Understanding Syntactic Structure}
+While widely-used interaction techniques often support two of these three properties, they do so at the expense of the third, which can be considerably limiting for certain tasks and people.  Consider an example we had in mind while developing the menu:  undergraduate college students writing and manipulating mathematics.  Many of these students do not have the time to learn an unfamiliar, non-WYSIWYG (what-you-see-is-what-you-get) system like \textit{LaTeX}, but also need an efficient system since they are asked to write many equations in homework assignments (especially if they are asked to ``show their work"), \textit{and} they need to be able to access many mathematical symbols.  Handwriting recognition systems might be much easier to learn, but even if the system's recognition accuracy is 100\%, in our opinion handwriting speed is a low bar for efficiency (14 to 15 year old students' handwriting, when copying, has been measured as averaging only 118 characters per minute or, at 5 characters per word, 24 words per minute \cite{graham1998development}).  WYSIWYG systems like \textit{Mathematica}\cite{Mathematica} and Microsoft \textit{Word}'s\cite{MSOffice} equation editor allow use of either the mouse or keyboard shortcuts to select symbols from menus and toolbars.  Although this might be seen as supporting both novice and expert users, since keyboard shortcuts can provide speed advantages once learned, it has been shown that, in general, many users never make the transition to using shortcuts, even in heavily used applications like \textit{Word} \cite{Lane05}, and an important part of supporting novice users is helping them attain expert status.
 
-  \subsection{Structure Editing}
-  
-\section{Combined System Description}
+Writing and manipulating mathematics is not the only application where the users would need to be quickly trained to efficiently select from a large number of menu items.  Novice writers of other sorts of code could benefit as well; for instance, novice HTML coders must spend considerable time learning which tags to select from the large number available.  We suspect that there are many other sorts of activities, particularly in data entry, classification, and retrieval, that could be made more practical by supporting a better balance between efficiency and learnability in applications where items must be selected from a large pool. 
 
+
+
+In the next section, we describe how keyboard-card menus present menu items, how they are navigated, and some related work.  We go on to describe our study, which compared keyboard-card menus with dropdown menus, and discuss the study's results, which show significant advantages for keyboard-card menus. 
+Keyboard navigation for keyboard-card menus (and keyboard navigation for the dropdown menus in our study) is unusual in that users are required to press and hold \textit{character} keys (i.e. to use the character keys themselves as modifier keys); we call these interactions ``rolled-chords,'' or ``rolled-chord shortcuts''.  We therefore include a discussion of the advantages and disadvantages of this approach relative to other ways the keyboard might be used in the process of navigating the menus.
+
+
+% =============================================================================
+\subsection{Keyboard-Card Menu Design}
+% =============================================================================
+
+Subsection \ref{subsec:Keyboard-Card Menus} describes how keyboard-card menu work.  Subsection \ref{subsec:Rolled-Chord Shortcuts} describes in more depth the ``rolled-chord shortcuts'' that keyboard-card menus are used to visualize.
+
+% ==============================================
+\subsection{Keyboard-Card Menus}
+\label{subsec:Keyboard-Card Menus}
+% ==============================================
+
+Inspired, in part, by work on keyboard-based menus for wearable computers, seen in \cite{Lyons03}, we have developed keyboard-card menus which lay out menu items in keyboard patterns that \textit{show} users what keys to press, instead of simply listing menu items with shortcut key names; at least in principle users do not even need to know the name of the key they want to press.  (An example keyboard-card menu--one used in the study described below--is shown in the lower half of \autoref{fig:kcmidahooxford}, and in \autoref{fig:kcmoxfordzoom}).   
+
+More specifically, the menu system consists of colored ``keyboard-cards'', each of which serves as a submenu (except for one card that serves as a root menu).  Each keyboard-card has printed on it a set of squares arranged in a keyboard pattern.  Printed on top of some (potentially all) of these squares are the menu items that can be selected by pressing the corresponding keys.  To make the affordances of the menu system more obvious to users, squares with menu items are also lighter in color than the rest of the card and each square corresponding to a submenu has an arrow in the bottom right corner.  As a secondary mechanism for associating the menu item with the key, and to make it even more obvious to users that they should use the keyboard rather than the mouse, each square with a menu item also has the corresponding key's character printed in white in a large font, behind the menu item text.
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{KCMIdahoOxford.jpg}
+  \caption{In the study, described later in this paper, participants used a keyboard-card menu system, shown in the bottom half of the window, to select state-town pairs.  Seen here is actually the "root keyboard-card" of the menu system.  The small arrows in the corners of the keys indicate that there is a submenu associated with that key (a detail the participants did not have to rely on). When a user presses one of these keys, a child keyboard-card, such as the one seen in \autoref{fig:kcmoxfordzoom} appears. }
+  \label{fig:kcmidahooxford}
+\end{figure}
+
+\begin{figure*} [t]
+  \begin{center}
+  \includegraphics[width=\textwidth]{KCMOxfordZoom.jpg}
+  \caption{The keyboard-card menu from \autoref{fig:kcmidahooxford} with the S key pressed.  Note how a hole has been ``punched out'' of the card.}
+  \label{fig:kcmoxfordzoom}
+  \end{center}
+\end{figure*}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{hand.jpg}
+  \caption{Keyboard-card menus are intended to be used with a normal keyboard and monitor, not a touchscreen. The S key is pressed and held down to make \autoref{fig:kcmoxfordzoom} appear on the screen.  Whenever no fingers are held down, the menu appears as it does in the lower half of \autoref{fig:kcmidahooxford}, i.e. with a single ``keyboard-card'' instead of multiple ``stacked'' cards. }
+  \label{fig:hand}
+\end{figure}
+
+Initially, when no keys are pressed, only the root card, with top-level menu items, is visible (as in the lower half of \autoref{fig:kcmidahooxford}).  Whenever a key corresponding to a submenu (rather than a leaf in the hierarchy) is pressed--\textit{and held down}--that submenu's keyboard-card is placed on top of the existing card(s), slightly offset to show the number of keyboard-cards below it (as in \autoref{fig:kcmoxfordzoom}, which would be displayed while the S key is held down).  %Releasing that key hides that keyboard-card again. 
+When one releases the key, the corresponding submenu's keyboard-card disappears.
+(Although the issue was ignored in our study, since no more than two cards, including the root card, were ``stacked'' at a time, releasing a key to hide a keyboard-card would most likely also just hide any cards on top of it, even if the keys associated with those cards were still pressed).  Holding down a key corresponding to a leaf in the menu hierarchy, in addition to performing whatever action is assigned, thickens the outline of the corresponding square on the fully-visible top card.
+
+Because menu item selection is performed entirely from the keyboard, without the user having to move his hands, it can be very efficient.  In addition, simply by navigating the menu hierarchy, users end up practicing, and thereby learning, shortcuts needed to access menu items, and may actually stop needing the menu altogether. This idea of ``physical rehearsal''--teaching and reinforcing the physical act of using a shortcut during the process of navigating a menu hierarchy--can be found in work on gestures and ``marking menus'' by Kurtenbach and Buxton \cite{Kurtenback94, kurtenbach1993design}.   
+
+
+% ==============================================
+\subsubsection{Rolled-Chord Shortcuts}
+\label{subsec:Rolled-Chord Shortcuts}
+% ==============================================
+
+The term ``rolled-chord'' comes from western classical music and refers to playing several notes together but initiating them at different times.  Here we use the term to refer to pressing multiple computer keys at the same time, but initiating the presses in a particular order.  However, while this term could be used to describe shortcuts involving special modifier keys (e.g. Ctrl-X, Alt-F4, Ctrl-Shift-S, etc.) we use the term to describe shortcuts where the modifier keys may in fact be letter keys.  (In applications where users need to type normal text, we assume that a separate mode would exist, as with the text editor \textit{vi} or its extension, \textit{Vim} \cite{Vim}).    For instance, one might press \textit{and hold} the F key, then press \textit{and hold} the D key, and, finally, press the J key to select some particular menu item.  In this paper, we consider only rolled-chord shortcuts using the letter keys plus the semicolon, comma, period, and forward slash keys on a QWERTY keyboard, since avoiding the use of special modifier keys has the advantage of reducing hand movement and therefore potentially increasing speed.
+
+Rolled-chords are to be contrasted with ``standard'' chording in which the exact order of key presses does not matter because it is assumed that key presses are initiated simultaneously.  Standard chording may be used to achieve high speeds of data entry--on specialized keyboards, text entry speeds of up to 300 words per minute are possible \cite{Shneiderman10}.  While one would expect standard chording to be faster because no time is needed to ensure a particular ordering of key presses, ordering does provide more potential shortcuts and, in particular, more shortcuts that may be accessed without moving one's fingers off the home row of keys.  Furthermore, for sequences of shortcuts where the initial keys are identical, we can allow users to hold down those initial keys while pressing and releasing the final keys; for instance, over the course of entering the sequence of shortcuts ``F-J, F-K, F-J", the F key does not need to be released (we will use square brackets to indicate where keys are held down;  e.g. ``F-[J, K, J]'' indicates that the F key is held down while J, then K, then J, again, are pressed).
+
+Rolled-chord shortcuts may also be contrasted with the use of short sequences of typed characters (e.g. ``: q ENTER'' is used to quit in \textit{vi}).  While such sequences remove limitations on the numbers of shortcuts that can be provided, rolled-chords
+%, even using only two-key sequences, still provide hundreds of possible shortcuts (we suspect that having more than three, and possibly more than two, keys per shortcut would be impractical for many users) and, if absolutely needed, sequences of rolled-chords could still be treated as shortcuts.
+still provide hundreds of possible shortcuts.  To see why, first consider only the shortcuts accessible by pressing two keys.  Some pairs of keys are clearly at least relatively awkward to press together.  For instance, pressing the W and the X keys together might best be accomplished by holding the W key with the ring finger while using either the middle or index finger to press the X key.  Of course this is not a terribly intuitive approach, since normally W and X are both pressed using the ring finger.  In addition, using the middle finger can be quite uncomfortable because of the tight connection between the middle and third fingers, and using the index finger may require a larger than normal amount of hand movement.  
+
+We avoid these problems altogether if we consider just the two-key rolled-chord shortcuts invokable by pressing a key on one side of the keyboard followed by pressing a key on the other side of the keyboard (using first one hand and then the other; in the study described below we actually consider just a small subset of these).  Each side has 15 keys, so the total number of such available shortcuts is (2 sides) * (15 initial-keys/side) * (15 secondary-keys/initial-key) = 450.  For comparison, Microsoft Word for Mac 2011 \cite{MSOffice} contains approximately 230 leaves in its menu hierarchy, if one ignores the Font submenu which adds several hundred more (this is not to say that it would necessarily make sense to add rolled-chord shortcuts to any or all of the items in Microsoft Word's menu hierarchy, but, instead to suggest that many computer end-users and developers have already been exposed to menu hierarchies of such a scale).
+
+We also hypothesize that rolled-chord shortcuts involving three (or perhaps even more) keys may be of practical value, despite being more complicated.  First, consider text editing in \textit{vi}, again, and the problem of moving the cursor around in the buffer.  Basic cursor movement is accomplished by pressing the H key to move left one character, the L key to move right one character, the J key to move down one line, and the K key to move up one line.  In addition, one can move around in larger increments, e.g. forwards or backwards a word, or to the beginning or end of a line, and up and down by paragraph or by page.  These larger increments require entirely different keys (e.g. W for forward a word), which we suspect means that many users just avoid pressing the faster movement keys (they may not fully recall what key to press and also wish to avoid accidentally deleting text).  
+
+With an alternative text editor using rolled-chord shortcuts, one might use multiple keys in the left hand to select the speed of movement while still using H, J, K and L  in the right hand to select the direction.  For instance, one might press and hold F to go into a ``move'' mode and press J to move down a single line followed by L to move forward a character within that next line (recall that this would be ``F-[J, L]'' , i.e. the F key would not need to be released between J and L presses).  One could then add the D key to change the rate of movement to, say, 5 lines/characters per H/J/K/L press (i.e. ``F-[D-[... H/J/K/L key presses here ...]]'', so ``F-[D-[J, L]]'' would move the cursor down 5 lines and then over 5 characters).  One could, instead of D, add the S key to change the rate to, say, 20 lines/characters (so ``F-[S-[J, L]]" would move the cursor down 20 lines and then over 20 characters).  Or, instead of D or S, one could press A to move 80 lines/characters at a time.  
+
+Because the F key is used in conjunction with the D, S, and A keys in this way, and the keys are designed to fit under the first, second, third and fourth finger (starting with the index finger), it is likely that
+\begin{itemize}
+\item the first two keys in the three-key sequences are at least relatively easy to press and hold down together, and
+\item the intensity of the operation is roughly correlated with the center of gravity of the left hand relative to the keyboard and with its degree of rotation.  
+\end{itemize}
+Because of this correlation, and also because this use of three-key shortcuts could be generalized to applications, besides cursor movement in text editors, where varying degrees of intensity are called for (e.g. zooming and panning in maps, from the keyboard), this style of cursor movement might be considered more organized and intuitive than that of \textit{vi} and other editors.  The approach may also be used with other sets of keys (e.g. R, E, W and Q might be used in the alternative text editor to move the cursor while selecting text).
+
+A second instance where having three-key rolled-chord shortcuts might be practical is simply to ``extend'' the number of keys (rather than intensifying the keys) that can be pressed after pressing the initial key.  Suppose, again, that the first key we press is F, but this time the items under the right-hand keys are codes for various medical procedures commonly associated with a hospital department.  If we have a list of up to 60 such procedure codes, we could extend the 15 right-hand keys using the D, S, and A keys, as in the text editing example above, while keeping them associated with the ``F''
+department.
+
+Third, three-key rolled-chord shortcuts may still be very fast, even relative to two-key rolled chord shortcuts.  This may be especially true when all three keys come from the center row of the keyboard (e.g. A-[F-[J]]) and so do not require finger joint extensions or contractions.
+
+Rolled-chords also have several important advantages over simple key sequences.  First, in sequences like ``F-J, F-K, F-J" we may reduce the number of keystrokes needed, as explained above (``F, J, F, K, F, J'' vs. ``F-[J, K, J]'') .  Second, rolled-chord shortcuts enforce the rule, when assigning shortcuts to commands, that the keys pressed in a shortcut never use the same finger twice.  We suspect that following this rule increases speed; it also, as pointed out in \cite{PurdyJuly112012}, removes the possibility of accidentally entering a repeated letter sequence like ``F, F'' because of an operating system's key press repeater.  Third, when mistakes are made in selecting an initial key of a shortcut, no additional keystroke (e.g. "Backspace" or "Delete" key press) is needed to undo the mistake--the user simply releases the key.  This feature is especially important not only because it makes mistakes more preventable, but because it means that \textit{when the available shortcuts are displayed in a navigable hierarchy, as with keyboard-card menus, users can ``peek'' into submenus without having to press an additional key to back out again}.  We expect that this will help novice users considerably in exploring hierarchies and in searching for items that have non-obvious locations within the menu hierarchy.
+
+Finally, one should not overlook the possibility of using forests of menu trees, and of using the shortcuts in one collection to move to another.  When all rolled-chord shortcuts are single-key, this would simply degenerate to simple key sequences.  Many applications might require a balance between one large tree and many small ones. 
+
+% ==============================================
+\subsection{Related Work}
+% ==============================================
+
+Encouraging shortcut use within graphical user interfaces is an active area of research.    A theoretical explanation of the problem of low levels of shortcut usage can be found in \textit{Paradox of the Active User} \cite{Carroll1987} which notes that people are biased towards using software to solve their immediate problems, rather than towards exploring what the software can do, and also generally prefer to use known solutions rather than new ones.  The severity of the problem has been empirically verified in \cite{Lane05}, and in trying to solve it researchers have gone so far as suggesting that the option to click on a dropdown menu item should be disabled when a keyboard shortcut is available \cite{Grossman07}.  
+
+Our general approach--graphically supporting users in entering commands from the keyboard--has been taken before in a several alternate ways.  ``GEKA'' \cite{Hendy10} populates a list of command names and shortcuts, refining the list as users type, allowing a command line-like experience with a graphical user interface.  ``HotKeyCoach'' \cite{Krisler2008} uses a transparent popup window to inform and remind users of available (traditional) shortcut alternatives in a non-disruptive way as they work with an application.  ``Blur'' \cite{scarr2011dips} combines features seen in ``GEKA'' and ``HotKeyCoach'', notifying users when a command could be invoked by pressing escape and then typing ``hot commands'' (e.g. ``align left'') into a transparent popup window; it also provides lists of command recommendations.  ``ExposeHK'' shows users available (traditional) keyboard shortcuts when a user presses a modifier key; it replaces toolbar icons with printed shortcuts, expands all dropdown menus at once (with shortcuts printed next to the menu item name), and uses tooltips to show shortcuts for icons in a Microsoft \textit{Office 2007}-style ribbon \cite{malacria2013promoting}.
+
+The line of work by Kurtenbach et al. on ``marking menus'' (which extend ``pie menus'' by allowing expert users to select items without looking at the menu) is in many ways parallel to ours, a major difference simply being the intended set of applications:  they assume a context in which users need some sort of pointing device most of the time (e.g. technical drawing), while we assume a context where most of the time users want to have both hands on the keyboard (e.g. text editing).  In particular, the design of keyboard-card menus follows three principles used in the design of marking menus  \cite{kurtenbach1993design}:  
+\begin{itemize}
+\item \textit{Self-revelation}:  interactively telling users what commands are available and what these commands do
+\item \textit{Guidance}: showing users how to invoke commands during the process of self-revelation
+\item \textit{Rehearsal}: guiding novice users through the same physical motions that an expert would use
+\end{itemize}
+A more recent alternative to marking menus, but still following these design principles, is ``OctoPocus'' \cite{Bau2008}.  Kurtenbach et al. also address the issue of providing large numbers of quickly accessible menu items in work on the ``HotBox'' \cite{Kurtenbach1999}.  
+
+Work that most closely relates to ours may be explorations of interaction with multi-touch surfaces, since these provide a new opportunity for computer chording.  Relevant work includes ``Multi-finger Chorded Toolglass'' \cite{malik2007exploration}, ``Multi-Touch Menu'' \cite{Bailly2008}, ``Finger-count shortcuts'' \cite{Bailly2010}, ``Multi-touch Marking Menus'' \cite{Lepinski2010}, and, perhaps most significantly, ``Arpege'' \cite{bau2010arpege}. An advantage of using a multitouch surface is that thumb mobility may be exploited, as seen in \cite{Bailly2008} and \cite{malik2007exploration}. However, physical keyboards appear to be faster to type with than virtual keyboards on a multi-touch surface \cite{Varcholik2012657}, and using them in presenting chords does not create occlusion problems (involving the hands) which, as highlighted in \cite{bau2010arpege}, would likely make the presentation rolled chords much more complicated.
+
+% =============================================================================
+\subsection{Study Description}
+% =============================================================================
+
+% ==============================================
+\subsubsection{Study Motivation}
+% ==============================================
+
+Keyboard-card menus are one of many possible ways to present rolled-chord shortcuts.  Using dropdown menus with menu items marked with letters, as in \autoref{fig:rcddmzoom}, as a baseline for comparison makes sense because of their advantages over keyboard-card menus and other types of menus, including that
+\begin{itemize}
+\item most existing applications already use dropdown menus, making the incorporation of rolled-chord shortcuts into the design of these applications somewhat more straightforward for software developers
+\item users may feel more comfortable with them, since they are almost certainly more familiar with them
+\item they do not hide submenu siblings (e.g. ``Massachusetts - F'' and ``Utah -T'' are still visible in \autoref{fig:rcddmzoom})
+\item they are more compact (at least for relatively small hierarchies)
+\end{itemize}
+
+Reducing the advantage of compactness, screen resolutions have improved dramatically over the past decade \cite{BrowserDisplayStatistics} and secondary monitors are often available.  Some advantages of keyboard-card menus over dropdown menus are that
+\begin{itemize}
+\item since the size and shape of keyboard-card menus is relatively constant, the content being manipulated could never possibly be covered up by the menu
+\item since dropdown menus typically have only a single row of items at the root level, they may allow for broader overall menu hierarchies, which have advantages over deep hierarchies \cite{Norman91}
+\item the keyboard pattern makes using of the keyboard rather than the mouse the obvious choice
+\end{itemize}
+
+The last point may be the most important, though it is unclear how many users would decide to use the mouse rather than the keyboard if presented with labeled dropdown menus.  Finally, there is our \textit{experiment hypothesis}:
+
+\begin{itemize}
+\item new users are able to learn menu items' shortcuts faster
+\end{itemize}
+
+By this we mean both that the number of selections needed to memorize a shortcut is low and that the time to enter a shortcut that has not been memorized is low. 
+
+\subsubsection{Initial Rationale for Experiment Hypothesis:} 
+
+There are several reasons to think that keyboard-card menus might help users learn shortcuts faster.  First, although the size of each menu item's text is the same in both the keyboard-card and dropdown menu presentations, the character used to access the menu item is bigger, and therefore may be easier to read.  Second, the greater amount of space between menu items may also make misreading the character associated with a menu item more difficult.  Third, placing menu items in a two-dimensional array might help users exploit approximate information about locations because there are more characteristics that can be remembered.  For instance, given set of menu items, if these menu items are displayed in a one dimensional list, one might be able to remember that menu item ``A'' is above menu item ``B'', but, if the items are displayed in a two-dimensional array, one might be able to remember that ``A'' is above ``B'' \textit{and} one might be able to remember that ``A'' is to the left of ``B''. Fourth, with keyboard-card menus there is an alternate, and possibly faster, way to associate the key with the menu item, since the system could be used without looking at the character printed under the menu item.
+
+After the experiment, we thought of a fifth, perhaps most likely, reason keyboard-card menus help users learn shortcuts faster.  This is given in our ``Discussion'' section, below.
+
+% ==============================================
+\subsubsection{Study Design}
+% ==============================================
+To see if the keyboard-card menu improves rolled-chord shortcut learnability relative to a dropdown menu presentation (i.e. relative to dropdown menus labeled as in \autoref{fig:rcddmzoom} that one navigates by pressing and holding keys), we performed a 20 participant (8 male) within-subjects comparison with adult self-described touch-typists as our participants, based loosely on \cite{Ahlstrom10} and \cite{Grossman07}. Participants were recruited through a mass email and word of mouth at a large state university in the United States.  After a 1 minute typing test (using the ``Space Cowboys'' test on typingtest.com), each participant performed up to 720 selection tasks (``trials'') over the course of at most 50 minutes, using one of the two menu systems, followed by half of a brief questionnaire.  The trials were then repeated, over the course of a second period of at most 50 minutes, using the second menu system with a second hierarchy of menu items, followed by the second half of the questionnaire.  Before each 50-minute period, participants performed 10 warm-up trials.  Participants were told that they could ask questions or take breaks at any point that would not count against the 50 minutes for each menu system, and participants were asked, at the 25-minute mark, if they would like to take a break.  Participants were also told that two thirds of the compensation would be prorated based on how many of the 1440 trials they completed.
+
+In each trial, each participant was first prompted by text on the screen to press SPACEBAR, which started an invisible timer for the trial.  They were then presented with text of the form ``U.S. state -> small town'', e.g. ``Delaware -> Little Creek'' (see \autoref{fig:kcmidahooxford}); while the states were presumably recognizable by participants, the towns were unlikely to be recognized since they were selected from lists of the smallest towns in those states.  The trial ended when the town was correctly selected from the submenu labeled with the state's name, at which point the elapsed time was recorded and the participant was again prompted to press SPACEBAR to start the next trial.  The number of incorrect selections of town names during each trial was also recorded (usually this was zero).
+
+Two non-overlapping hierarchies of states and towns were used.  Each consisted of 6 states and 72 towns, 12 from each state.  The states were assigned the A, S, D, F, G, and T keys and the towns were assigned the Y, U, I, O, P, H, J, K, L, semicolon, N, and M keys (as in \autoref{fig:kcmidahooxford}, \autoref{fig:kcmoxfordzoom}, and \autoref{fig:rcddmzoom}).  From each hierarchy, 14 towns, 2 or 3 from each state, were randomly selected for use in trials.  The 720 trials for each menu system were divided into 12 blocks of 60 trials, and the numbers of occurrences of each town in each block were 12, 12, 6, 6, 4, 4, 3, 3, 2, 2, 2, 2, 1, and 1, with the order varying randomly from block to block.  This organization of hierarchies and trials, and the Zipfian distribution used (``which has been shown to represent command use frequency in real applications''), was used in \cite{Grossman07}. 
+
+While the same 14 towns for each hierarchy were used across participants, the numbers of occurrences were paired, randomly, with different towns for different participants (the pairing did not change across blocks for a given participant).  For instance, participants A and B would both see ``Delaware -> Little Creek'', but participant A might see it 6 times in every block while participant B might only see it 2 times in every block.
+
+The numbers of participants were balanced between the four possibilities determined by whether the keyboard-card or dropdown menu was seen first and by which set of states and towns was used with which menu type.
+
+The software for the experiment was run on a 2.8 GHz Intel Core 2 Duo MacBook Pro with Mac OS X Snow Leopard using Java 1.6.  However, participants viewed the software on an 18 inch, 1280 x 1024 pixel separate monitor (Dell Model No. 1800FP) and used a separate keyboard (Dell Model No. L100).  The experiment was performed in a faculty member's office on a university's campus. 
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{HKDDHartvilleZoom.jpg}
+  \caption{Part of a dropdown menu, navigable by pressing and holding keys rather than with the mouse, used in the study; note the letters on each item.  Also note that the text is the same font and size as in the keyboard-card menus.}
+  \label{fig:rcddmzoom}
+\end{figure}
+
+
+
+
+% =============================================================================
+\subsection{Study Results}
+% =============================================================================
+
+The average selection times for the two different menu systems can be seen in \autoref{fig:averagetimes}.  Note that while outlier trials were removed (a trial was considered an outlier if its time was greater than 3*(Q3-Q1)+Q3, where Q1 and Q3 were the first and third quartile values; 0.55\% of trials were considered outliers), average times for participants who did not complete all 1440 trials were left in.  Averaged trial completion times for each block  are only complete for all participants and menu types in blocks 1-8.  One participant was only able to complete trials in blocks 1-8 for both menu types.  Two other  participants were only able to complete trials in blocks 1-10 using the dropdown menus, but were able to complete trials in all blocks using the keyboard-card menus.  The remaining 17 participants were able to complete trials in all blocks.
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{AverageTimes.jpg}
+  \caption{Average trial completion times, in milliseconds, for the keyboard-navigated dropdown menus and keyboard-card menus in the study.  Note that data is only complete for blocks 1-8}
+  \label{fig:averagetimes}
+\end{figure}
+
+To analyze this data we fit quadratic equations, as first approximations, to the completion time data for each participant (with trial number as the independent variable and completion time as the dependent variable), leaving out times for trials where any participant was missing data (due either to an outlier completion time or to not being able to complete all trials), the result of which was complete data for 323 trials over blocks 1-8; the averages of the times for these individual trials are shown in \autoref{fig:AverageIndividualTrialsComplete}.  Paired t-tests on the coefficients of the fitted quadratics showed statistically significant (p = 0.0458) differences between the average second-order coefficients for keyboard-card and dropdown menus (i.e. there were statistically significant differences in the ``curviness'' of the data for the keyboard-card and dropdown menus).  In addition, we performed a repeated measures ANOVA on the average completion times for blocks 1-7 (where all participants completed all trials), which showed statistically significant differences between the two menu types (p = .044) as well as between the blocks (p < .001).
+
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{AverageIndividualTrialsComplete.jpg}
+  \caption{Average times across participants at individual trial numbers where data is complete.  These individual trials come from blocks 1-8.  Also included are quadratic curves fit to the data.} 
+  \label{fig:AverageIndividualTrialsComplete} 
+\end{figure}
+
+Average error rates for each trial and menu type are shown \autoref{fig:errorrates}.  Overall error rates across blocks 1-7 for the dropdown menus and keyboard-card menus were 10.4\% and 8.4\% respectively, where errors were defined as the incorrect selection of a leaf in the menu hierarchy and the error rate for a block was calculated as $e/(e+t)$ where $e=$ the number of errors in the block's non-outlier trials and $t=$ the number of non-outlier trials in the block.  This difference was not statistically significant.  However, t-tests on the data for the 5th, 9th and 10th block differences did show statistical significance (p-values were .032, .008, and .049 respectively; note that 9th and 10th blocks exclude data for one participant).  Though a repeated measures ANOVA on the error rates for blocks 1-7 also failed to show statistical significance, fitting quadratics to the error rates for each participant at each block where data was available, and then performing t-tests on the coefficients \textit{nearly} showed statistical significance at the 5\% level for the quadratic and linear coefficients (p-values were .0544 and .0624 respectively)
+
+Several interesting correlations can also be seen in the overall (i.e. across blocks) data for each participant.  Error rates for dropdown menus were correlated ($R=$0.718) with the error rates for keyboard-card menus and overall average times for dropdown menus were correlated ($R=$0.911) with overall average times for keyboard-card menus.  However, error rates and average times were negatively correlated for both dropdown menus and keyboard-card menus ($R=$ -0.510 and -0.479, respectively), so it appears that some participants chose to concentrate more on being accurate, at the expense of speed, and some chose to do the opposite.
+
+In addition, the difference between the error rates for dropdown and keyboard-card menus was positively correlated with the error rate for dropdown menus (see \autoref{fig:errorratedifferences}) and the difference between the average times for keyboard-card and dropdown menus was positively correlated with the average times for dropdown menus (see \autoref{fig:timedifferences}).  In other words, participants whose error rates were higher made even more mistakes when using the dropdown menus, and participants whose average times were slow were even slower  when using dropdown menus.
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{ErrorDataFixed.jpg}
+  \caption{Error rates for the keyboard-navigated dropdown menus and keyboard-card menus in the study.  Note that data is only complete for blocks 1-8.}
+  \label{fig:errorrates}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{ErrorRateDifferences.jpg}
+  \caption{The differences between the overall average error rates for dropdown menus and keyboard-card menus, for each participant, plotted against the error rate for dropdown menus.}
+  \label{fig:errorratedifferences}
+\end{figure}
+
+\begin{figure}
+  \center
+  \includegraphics[width=\linewidth]{OverallAverageTimeDifferences.jpg}
+  \caption{The differences between the overall average times for dropdown menus and keyboard-card menus, for each participant, plotted against the time for dropdown menus.}
+  \label{fig:timedifferences}
+\end{figure}
+
+Results from the questionnaire can be seen in the table, where
+\begin{itemize}
+\item Q1=``How quickly do you feel you were able to become familiar with the menu item locations over the course of performing the trials?''
+\item Q2=``At the beginning of the set of trials for this menu system, how quickly do you feel you were able to select menu items?'', and
+\item Q3=``At the end of the set of trials for this menu system, how quickly do you feel you were able to select menu items?''
+\end{itemize}
+Ratings were given on a scale from 0=``Very Slowly'' to 9=``Very Quickly''.  Though the results of these ratings were favorable for keyboard-card menus, t-tests did not reveal statistically significant differences between the average ratings (p-values given in the table). These results were not correlated with typing speed.
+
+\begin{table}[h]
+  \centering
+  \begin{tabularx}{\linewidth}{ |X|X|X|X|X|X| }
+  \hline
+   & \bf{KCM Ave.} & \bf{KCM Std. Dev.} & \bf{DDM Ave.} & \bf{DDM Std. Dev.} & \bf{P-values} \\
+  \hline
+  \bf{Q1}  & 6.0  & 1.5  & 4.8 & 2.4 & .165  \\
+  \hline
+  \bf{Q2}  & 3.0  & 1.8  & 2.2 & 1.6 & .119  \\
+  \hline
+  \bf{Q3}  & 7.3  & 1.3  & 6.7 & 2.1 & .525  \\
+  \hline
+  \end{tabularx}  \caption{Questionnaire Results.}
+  \label{tab:myfirsttable}
+\end{table}
+
+In addition, two open-ended questions were given in the questionnaire:
+\begin{itemize}
+\item Q4 = ``For this menu system, did you notice anything that made selecting items difficult?  If so, please list and explain.''
+\item Q5 = ``Having used both menu systems, which do you prefer? Why?'' 
+\end{itemize}
+Q4 was repeated twice, once in the first half of the questionnaire (taken immediately after using first menu type) and once in the second half at the end of the session.  Q5 was the last question in the second half of the questionnaire.
+
+For Q5, 12 of the 20 participants wrote that they preferred the keyboard-card menu, while 8 wrote they preferred the dropdown menus (though with one of the 8, the explanation appeared to give an argument in favor of the keyboard-card menus, so a mistake may have been made in that case which would make the numbers 13 and 7).  Explanations for the preference towards the keyboard-card menus included:
+\begin{itemize}
+\item ``I seemed to pick up the shortcuts faster.  It felt easier to use''
+\item ``There was more visual association in the second''
+\item ``...it gave me a visual of where I needed to type with the keyboard image on the screen.  I thought I learned the second menu faster.''
+\item ``I felt I got accustomed to it more easily [and] quicker.  I believe I finished the 720 trials in the first faster.''
+\item ``...it was easier for me to understand it''
+\item ``the layout is more intuitive and it's easier on the eyes.''
+\item ``...easier to become familiar with choices''
+\item ``Modeling where to press on the keyboard was helpful, as were the color shifts.  It was also easier on the eyes (looking at it was less of a hassle).''
+\end{itemize}
+
+On the other hand, some of the explanations of preference from participants favoring the dropdown menus included:
+\begin{itemize}
+\item ``I feel like I was faster with the second procedure.  However I believe I made more mistakes along the way.''
+\item ``The [keyboard-card menu] might be better for those that use the `vulture' method of typing as it shows where the key is.  The extra space in this layout just makes it take longer to read  the flashing colors are distracting once the combinations are memorized.''
+\item ``although it's slow starting out, I memorized the keys faster, plus the first one made me feel a little sick D: ''
+\item ``more familiar with ``dropdown'' menu''
+\item ``I like the first menu system because it takes up significantly less space, and it has more flexibility.''
+\item ``because then I didn't try to look and check each time.''
+\item ``I was able to catch on quicker''
+\end{itemize}
+
+Answers to Q4 after using the keyboard-card menu included:
+\begin{itemize}
+\item ``Had trouble w/ Kentucky --> might help to alphabetize the key strokes, e.g. `D' for `Delaware'
+\item ``I was thrown off that Indiana was `A' rather than `I', etc.  Also, it was kind of hard to read the words printed over the letters on the screen."
+\item ``I didn't like the change of colors from blue to red --> hard to get used to''
+\item ``At the beginning the color changes were distracting toward my goal, but the visual layout soon became helpful.''
+\item ``The visual distance between the prompt + the on-screen keyboard''
+\item ``Keys close to each other''
+\item ``I couldn't remember where half the towns were.  Seemed to take a long time to locate some cities.''
+\item ``I still wanted to sometimes hit the key that corresponded to the letter of the word.''
+\item ``Same first letter for states would have made it easier''
+\item ``The background letter images made it harder to read the words.''
+\item ``That the names on the left disappeared so if you made the wrong selection you had to depress the key to continue scanning the list.''
+\item ``Had to read from left to right at first."
+\item ``The words sometimes mix with the letter in the key''
+\item ``Confusing at first''
+\item ``expanding beyond the home row key set, such as using the key `T'.''
+\item ``having to move up for colorado and right for kansas threw me off a little. fingers had gotten used to staying still''
+\end{itemize}
+
+Answers to Q4 after using the dropdown menu included:
+\begin{itemize}
+\item ``Despite the number of trials, it took me forever to learn which letter corresponded to which state (some in the middle I didn't learn).  Were menu items ordered in any way? I didn't really pick up on it if they were.  Holding down one key and then pressing the other could be awkward when the keys were close together.  Maybe the commonly-used items could have moved to the top of each menu to make it easier.  Tasks were rapid-fire--I thought I was trying to go a little too fast sometimes''
+\item ``With the state/city combination I was tempted to do the combination of keys that corresponded with the first letters of the word.  ex Kentucky -> Fairfield I wanted to do K - F.''
+\item ``There were way to many choices''
+\item ``beginning letter of state [and] beginning letter of city''
+\item ``I was inclined to associate letters with the names of the places (L - little creek) so the lack of matching made it more difficult.  Also, when I had to shift from the standard typing position (G/H for instance) my response time slowed''
+\item ``It's much more difficult to read off a dropdown list than with the keyboard layout.  Also, the dropdown list is not in alphabetical order, which oftentimes mislead me to the wrong answer.''
+\item ``One thing that I found difficult was when the letters of two options were close together on the menu.  I kept on switching them around in my head and sometimes forgot which was which.'' 
+\item ``I felt like my eyes were doing more work looking around the screen than [with the keyboard-card] trials.  Also, having towns on keys which didn't correspond w/ their first letter made it difficult at first.''
+\item ``My first instinct would be to hit `L' for Louisiana rather than `A', `C' for Connecticut rather than `D', etc.  Also, the cities under each state's menu were not actually cities in these states, so it was hard to remember their names.''
+\item ``It was hard to keep track of the Connecticut/Canaan and Connecticut/Cornwall difference.  It was very difficult locating the names on the dropdown lists.''
+\item ``They weren't in alphabetical order''
+\item ``At the start, I had to scan the list to find out which key belonged to which city.  That lost me some time"
+\item ``The place to look for second menus keep changing and sometimes I would even have to spend time looking for where the menu is.''
+\item ``Some menus were in alphabetical order \& others weren't.  Also as one key had to be held down this slowed me as I became more familiar \& memorized combos because sometimes they weren't recognized when typed too fast if my finger didn't stay on the 1st key''
+\item ``Utah -Scofield were right next to one another [using the T and U keys], which made it awkward.  Also, there was no alphabetic order to the menu, so it took a long time to find unfamiliar items.''
+\end{itemize}
+
+% =============================================================================
+\subsection{Discussion}
+% =============================================================================
+
+The selection time data supports the hypothesis that the keyboard-card menu's presentation makes rolled-chord shortcuts easier to learn than does the dropdown menu's presentation.  We further hypothesize, first, that the eventual convergence of the two curves in \autoref{fig:averagetimes} means that by the 12th block users had (mostly) memorized the 14 shortcuts (and so were not using either presentation), and second, that the initial divergence of the two curves indicates that the keyboard-card menu's presentation mostly helped users in finding and recalling shortcuts they had seen but not fully memorized.  
+
+Although in \autoref{fig:averagetimes} the separation between the curves appears to be small, it may be exaggerated considerably in more realistic applications by two factors.  First, the period in which users have seen menu items but have not yet memorized their locations (i.e. the middle section of \autoref{fig:averagetimes}) may be extended over a greater period of time (e.g. hours or days, rather than tens of minutes) affecting the number of menu selections needed for memorization.  Second, the effect of errors on the average selection times would likely be much greater, since only the time needed to make an error, recognize it, and make a correct selection is included in the \autoref{fig:averagetimes} data;  in realistic applications, the time to undo an error would also have to be included.
+
+The negative correlation seen between error rates and average times shows users making a tradeoff between speed and accuracy.  However, the data seen in \autoref{fig:errorratedifferences} and \autoref{fig:timedifferences} suggests that use of a keyboard-card menu instead of a dropdown menu can help both users who prefer speed to accuracy and users who prefer accuracy to speed.
+
+After performing the study, we have come up with a relatively simple explanation for the differences between both the average time curves \textit{and} the error rate curves, not among the four given in the ``Study Motivation" section above:  keyboard-card menus make it easier for users to check their knowledge of the shortcuts.  For instance, suppose a user has gained only an intermediate level of experience with the shortcuts and, therefore, wants to check that the shortcut ``D-[L]'' is the one he wants to use.  To check this using the dropdown menu system \textit{without actually invoking the shortcut}, he would have to press and hold the D key and then visually scan through the list of items that appear until he either sees the L key in the list or the menu item itself.  In contrast, after pressing the D key using the keyboard-card system, he can move his gaze much more directly to the position of the menu item associated with the L key because he knows where the L key is within the keyboard layout.
+
+From the written responses to the questionnaire, several issues emerged as significant.  First, the menu items were not organized either alphabetically or by item frequency.  Second, how far users had to move their fingers to invoke a shortcut (e.g. the U key vs. the J key) mattered to them.   Third, users' normal expectation is that the shortcut key used will be the same as the first letter of the menu item.  Finally, some users found the bright flashing colors bothersome.  How much these issues actually slowed users down, and how much they affect users' overall feelings about the shortcuts, remain to be investigated.  However, they may be used as an initial set of heuristics in future keyboard-card menu applications (e.g. given a choice between associating a menu item with the U key or the J key, pick the J key).
+
+% =============================================================================
+\subsubsection{Future Work}
+% =============================================================================
+
+Many issues surrounding keyboard-card menus remain unexplored.  Perhaps the most important next step is to test the menu system in an actual application; one such application under consideration is interactive theorem proving with the Coq Proof Assistant\cite{Coq}, since its use involves manipulation of a wide variety mathematical notations using a large set of commands.
+
+Other questions that may be addressed (many of which arise from the results of the study discussed in this paper) include:
+\begin{itemize}
+\item Does the menu actually encourage first time users of a system to use the shortcuts? 
+\item What happens when icons instead of, or in addition to, labels are used?
+\item What is the best way to map a hierarchy to the menu?
+\item What happens when three finger shortcuts are used?  
+\item Can keyboard-card menus' presentation be effective with other sorts of shortcuts (e.g. simple key sequences)? 
+\item What sorts of color schemes should be used?  Should bright colors be completely avoided because they seem to bother some people?   Should each card have its own color/texture to make it easier to tell where one is in the hierarchy?  (In the study, all sub-cards in the second level were red).
+\item How much of a difference does it make to assign a menu item to a key that matches the first letter of the menu item (e.g. assigning the ``Idaho'' submenu to the I key)?  And if one were to do so as much as possible, would inconsistencies caused having two items with the same initial letter make the error rate go up?  Would removing the large letters from the keys in the keyboard-card menu help reduce confusion?
+\item Would using dropdown menus alphabetized by shortcut character, with or without extra ``inactive'' locations, make up the difference in times seen between the two menu types in the study? Would alphabetizing by menu item name (e.g. placing ``Atomic City'' ahead of ``Clayton'') in the menus have made any difference?
+\item What can we do to prevent users from missing shortcut invocations because they type too fast?  For instance, would keeping a submenu key ``active'' for a few milliseconds after it is released fix the problem?  Can we try to guess the intended shortcut (e.g. can we sometimes assume that ``F, J'' was meant to be ``F-[J]'' if ``J'' by itself is not a valid shortcut)?
+\item How effective are these menus for users who do not touch type?
+\item How much of the difference does using keys other than A, S, D, F, J, K, L, and semicolon make in expert speed, learnability, accuracy, etc.? 
+\end{itemize}
+
+
+% =============================================================================
+\subsection{Conclusion}
+% =============================================================================
+
+While selecting from a large set of menu items in an efficient manner is certainly possible, expecting users to learn how to do so using traditional shortcuts displayed in dropdown menus is often unrealistic.  In order to open up new realms of computer applications to a wider range of users (college students typing of mathematics at the computer, for instance), we are rethinking shortcuts and, in particular, how to present them.  We have developed keyboard-card menus, and have tested them against dropdown menus as a way of presenting how to enter shortcuts, using rolled-chords as our shortcut choice in the experiment.  Our data shows that keyboard-card menus, taking advantage of increasing amounts of available screen space with their keyboard-shaped presentation, can be more effective than a presentation based on dropdown menus as a method for presenting large numbers of shortcuts in an easy-to-learn way. 
+
+% =============================================================================
+\subsection{Acknowledgements}
+% =============================================================================
+
+We would like to thank our participants for their time and effort.  This research was supported by NSF award CCF-1250306.
+
+
+
+\section{Keyboard-Card Menus + Syntax Tree Highlighting:  A Case Study with a Subset of Coq}
+
+Here I briefly present a prototype structure editing\footnote{In general, this means editing with an awareness of document validity restrictions, in contrast to systems that work by entering text character by character--many existing systems might be viewed as hybrids.  Coq, because of its tactic system for building proofs, could itself be considered a structure editor.} system.  The system uses keyboard-card menus to move segments of highlighting within the buffer around, in accordance with the underlying syntax tree.
+
+There are several major benefits of this approach.  First, particularly for systems like Coq that involve complex nesting of (often computer-generated, poorly formatted) code, the approach may help users understand the structure of the text, without having to leave the editing environment.  Second, it prevents users from writing many classes of ill-formatted code in a way that may be especially useful to novice users unfamiliar with the rules of the language.  Third, it allows boilerplate code to be easily inserted from templates, reducing the number of necessary key strokes.  Finally, it comes with the learnability advantages of Keyboard-Card menus, as discussed in the previous section.
+
+Perhaps the best way to understand this system is through an example.  In \autoref{fig:pl0} we see the initial state of the system.  The dark green text represents the currently selected node.  In general, text between ``(*'' and ''*)" is comment text, and throughout this example is being used to show ``placeholder'' text that either must or could be filled in.  In \autoref{fig:pl0}, this placeholder text indicates that a propositional variable is required.  The keyboard-card displayed in the bottom half of the window is already set up so that a propositional variable may be typed in.  (In future versions of the keyboard-card menu system, keyboard-cards with different, and possibly larger, sets of keys may be supported so that, for instance, the slash key does not need to be used for backspace).    
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl0.jpg}
+  \caption{}
+  \label{fig:pl0}
+\end{figure}
+
+\autoref{fig:pl1} shows the system after the A key has been pressed but before it has been released (hence the graying out of key labels).  Once the A key has been released, other keys can in fact be pressed so as to enter multi-character identifiers.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl1.jpg}
+  \caption{}
+  \label{fig:pl1}
+\end{figure}
+
+\autoref{fig:pl2} shows the result of releasing the A key and pressing the period/``Navigate and Manipulate Mode'' key.  This has the effect of changing the current keyboard-card menu card tree so that the Nav-Manip root card is displayed and active. 
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl2.jpg}
+  \caption{}
+  \label{fig:pl2}
+\end{figure}
+
+In \autoref{fig:pl3} we see using the navigation submenu to move to the next leaf in the tree.  This is actually a placeholder for an optional list of space-separated propositional variables.  Placeholders for optional text only appear in full when they are selected, and are otherwise marked with a small triangle below the line of text and a vertical line within the line of text.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl3.jpg}
+  \caption{}
+  \label{fig:pl3}
+\end{figure}
+
+\autoref{fig:pl4} shows the ``Set to'' submenu, after the user has moved right two more positions to where ``Sections'' and ``Proof Lines'' can be inserted.  In future versions of the editor, the other items in the submenu may be grayed out, but at present their selection has no effect.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl4.jpg}
+  \caption{}
+  \label{fig:pl4}
+\end{figure}
+
+Selecting ``Proof Line'', as in \autoref{fig:pl5} has the effect of inserting a line starting with ``Fact..''.  The ``Line Identifier'' node is selected, and can be edited using a keyboard-card tree similar to that seen in \autoref{fig:pl0}.  The user switches to this keyboard-card tree by pressing the ``Set to'' submenu key while the Line Identifier placeholder is selected---in this case, the submenu key behaves like a leaf key.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl5.jpg}
+  \caption{}
+  \label{fig:pl5}
+\end{figure}
+
+After switching back to Nav-Manip mode and moving to the formula placeholder, the ``\textbackslash/'' (OR) operator may be inserted along with two formula placeholders.  This is accomplished by displaying the ``Operator'' submenu from the ``Set to'' submenu (so three fingers are involved).
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl6.jpg}
+  \caption{}
+  \label{fig:pl6}
+\end{figure}
+
+Without having to lift one's index fingers, one can then replace the first of the two new formula placeholders with another binary operator and pair of placeholders.  Not shown, one could have used the ``Add to right'' submenu to replace the current formula, call it ``A'', with a binary operator whose left subformula is A and whose right subformula is selected.  
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl7.jpg}
+  \caption{}
+  \label{fig:pl07}
+\end{figure}
+
+There are actually two different selection modes.  Leaf mode, which we have seen, draws green highlights over selectable leaves and the user can move left and right among these.  Branch mode, seen in \autoref{fig:pl8}, draws brown highlights over a set of sibling nodes.
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl8.jpg}
+  \caption{}
+  \label{fig:pl8}
+\end{figure}
+
+Users can move left, as seen in \autoref{fig:pl9}...
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl9.jpg}
+  \caption{}
+  \label{fig:pl9}
+\end{figure}
+
+...to the parent, as seen in \autoref{fig:pl10}...
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl10.jpg}
+  \caption{}
+  \label{fig:pl10}
+\end{figure}
+
+...right, as seen in \autoref{fig:pl11}...
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=\linewidth]{pl11.jpg}
+  \caption{}
+  \label{fig:pl11}
+\end{figure}
+
+...or back to the selected child node.  Other selection modes (e.g. movement using in-order or level order traversal) may be considered in future iterations of the design process.
 
 %=============================================================================
 \chapter{Related Work}
@@ -783,7 +1262,7 @@ where a node represents a statement that is being proved using the node's childr
 
 A few other significant projects aiming to improve the presentation of machine-checked proofs include \textit{Proviola}, which allows users to move through a proof script displayed on a web page and view the results that Coq would produce \cite{tankink2012narrating}; an ``Interactive Derivation Viewer'' for visualizing derivations written in the TPTP language \cite{trac2007interactive}; the LOUI interface for the OMEGA proof assistant, featuring graphical visualization, term browsing, and natural language proof presentation \cite{siekmann1999loui}; and the Tecton system, featuring tree visualization combined with hypertext navigation of nodes \cite{kapur1994overview}.  Theoretical and methodological work has also been done and can be seen in \cite{eastaughffe1998support,bertot1998generic,luth1999functional,volker2004thoughts,geuvers2009proof}, and \cite{luth2009user}.  Work aimed at making ITPs more suitable for novices and educational settings includes \cite{tsovaltzi2003approach,meier2004adaptable,narboux2007graphical,billingsley2007student,dillinger2007acl2s,hendriks2010teaching,schreiner2009risc} and \cite{pierce2010proofassist}.
 
-In addition to previous work specifically on theorem prover user interfaces, it is important to consider more general human-computer interaction research and research on software development tools.  Starting with the latter, one can consider the data of \cite{murphy2006java} showing that the Eclipse IDE's ``rename,'' ``move,'' ``extract'', and ``inline'' refactoring commands are in fact used by many programmers and are frequently invoked via key bindings.  The data also shows that a large percentage of \textit{all} commands executed by developers using the IDE extensively were invoked via key bindings, and one of the top commands was ``content assist'', which suggests possible text to insert (similar to Proof Previews, though it does not show the effects of evaluating this text).  One may also note, here, the existence of various lines of work, e.g. the \textit{Frama-C} \cite{FramaC} project, aimed at integrating theorem proving and programming within IDEs.
+In addition to previous work specifically on theorem prover user interfaces, it is important to consider more general human-computer interaction research and research on software development tools.  Starting with the latter, one can consider the data of \cite{murphy2006java} showing that the Eclipse IDE's ``rename,'' ``move,'' ``extract'', and ``inline'' refactoring commands are in fact used by many programmers and are frequently invoked via key bindings.  The data also shows that a large percentage of \textit{all} commands executed by developers using the IDE extensively were invoked via key bindings, and one of the top commands was ``content assist'', which suggests possible text to insert (similar to Proof Previews, though it does not show the effects of evaluating this text).  One may also note, here, the existence of various lines of work, e.g. the \textit{Frama-C} \cite{FramaC} project, aimed at integrating theorem proving and programming within IDEs, and the \textit{KeY} \cite{beckert2007verification} project (for ``Integrated Deductive Software Design'') which integrates graph visualization with theorem proving in the Eclipse IDE.
 
 In addition to IDEs, we may consider software visualization tools:  \cite{bassil2001software} reports on a survey of users of software visualization tools such as \textit{daVinci} (now called \textit{uDraw(Graph)}), \textit{GraphViz}, \textit{Grasp} (now \textit{jGrasp}), and \textit{Tom Sawyer Software}--more than 40 different tools altogether.  Some of the ``functional aspects'' of the software visualization tools that were considered most useful, and that might also have useful analogs in theorem prover user interfaces, were ``search tools for graphical and/or textual elements'', ``hierarchical representations'' and ``navigation across hierarchies'', ``use of colors'', and ``easy access, from the symbol list, to the corresponding source code.''  Among functional aspects considered least useful were ``3D representations and layouts, and virtual reality techniques'' and ``animation effects'', though the later was considered ``quite useful'' when the software was implemented in a declarative language.  Software visualization tools were considered beneficial in increasing productivity and managing complexity, and were considered particularly important in the ``software comprehension process.''
 
