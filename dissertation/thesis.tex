@@ -1316,7 +1316,26 @@ Unfortunately, it turned out (in the pilot testing for the experiment) that the 
 
 The final contribution to be mentioned is simply the set of results obtained.  With Keyboard-Card Menus, we have evidence that users are capable of interacting with a computer through a new interface and that the presentation used by this interface has learnability advantages over dropdown menus.  With the Proof Previews experiment results, we have evidence that the menu of suggestions allow users to complete more proofs in less time, and that users usually prefer using the feature to typing out the proof character by character.  
 
-With Proof Transitions, although a majority of participants did not prefer the new interface, one must bear several facts in mind.  First, this was not a winner-take-all comparison and a large minority of participants did in fact prefer the Proof Transitions interface; one-size-fits-all is probably not what is needed in theorem prover user interfaces, and, as suggested by both the novice users in the study and experienced users in the earlier survey, many-sizes-to-fit-each may be more appropriate (e.g. a user interface for teaching or presenting proofs vs. a user interface for writing them).  Second, this large minority was present despite the experiment being biased against Proof Transitions (since the prototype version of Proof Transitions presented to participants did not allow proofs to be written or edited, though a non-prototype version might, and since the tutorial that was seen by participants was presented primarily using the basic interface).  Third, there are many ways in which Proof Transitions could be refined to boost user preference for it higher.
+With Proof Transitions, although a majority of participants did not prefer the new interface, one must bear several facts in mind.  First, this was not a winner-take-all comparison and a large minority of participants did in fact prefer the Proof Transitions interface; one-size-fits-all is probably not what is needed in theorem prover user interfaces, and, as suggested by both the novice users in the study and experienced users in the earlier survey, many-sizes-to-fit-each may be more appropriate (e.g. a user interface for teaching or presenting proofs vs. a user interface for writing them).  Second, this large minority was present despite the experiment being biased against Proof Transitions (since the prototype version of Proof Transitions that was presented to participants did not allow proofs to be written or edited, though a non-prototype version might, and since the tutorial that was seen by participants was presented primarily using the basic interface).  Third, there are many ways in which Proof Transitions could be refined to boost user preference for it higher, as discussed below.
+
+This brings us to the question of where to go from here.  I see at least five paths.  First is the next iteration of refinement and testing of Proof Transitions.  This might include:
+
+\begin{itemize}
+ \item Automatically adding visit-marks (the purple squares seen in \autoref{fig:ptvisitednode}) to nodes as they are visited.  The original rationale for not doing so was that users would want to only mark nodes they had actually taken a close look at and felt comfortable they understood (which, as far as I can tell, is still accurate), and it is very easy to navigate through the tree without actually looking at the contents of the nodes.  The problem was that users forgot to use the visit-mark feature.  Reasonable compromises might be 1) to add the marks only after the user had continuously been at the node, zoomed in, for a few seconds) to gradually make the mark fade in as the user remained at the node.
+ \item Transition animation...
+ \item Better systems for node traversal (in-order)
+ \item Mini-map / multiple zooming levels
+\end{itemize}
+
+There are also ``larger'' problems that need to be addressed:
+
+\begin{itemize}
+ \item Integration w/ editor
+ \item Large nodes
+ \item Building the tree
+ \item Mechanism for tactics
+\end{itemize}
+
 
 
 
