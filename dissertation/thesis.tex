@@ -1322,18 +1322,19 @@ This brings us to the question of where to go from here.  I see at least five pa
 
 \begin{itemize}
  \item Automatically adding visit-marks (the purple squares seen in \autoref{fig:ptvisitednode}) to nodes as they are visited.  The original rationale for not doing so was that users would want to only mark nodes they had actually taken a close look at and felt comfortable they understood (which, as far as I can tell, is still accurate), and it is very easy to navigate through the tree without actually looking at the contents of the nodes.  The problem was that users forgot to use the visit-mark feature.  Reasonable compromises might be 1) to add the marks only after the user had continuously been at the node, zoomed in, for a few seconds) to gradually make the mark fade in as the user remained at the node.
- \item Transition animation...
- \item Better systems for node traversal (in-order)
- \item Mini-map / multiple zooming levels
+ \item Improvements to the transition highlighting and animation (i.e. blinking yellow highlighting).  Making the animation play automatically when one moves to a node would be one improvement, since users tended to forget about the animation's existence.  Giving the user the ability to move through the matching text at his own pace (e.g. by pressing keys) might be another; one could then allow the animation to be played more quickly when one moves to the node, knowing that the user has the opportunity to go back at a slower pace.  It also seems unlikely that blinking highlighting is the best way to match sections of text; other options that may be more salient include drawing lines between matching locations and making a copy of the text float to its matching location.
+ \item One major advantage of the basic CoqEdit interface seems to be the fact that node traversal was linearized--the user is forced to go through the nodes in a particular order.  This means faster traversal of the proof tree, as well as making it easy to tell which nodes have been visited. Adding forwards and backwards commands for both in-order and level-order would be relatively straightforward (though it might be helpful to zoom out during the larger jumps).
+ \item Having a mini-map, rather than forcing users to go through the extra step of zooming out, might make it easier to keep track of where one is within the tree.  At the same time, one could allow for more than two zoom levels so that users could inspect branches of the proof tree (as well as pairs of nodes or the entire tree structure).
 \end{itemize}
 
-There are also ``larger'' problems that need to be addressed:
+There are also some longer-term issues to be addressed.  Perhaps the most challenging would be a mechanism for getting sets of matching text resulting from tactic use on particular goals.  While it may be best to leave back-end developers the task of providing commands to print out relevent information\footnote{This would be analogous to a command line debugging tool for a programming language.}, there are also probably still more design decisions regarding what that information includes as well has how to present it to the user.  For example, a user might be interested in the procedure by which a tactic is executing other tactics (e.g. the fact that the ``intros'' tactic repeatedly executes the ``intro'' tactic).
+
+Other longer-term work includes:
 
 \begin{itemize}
- \item Integration w/ editor
- \item Large nodes
- \item Building the tree
- \item Mechanism for tactics
+ \item Integrating the visualization with the editing environment.  Presumably this will follow a model similar to that of Proof Web (see \autoref{fig:proofweb}), but inevitably there will be some complications.  One important difference with Proof Web that I hope to see is the ability to edit the proof script ``from the visualization'' at arbitrary nodes in the proof tree; this would require some automatic code generation and, ideally, automatic code formatting.
+ \item Dealing with nodes containing large amounts of text.  One solution here would be to make the nodes scrollable (like ordinary windows).  Other solutions that might work better with the text matching visualization might be to shrink the node's text or to expand the box containing the text.  Hybrid solutions are another possibility.
+ \item Visualizing advanced tactics that actually have effects on unproved goals other than the current goal.  These are not necessary, and users could be prevented from using these, but some relatively minor modifications to the existing visualization could probably be used to represent these.
 \end{itemize}
 
 
