@@ -782,6 +782,7 @@ The following section, with the exception of the ``Future Work'' subsection, is 
 The second section in this chapter contains a description of a prototype system that uses Keyboard-Card Menus in combination with a structure editing system.  Although the idea can be applied generally, in this case it has been applied to a subset of Coq that might be useful for students studying propositional logic using the widely-used ``Logic in Computer Science'' by Huth and Ryan \cite{huth2004logic}.  While the prototype is not actually an extension of CoqEdit, it could easily be turned into one.\footnote{The main change needed would be to convert the highlighting used in CoqEdit to underlining, since the extension's highlighting would conflict.}
 
 \section{Keyboard-Card Menus}
+\label{section:kcm}
 
 \subsection{Abstract}
 
@@ -1318,7 +1319,7 @@ The final contribution to be mentioned is simply the set of results obtained.  W
 
 With Proof Transitions, although a majority of participants did not prefer the new interface, one must bear several facts in mind.  First, this was not a winner-take-all comparison and a large minority of participants did in fact prefer the Proof Transitions interface; one-size-fits-all is probably not what is needed in theorem prover user interfaces, and, as suggested by both the novice users in the study and experienced users in the earlier survey, many-sizes-to-fit-each may be more appropriate (e.g. a user interface for teaching or presenting proofs vs. a user interface for writing them).  Second, this large minority was present despite the experiment being biased against Proof Transitions (since the prototype version of Proof Transitions that was presented to participants did not allow proofs to be written or edited, though a non-prototype version might, and since the tutorial that was seen by participants was presented primarily using the basic interface).  Third, there are many ways in which Proof Transitions could be refined to boost user preference for it higher, as discussed below.
 
-This brings us to the question of where to go from here.  I see at least five paths.  First is the next iteration of refinement and testing of Proof Transitions.  This might include:
+This brings us to the question of where to go from here.  I see at least four major paths.  First is the next iteration of \textbf{refinement and testing of Proof Transitions}.  This might include:
 
 \begin{itemize}
  \item Automatically adding visit-marks (the purple squares seen in \autoref{fig:ptvisitednode}) to nodes as they are visited.  The original rationale for not doing so was that users would want to only mark nodes they had actually taken a close look at and felt comfortable they understood (which, as far as I can tell, is still accurate), and it is very easy to navigate through the tree without actually looking at the contents of the nodes.  The problem was that users forgot to use the visit-mark feature.  Reasonable compromises might be 1) to add the marks only after the user had continuously been at the node, zoomed in, for a few seconds) to gradually make the mark fade in as the user remained at the node.
@@ -1327,17 +1328,19 @@ This brings us to the question of where to go from here.  I see at least five pa
  \item Having a mini-map, rather than forcing users to go through the extra step of zooming out, might make it easier to keep track of where one is within the tree.  At the same time, one could allow for more than two zoom levels so that users could inspect branches of the proof tree (as well as pairs of nodes or the entire tree structure).
 \end{itemize}
 
-There are also some longer-term issues to be addressed.  Perhaps the most challenging would be a mechanism for getting sets of matching text resulting from tactic use on particular goals.  While it may be best to leave back-end developers the task of providing commands to print out relevent information\footnote{This would be analogous to a command line debugging tool for a programming language.}, there are also probably still more design decisions regarding what that information includes as well has how to present it to the user.  For example, a user might be interested in the procedure by which a tactic is executing other tactics (e.g. the fact that the ``intros'' tactic repeatedly executes the ``intro'' tactic).
+There are also some longer-term issues to be addressed.  Perhaps the most challenging would be a mechanism for getting sets of matching text resulting from tactic use on particular goals.  While it may be best to leave to back-end developers the task of providing commands to print out relevent information\footnote{This would be analogous to a command line debugging tool for a programming language.}, there are also probably still more design decisions regarding what that information includes as well has how to present it to the user.  For example, a user might be interested in the procedure by which a tactic is executing other tactics (e.g. the fact that the ``intros'' tactic repeatedly executes the ``intro'' tactic).
 
-Other longer-term work includes:
+Other longer-term work on Proof Transitions includes:
 
 \begin{itemize}
  \item Integrating the visualization with the editing environment.  Presumably this will follow a model similar to that of Proof Web (see \autoref{fig:proofweb}), but inevitably there will be some complications.  One important difference with Proof Web that I hope to see is the ability to edit the proof script ``from the visualization'' at arbitrary nodes in the proof tree; this would require some automatic code generation and, ideally, automatic code formatting.
  \item Dealing with nodes containing large amounts of text.  One solution here would be to make the nodes scrollable (like ordinary windows).  Other solutions that might work better with the text matching visualization might be to shrink the node's text or to expand the box containing the text.  Hybrid solutions are another possibility.
- \item Visualizing advanced tactics that actually have effects on unproved goals other than the current goal.  These are not necessary, and users could be prevented from using these, but some relatively minor modifications to the existing visualization could probably be used to represent these.
+ \item Visualizing advanced tactics that actually have effects on unproved goals other than the current goal.  These tactics are not necessary, and users could be prevented from using these, but some relatively minor modifications to the existing visualization could probably be used to represent these.
 \end{itemize}
 
+A second path for future research would be to \textbf{fully implement Proof Previews}.  One complicating aspect of this is performance:  how to index libraries, and perhaps use some parallel processing, to generate a list of possible tactics and theorems to apply in real time.  Two additional related problems are how to put the most helpful suggestions at the top of the list and how to avoid not only tactics that immediately produce errors, but also tactics that produce unprovable subgoals.  This could be very challenging as it involves techniques from automated theorem proving (a discipline in its own right).
 
+A third path would be to \textbf{improve and optimize Keyboard-Card Menus, Syntax Tree Highlighting, and their combined use}.  \autoref{section:kcm} discusses many possible avenues for future work on Keyboard-Card Menus.  Two more, not mentioned there, would be 1) to explore different sets of keys (e.g. consider keyboard-cards that include the SHIFT keys), and 2) to experiment with providing more detailed information about the effects of invoking a command (e.g. pressing and holding a key for several seconds might be equivalent to hovering over an icon with the mouse instead of clicking it).
 
 
 
