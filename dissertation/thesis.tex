@@ -1340,17 +1340,18 @@ Other longer-term work on Proof Transitions includes:
 
 A second path for future research would be to \textbf{fully implement Proof Previews}.  One complicating aspect of this is performance:  how to index libraries, and perhaps use some parallel processing, to generate a list of possible tactics and theorems to apply in real time.  Two additional related problems are how to put the most helpful suggestions at the top of the list and how to avoid not only tactics that immediately produce errors, but also tactics that produce unprovable subgoals.  This could be very challenging as it involves techniques from automated theorem proving (a discipline in its own right).
 
-A third path would be to \textbf{improve and optimize Keyboard-Card Menus, Syntax Tree Highlighting, and their combined use}.  \autoref{section:kcm} discusses many possible avenues for future work on Keyboard-Card Menus.  Two more, not mentioned there, would be 1) to explore different sets of keys (e.g. consider keyboard-cards that include the SHIFT keys), and 2) to experiment with providing more detailed information about the effects of invoking a command (e.g. pressing and holding a key for several seconds might be equivalent to hovering over an icon with the mouse instead of clicking it).  Other issues include:
+A third path would be to \textbf{improve and optimize Keyboard-Card Menus, Syntax Tree Highlighting, and their combined use}.  \autoref{section:kcm} discusses many possible avenues for future work on Keyboard-Card Menus.  Two more, not mentioned there, would be 1) to explore different sets of keys (e.g. consider keyboard-cards that include the SHIFT keys), and 2) to experiment with providing more detailed information about the effects of invoking a command (e.g. pressing and holding a key for several seconds might be equivalent to hovering over an icon with the mouse instead of clicking it).  Other areas to work on include:
 
 \begin{itemize}
- \item commands for larger templates
- \item alternative traversals
- \item optimal command organization and placement in kcms
- \item other languages
+% \item commands for larger templates
+ \item Providing alternative ways to traverse the syntax tree, e.g. if one runs out of siblings when moving the right, does moving to an uncle on the right feel seem natural?
+ \item Optimizing the set of commands and their placement in the keyboard-card hierarchies.
+ \item Working with other languages, e.g. 1st order logic, programming languages, or Coq's full ``vernacular'' language---part of the rationale for developing Syntax Tree Highlighting was to make clear how to parse expressions in Coq that often involve deep nesting of subexpressions and non-standard or user-defined notations/precedences. 
 \end{itemize}
 
+A fourth and final path would be to step back and \textbf{re-evaluate the design of traditional text editors}.  One can think of the Proof Transitions as a non-traditional editor (the prototype being only available for read-only documents).  Given larger amounts of screen space, keyboard-card menus and other new input techniques, and programming interfaces for zoomable user interfaces, work in this direction seems appropriate.
 
-
+%I hope that this document will inspire further research along one or more of these paths.
 
 
 %=============================================================================
