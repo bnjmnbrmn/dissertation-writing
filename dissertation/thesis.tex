@@ -56,6 +56,12 @@
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage{textcomp}
 \usepackage{caption}
+
+\usepackage{listings}
+\lstset{
+    literate={~} {$\sim$}{1}
+}
+
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \newcommand{\ra}{\ensuremath{\rightarrow}}
@@ -1164,7 +1170,30 @@ Here I briefly present a prototype structure editing\footnote{In general, this m
 
 There are several major benefits of this approach.  First, particularly for systems like Coq that involve complex nesting of (often computer-generated, poorly formatted) code, the approach may help users understand the structure of the text, without having to leave the editing environment.  Second, it prevents users from writing many classes of ill-formatted code in a way that may be especially useful to novice users unfamiliar with the rules of the language.  Third, it allows boilerplate code to be easily inserted from templates, reducing the number of necessary key strokes.  Finally, it comes with the learnability advantages of Keyboard-Card menus, as discussed in the previous section.
 
-Perhaps the best way to understand this system is through an example.  In \autoref{fig:pl0} we see the initial state of the system.  The dark green text represents the currently selected node.  In general, text between ``(*'' and ''*)" is comment text, and throughout this example is being used to show ``placeholder'' text that either must or could be filled in.  In \autoref{fig:pl0}, this placeholder text indicates that a propositional variable is required.  The keyboard-card displayed in the bottom half of the window is already set up so that a propositional variable may be typed in.  (In future versions of the keyboard-card menu system, keyboard-cards with different, and possibly larger, sets of keys may be supported so that, for instance, the slash key does not need to be used for backspace).    
+Perhaps the best way to understand this system is through an example.  First note that the ultimate goal is to produce a Fitch-style proofs using Coq that are in the format of the following proof :
+
+
+\begin{lstlisting}
+Parameter phi : Prop.
+
+Section _1.
+  Hypothesis l1 : ~(phi \/ ~phi).
+  Section _1_1.
+    Hypothesis l2 : phi.
+    Fact l3 :  . Proof. apply (or_intro_l l2). Qed.
+    Fact l4 : False. Proof. apply (not_elim l3 l1). Qed.
+  End _1_1.
+  Fact l5 : ~phi. Proof. apply (not_intro l4). Qed.
+  Fact l6 : phi \/ ~phi. Proof. apply (or_intro_r l5). Qed.
+  Fact l7 : False. Proof. apply (not_elim l6 l1). Qed.
+End _1.
+Fact l8 : ~~(phi \/ ~phi). Proof. apply (not_intro l7). Qed.
+Fact l9 : phi \/ ~phi. Proof. apply (not_not_elim l8). Qed.
+\end{lstlisting}
+
+This is Coq syntax that directly corresponds to a Fitch-style proof as presented in \cite{huth2004logic} (some axioms have been added):  ``Section''s are used in place of the more normal nested boxes used in Fitch-style proofs. \footnote{If you are not familiar with such proofs, these indicate where hypotheses are assumed to hold.  You may also note that each ``Fact'' (synonymous to Coq with ``Lemma'' and ``Theorem'') is justified using earlier lines in the proof.}  This proof can in fact be checked by Coq.
+
+In \autoref{fig:pl0} we see the initial state of the system.  The dark green text represents the currently selected node.  In general, text between ``(*'' and ''*)" is comment text, and throughout this example is being used to show ``placeholder'' text that either must or could be filled in.  In \autoref{fig:pl0}, this placeholder text indicates that a propositional variable is required.  The keyboard-card displayed in the bottom half of the window is already set up so that a propositional variable may be typed in.  (In future versions of the keyboard-card menu system, keyboard-cards with different, and possibly larger, sets of keys may be supported so that, for instance, the slash key does not need to be used for backspace).    
 
 \begin{figure}[H]
   \center
