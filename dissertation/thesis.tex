@@ -605,7 +605,36 @@ Despite having run two pilot sessions\footnote{Ideally, more pilots sessions wou
 
 \subsection{Results}
 
-Probably the most disappointing result turned out to be Proof Transitions' transition highlighting and animation, which went largely unused (possibly for the reasons discussed in the next subsection) even in the second set of eight sessions.  However, other results were more positive.
+%Objective measurements:  PT 2child observation and PP Proof speed
+
+Proof Transitions and Proof Previews each had benefits according to relatively \textbf{objective measures}.  For Proof Transitions, the dependent variable I found easiest to measure was \textit{opportunities taken to explicitly make the observation that a destruct tactic produced two child subgoals}.  Each participant had six opportunities to make this observation, three with Proof Transitions and three without.  With Proof Transitions, users were significantly more likely to make this observation when the opportunity presented itself---\textbf{33 out of 41 opportunities were taken with Proof Transitions vs 17 out of 38 without} (p=.023).  (Some participants ran out of time, or their explanations were inaudible at these points, so the total numbers of opportunities for the 16 participants was reduced from 48 to 41 and 38 for explanations with and without Proof Transitions respectively).
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=.8\linewidth]{PTSplits.jpg}
+  \caption{The fraction of opportunities that each participant took, with and without the Proof Transitions visualization, to point out that a tactic produced two child subgoals, rather than one.  (The number of opportunities was reduced from 3 when a participant ran out of time or their description of the relevant part of the proof was inaudible).}
+  \label{fig:ptsplits}
+\end{figure}
+
+Timing results from the Proof Previews part of the experiment are shown in \autoref{fig:minuteswritingproofs} and \autoref{fig:proofscompleted}.  With Proof Previews, participants were able to complete the proofs at an overall average rate of 1.3 minutes per proof vs. 1.9 minutes without.  This was a statistically significant result (p=.033).
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=.8\linewidth]{MinutesWritingProofs.jpg}
+  \caption{The total number of minutes (capped at 15) each participant spent writing proofs, with and without Proof Previews.  Note that in the second set of 8, participants were required to use the Proof Preview feature, which had a significant effect (p=.005).}
+  \label{fig:minuteswritingproofs}
+\end{figure}
+
+\begin{figure}[H]
+  \center
+  \includegraphics[width=.8\linewidth]{ProofsCompleted.jpg}
+  \caption{The number of proofs each participant was able to complete.  The final proof in both the set used with Proof Previews and the set not using Proof Previews was especially challenging. Note that in the second set of 8, participants were required to use the Proof Preview feature.  Although having proof previews had a significant effect on the rates at which theorems were proved, the difference in the number of proofs completed was not statistically significant, perhaps because the number of proofs was capped at 10 and it was the final proof that was especially challenging.}
+  \label{fig:proofscompleted}
+\end{figure}
+
+A result I was unable to conclusively show was that Proof Transitions' transition highlighting and animation feature was beneficial---it was largely unused even with the extra encouragement provided in the instructions for second set of eight sessions.  In hindsight, while the feature could have been improved in several ways (see the next subsection), the effects might have been more clear if I had asked for descriptions of the effects of particular tactics that users had never seen, instead of descriptions of large proofs containing many instances of the same tactics (all of which users had already been exposed to in the introductory tutorial screen-cast).
+
+\textit{Proof Transitions Questionnaire Results:}  \autoref{tab:ptratings} and \autoref{tab:nonptratings} show the questionnaire rating averages for the proof interpretation/explanation with Proof Transitions and the basic CoqEdit interface respectively.  The differences were statistically significant only for the Frustrating to Satisfying axis.  The overall preference rating average, again on a 1 to 9 scale but this time with 1 indicating preference towards Proof Transitions and 9 indicating preference towards the basic CoqEdit interface for explaining proofs had an average of 5.8.  This was, however, not a statistically significant difference from the middle value of 5.  In fact, five of the participants gave a number less than 5, indicating a preference towards the Proof Transitions interface, and one more gave a value of 5, indicating no preference.
 
 \begin{table}
 \begin{tabularx}{\textwidth}{ |X|X|X| }
@@ -626,7 +655,7 @@ Probably the most disappointing result turned out to be Proof Transitions' trans
   \hline
   
 \end{tabularx}
-\caption{Satisfaction and preferences questionnaire average results for proof interpretation using Proof Transitions.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
+\caption{Satisfaction and preferences questionnaire average results for \textbf{proof interpretation using Proof Transitions}.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
 \end{table}
 \label{tab:ptratings}
 
@@ -649,11 +678,11 @@ Probably the most disappointing result turned out to be Proof Transitions' trans
   \hline
   
 \end{tabularx}
-\caption{Satisfaction and preferences questionnaire average results for proof interpretation using the basic CoqEdit interface.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
+\caption{Satisfaction and preferences questionnaire average results for \textbf{proof interpretation using the basic CoqEdit interface}.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
 \end{table}
 \label{tab:nonptratings}
 
-\autoref{tab:ptratings} and \autoref{tab:nonptratings} show the questionnaire rating averages for the proof interpretation/explanation with Proof Transitions and the basic CoqEdit interface respectively.  The differences were statistically significant only for the Frustrating to Satisfying axis.  The overall preference rating average, again on a 1 to 9 scale but this time with 1 indicating preference towards Proof Transitions and 9 indicating preference towards the basic CoqEdit interface for explaining proofs had an average of 5.8.  This was, however, not a statistically significant difference from the middle value of 5.  In fact, five of the participants gave a number less than 5, indicating a preference towards the Proof Transitions interface, and one more gave a value of 5, indicating no preference.
+
 
 %Comments on PT vs basic
 
@@ -676,6 +705,8 @@ Comments on Proof Transitions versus basic CoqEdit included:
 \end{itemize}
 
 %Ratings for PP
+
+\textit{Proof Previews Questionnaire Results:} \autoref{tab:ptratings} and \autoref{tab:nonptratings} show the questionnaire rating averages for the proof interpretation/explanation with Proof Transitions and the basic CoqEdit interface respectively.  Differences were statistically significant except for the Dull-Stimulating and Rigid-Flexible axes.  The overall preference rating average was 3.1 (std dev = 2.4) on a scale from Proof Previews=1 to No Proof Previews=9 (and was statistically signifiant---p$<$0.01).
 
 \begin{table}
 \begin{tabularx}{\textwidth}{ |X|X|X| }
@@ -723,11 +754,9 @@ Comments on Proof Transitions versus basic CoqEdit included:
 \end{table}
 \label{tab:nonppratings}
 
-\autoref{tab:ptratings} and \autoref{tab:nonptratings} show the questionnaire rating averages for the proof interpretation/explanation with Proof Transitions and the basic CoqEdit interface respectively.  Differences were statistically significant except for the Dull-Stimulating and Rigid-Flexible axes.  The overall preference rating average was 3.1 (std dev = 2.4)on a scale from Proof Previews=1 to No Proof Previews=9 (and was statistically signifiant---p$<$0.01).
-
 %Comments for PP
 
-Comments on Proof Transitions versus basic CoqEdit included:
+Comments on Proof Previews versus basic CoqEdit included:
 
 \begin{itemize}
 \item ``The recommendations in the pop-up menu...were incredibly helpful.''
@@ -744,32 +773,6 @@ Comments on Proof Transitions versus basic CoqEdit included:
 \item ``Both were great!!''
 \end{itemize}
 
-%Objective measurements:  PT 2child observation and PP Proof speed
-
-Proof Transitions and Proof Previews also had some benefits according to more \textbf{objective measures}.  For Proof Transitions, the dependent variable I found easiest to measure was \textit{opportunities taken to explicitly make the observation that a destruct tactic produced two child subgoals}.  Each participant had six opportunities to make this observation, three with Proof Transitions and three without.  With Proof Transitions, users were significantly more likely to make this observation when the opportunity presented itself---\textbf{33 out of 41 opportunities were taken with Proof Transitions vs 17 out of 38 without} (p=.023).  (Some participants ran out of time, or their explanations were inaudible at these points, so the total numbers of opportunities for the 16 participants was reduced from 48 to 41 and 38 for explanations with and without Proof Transitions respectively).
-
-\begin{figure}[H]
-  \center
-  \includegraphics[width=.8\linewidth]{PTSplits.jpg}
-  \caption{The fraction of opportunities that each participant took, with and without the Proof Transitions visualization, to point out that a tactic produced two child subgoals, rather than one.  (The number of opportunities was reduced from 3 when a participant ran out of time or their description of the relevant part of the proof was inaudible).}
-  \label{fig:ptsplits}
-\end{figure}
-
-Timing results from the Proof Previews part of the experiment are shown in \autoref{fig:minuteswritingproofs} and \autoref{fig:proofscompleted}.  With Proof Previews, participants were able to complete the proofs at an overall average rate of 1.3 minutes per proof vs. 1.9 minutes without.  This was a statistically significant result (p=.033).
-
-\begin{figure}[H]
-  \center
-  \includegraphics[width=.8\linewidth]{MinutesWritingProofs.jpg}
-  \caption{The total number of minutes (capped at 15) each participant spent writing proofs, with and without Proof Previews.  Note that in the second set of 8, participants were required to use the Proof Preview feature, which had a significant effect (p=.005).}
-  \label{fig:minuteswritingproofs}
-\end{figure}
-
-\begin{figure}[H]
-  \center
-  \includegraphics[width=.8\linewidth]{ProofsCompleted.jpg}
-  \caption{The number of proofs each participant was able to complete.  The final proof in both the set used with Proof Previews and the set not using Proof Previews was especially challenging. Note that in the second set of 8, participants were required to use the Proof Preview feature.  Although having proof previews had a significant effect on the rates at which theorems were proved, the difference in the number of proofs completed was not statistically significant, perhaps because the number of proofs was capped at 10 and it was the final proof that was especially challenging.}
-  \label{fig:proofscompleted}
-\end{figure}
 
 
 
