@@ -32,8 +32,10 @@
 % common options
 %\documentclass[phd,dedicationpage,ackpage,figures,tables,appendix]{uithesis}
 
+\PassOptionsToPackage{hidelinks}{hyperref}
+
 % example
-\documentclass[phd,appendix,figures]{uithesis}
+\documentclass[phd,appendix,figures,tables,abstractpage]{uithesis}
 
 %=============================================================================
 % User packages
@@ -49,7 +51,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{epstopdf}
-\usepackage{hyperref}
+\usepackage{hyperref} %Note the \PassOptionsToPackage at top
 \usepackage{float}
 \usepackage{dblfloatfix}
 \usepackage{tabularx}
@@ -95,7 +97,12 @@
 \copyrightyear{2014}
 
 \Abstract{
-\blindtext
+%\blindtext
+Interactive theorem provers are software tools that help users create machine-checked proofs.  Although difficult to use, they have been playing an important role in the effort to create highly reliable software.  I present several novel user interface ideas for interactive theorem provers, generalizable to other mathematics and programming tools.  Prototypes tailored to the Coq interactive theorem prover were developed and tested in an experiment with human participants.   The results show promising directions for making interactive theorem provers easier to use.
+}
+
+\PublicAbstract{
+This dissertation discusses the development and testing, with human participants, of several novel user interfaces for interactive theorem provers.  Interactive theorem provers are software tools used to precisely describe and correctly reason about mathematical ideas and, in particular, to create and check what are often very complex mathematical proofs.  One important application is the development of proofs about software so as to ensure higher levels of reliability in critical (e.g. aviation, automotive, financial, medical) software than are possible with software testing alone.  Improved user interfaces for interactive theorem provers are important for allowing more widespread, efficient, and effective use of these tools.  In addition, most of the user interface ideas generated in the context of interactive theorem provers can be generalized for use with other applications, especially programming environments, and present new directions for human-computer interaction more broadly. 
 }
 
 %\dedication{Dedication here (optional)}
@@ -377,7 +384,7 @@ The ``Interrupt evaluation'' menu item is not strictly necessary; an equivalent 
   \label{fig:coqeditred}
 \end{figure}
 
-To try to evaluate all sentences in the buffer, the user can use the ``Go to end'' menu item.  This of course may not always be successful since non-terminating and error sentences may be encountered, as in \autoref{fig:coqeditpurple} and \label{fig:coqeditred}.  Note that when an error is processed, processing stops, the sentences-to-process queue is emptied, and the highlighting is updated to reflect this.  Users are thus informed of incorrect proof attempts.  
+To try to evaluate all sentences in the buffer, the user can use the ``Go to end'' menu item.  This of course may not always be successful since non-terminating and error sentences may be encountered, as in \autoref{fig:coqeditpurple} and \autoref{fig:coqeditred}.  Note that when an error is processed, processing stops, the sentences-to-process queue is emptied, and the highlighting is updated to reflect this.  Users are thus informed of incorrect proof attempts.  
 
 ``Go to end'' is effectively the same as repeated invoking ``Forward one sentence'' until there are no more sentences that can be queued for evaluation.  Similarly, ``Go to start'' is effectively the same as invoking ``Back one sentence'' repeatedly until the dark green highlighting is at the first sentence of the buffer, and ``Go to cursor'' attempts to move the dark green highlighting forwards or backwards to the sentence containing the cursor by invoking either ``Forward one sentence'' or ``Back one sentence'' repeatedly (when the first purple sentence is evaluated, the dark green highlighting will move to it).  
 
@@ -392,7 +399,7 @@ As a jEdit plugin, CoqEdit lives in an ecosystem of other plugins which may have
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptfirstchildzoomedin.jpg}
-  \caption{}
+  \caption{Proof Transitions zoomed-in view.}
   \label{fig:ptfirstchildzoomedin}
 \end{figure}
 
@@ -404,14 +411,14 @@ At the zoomed-in level two nodes are always visible:  the ``current'' node, whic
 
 \autoref{fig:ptsecondchildzoomedout}, \autoref{fig:ptthirdchildzoomedout}, and \autoref{fig:ptfourthgrandchildzoomedout} show what happens when one uses the arrow keys to move the current node to the sibling directly to right, twice, and then to the left-most child of the third of the three siblings (right arrow key, right arrow key, up arrow key).  Repeatedly using the left and right arrow keys will cycle through the current set of siblings.  
 
-As shown, the visualization moves nodes so as to keep the current node above its parent (so that both the current node and its parent are visible when one zooms in).  To try to keep the shape of the tree relatively stable (i.e. to help users know which nodes are the same in \autoref{fig:ptfirstchildzoomedout}, \autoref{fig:ptsecondchildzoomedout}, \autoref{fig:ptthirdchildzoomedout}, \autoref{ptfourthgrandchildzoomedout}, for instance), the subtrees under the siblings, ``uncles'', ``great uncles'', etc., are each moved as a unit with each subtree getting its own allotment of space horizontally, \textit{and}, except for the parent of the current node, each parent node is kept centered above its left-most child (moving to the parent node from a child node other than the left-most requires shifting the subtree under the parent to the right to maintain this property).   
+As shown, the visualization moves nodes so as to keep the current node above its parent (so that both the current node and its parent are visible when one zooms in).  To try to keep the shape of the tree relatively stable (i.e. to help users know which nodes are the same in \autoref{fig:ptfirstchildzoomedout}, \autoref{fig:ptsecondchildzoomedout}, \autoref{fig:ptthirdchildzoomedout}, \autoref{fig:ptfourthgrandchildzoomedout}, for instance), the subtrees under the siblings, ``uncles'', ``great uncles'', etc., are each moved as a unit with each subtree getting its own allotment of space horizontally, \textit{and}, except for the parent of the current node, each parent node is kept centered above its left-most child (moving to the parent node from a child node other than the left-most requires shifting the subtree under the parent to the right to maintain this property).   
 
 To make it even more clear that one is looking at the same set of nodes when one moves to a sibling, child, or parent node, the sliding around of nodes is animated over a fraction of a second.  \autoref{fig:ptdestructortransition} shows a snapshot of what moving to a sibling looks like when zoomed in.  Note that this animation does not limit the speed at which one can move from node to node (pressing, say, the right arrow key, while an animation is playing moves the nodes to where they would be at the end of that animation and then starts the new animation).
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptfirstchildzoomedout.jpg}
-  \caption{}
+  \caption{Proof Transitions zoomed-out view.}
   \label{fig:ptfirstchildzoomedout}
 \end{figure}
 
@@ -419,28 +426,28 @@ To make it even more clear that one is looking at the same set of nodes when one
 \begin{figure}[H]
   \center
   \includegraphics[width=.6\linewidth]{ptsecondchildzoomedout.jpg}
-  \caption{}
+  \caption{Proof Transitions after moving to a second child node.}
   \label{fig:ptsecondchildzoomedout}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=.6\linewidth]{ptthirdchildzoomedout.jpg}
-  \caption{}
+  \caption{Proof Transitions after moving to a third child node.}
   \label{fig:ptthirdchildzoomedout}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=.6\linewidth]{ptfourthgrandchildzoomedout.jpg}
-  \caption{}
+  \caption{Proof Transitions after moving to a grandchild node.}
   \label{fig:ptfourthgrandchildzoomedout}
 \end{figure}
 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{ptvisitednode.jpg}
-  \caption{}
+  \caption{Proof Transitions node with a purple ``visited'' marking.}
   \label{fig:ptvisitednode}
 \end{figure}
 
@@ -451,7 +458,7 @@ In \autoref{fig:ptdestructand} through \autoref{fig:ptdestructor5} we see the ot
 \begin{itemize}
 \item If the user is not already zoomed in, the visualization zooms in as if the I key were pressed.
 \item The view shifts upwards so that the current node (which, recall, has the orange tactic box) is in the bottom half of the window and its left-most child is in the top half; see \autoref{fig:ptdestructand} and \autoref{fig:ptdestructor0}.
-\item In the bottom node, text that disappears completely in every child node is highlighted in red.  In \autoref{fig:ptdestructand} this happens to be a conjunction symbol (``/\textbackslash'') whereas in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor6} (which all show the same parent and set of children) it is a disjunction symbol (``\textbackslash/'').  This highlighted difference is actually the reason one child node is created by the ``destruct'' tactic seen in \autoref{fig:ptdestructand} in contrast to the the two nodes created by the same destruct tactic (albeit with a different argument) in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5}.
+\item In the bottom node, text that disappears completely in every child node is highlighted in red.  In \autoref{fig:ptdestructand} this happens to be a conjunction symbol (``/\textbackslash'') whereas in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5} (which all show the same parent and set of children) it is a disjunction symbol (``\textbackslash/'').  This highlighted difference is actually the reason one child node is created by the ``destruct'' tactic seen in \autoref{fig:ptdestructand} in contrast to the the two nodes created by the same destruct tactic (albeit with a different argument) in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5}.
 \item At the same time that the red highlighting is added to the parent node, green highlighting is added to each child node to mark text that is new in the child node (i.e. does not correspond in some way with text in the parent node).  Note that while there is green highlighting in \autoref{fig:ptdestructand}, since ``H7 : '' does not appear anywhere in the bottom node, there is no green highlighting in any of the child nodes in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5} since each child is entirely the result of removing and rearranging text from the parent node.
 \item Blinking yellow highlighting is used to show where the tactic is finding or producing matching text.  For the sake of brevity, this is only shown in \autoref{fig:ptdestructor0} through \autoref{fig:ptdestructor5} and not in \autoref{fig:ptdestructand}.  Blinking occurs at a rate of two blinks per second and each matching pair gets five blinks.  Pressing T again, or moving to a different node, clears the red and green highlighting and stops the animation.
 \end{itemize}
@@ -727,7 +734,7 @@ Comments on Proof Transitions versus basic CoqEdit included:
   \hline
   
 \end{tabularx}
-\caption{Satisfaction and preferences questionnaire average results for theorem proving using Proof Previews.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
+\caption{Satisfaction and preferences questionnaire average results for \textbf{theorem proving using Proof Previews}.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
 \end{table}
 \label{tab:ppratings}
 
@@ -750,7 +757,7 @@ Comments on Proof Transitions versus basic CoqEdit included:
   \hline
   
 \end{tabularx}
-\caption{Satisfaction and preferences questionnaire average results for theorem proving using the basic CoqEdit interface.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
+\caption{Satisfaction and preferences questionnaire average results for \textbf{theorem proving using the basic CoqEdit interface}.  Values go from 1 to 9 (e.g. a 9 for a Terrible to Wonderful rating would mean completely wonderful).}
 \end{table}
 \label{tab:nonppratings}
 
@@ -1228,7 +1235,7 @@ In \autoref{fig:pl0} we see the initial state of the system.  The dark green tex
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl0.jpg}
-  \caption{}
+  \caption{Example, stage 1, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl0}
 \end{figure}
 
@@ -1237,7 +1244,7 @@ In \autoref{fig:pl0} we see the initial state of the system.  The dark green tex
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl1.jpg}
-  \caption{}
+  \caption{Example, stage 2, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl1}
 \end{figure}
 
@@ -1246,7 +1253,7 @@ In \autoref{fig:pl0} we see the initial state of the system.  The dark green tex
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl2.jpg}
-  \caption{}
+  \caption{Example, stage 3, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl2}
 \end{figure}
 
@@ -1255,7 +1262,7 @@ In \autoref{fig:pl3} we see using the navigation submenu to move to the next lea
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl3.jpg}
-  \caption{}
+  \caption{Example, stage 4, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl3}
 \end{figure}
 
@@ -1264,7 +1271,7 @@ In \autoref{fig:pl3} we see using the navigation submenu to move to the next lea
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl4.jpg}
-  \caption{}
+  \caption{Example, stage 5, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl4}
 \end{figure}
 
@@ -1273,7 +1280,7 @@ Selecting ``Proof Line'', as in \autoref{fig:pl5} has the effect of inserting a 
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl5.jpg}
-  \caption{}
+  \caption{Example, stage 6, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl5}
 \end{figure}
 
@@ -1282,7 +1289,7 @@ After switching back to Nav-Manip mode and moving to the formula placeholder, th
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl6.jpg}
-  \caption{}
+  \caption{Example, stage 7, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl6}
 \end{figure}
 
@@ -1291,7 +1298,7 @@ Without having to lift one's index fingers, one can then replace the first of th
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl7.jpg}
-  \caption{}
+  \caption{Example, stage 8, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl07}
 \end{figure}
 
@@ -1300,7 +1307,7 @@ There are actually two different selection modes.  Leaf mode, which we have seen
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl8.jpg}
-  \caption{}
+  \caption{Example, stage 9, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl8}
 \end{figure}
 
@@ -1309,7 +1316,7 @@ Users can move left, as seen in \autoref{fig:pl9}...
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl9.jpg}
-  \caption{}
+  \caption{Example, stage 10, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl9}
 \end{figure}
 
@@ -1318,7 +1325,7 @@ Users can move left, as seen in \autoref{fig:pl9}...
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl10.jpg}
-  \caption{}
+  \caption{Example, stage 11, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl10}
 \end{figure}
 
@@ -1327,7 +1334,7 @@ Users can move left, as seen in \autoref{fig:pl9}...
 \begin{figure}[H]
   \center
   \includegraphics[width=\linewidth]{pl11.jpg}
-  \caption{}
+  \caption{Example, stage 12, of syntax-tree highlighting and keyboard-card menu for propositional logic}
   \label{fig:pl11}
 \end{figure}
 
