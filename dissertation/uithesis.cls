@@ -534,6 +534,9 @@
         \ackpg
      }{}
      \abstractpg			% (internal) abstract (optional)
+
+     \pubabpg
+
      %\setcounter{tocdepth}{6}
      \setcounter{tocdepth}{3}	% changed by Duckki
      \tableofcontents
@@ -544,21 +547,21 @@
      \ifthenelse{\boolean{tables}}{
         \newpage
         \phantomsection	% by Duckki
-        \addcontentsline{toc}{listhead}{LIST OF TABLES}%
+        %\addcontentsline{toc}{listhead}{LIST OF TABLES}%
         \addtocontents{lot}{\vspace{11mm}\vbox{\noindent Table \protect\hfill}}
         \listoftables
      }{}
      \ifthenelse{\boolean{figures}}{
         \newpage
         \phantomsection	% by Duckki
-        \addcontentsline{toc}{listhead}{LIST OF FIGURES}%
+        %\addcontentsline{toc}{listhead}{LIST OF FIGURES}%
         \addtocontents{lof}{\vspace{11mm}\vbox{\noindent Figure \protect\hfill}}
         \listoffigures
      }{}
 
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      % Reorder these in anyway you see fit for output. You may have to change %
-     % the listtheorems{<type>) to fit your declarations (currently, theorem  %
+     % the listtheorems{<type>} to fit your declarations (currently, theorem  %
      % is set to thm, lemma to lem, and example to example).                  %
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
      \ifthenelse{\boolean{algorithms}}{
@@ -649,6 +652,7 @@
         \vspace{5mm}
         \listtheorems{example,lem,thm}
      }{}
+    \phantomsection
     \addcontentsline{toc}{blankhead}{CHAPTER}
 
   } % ifthenelse nofrontmatter
@@ -678,6 +682,9 @@
 \def\copyrightyear#1{\gdef\@copyrightyear{#1}}
 %\def\abstractfile#1{\setboolean{abtitlepage}{true}\gdef\@abstractfile{#1}}
 \def\Abstract#1{\setboolean{abtitlepage}{true}\gdef\@abstracttext{#1}}
+
+\def\PublicAbstract#1{\gdef\@pubabtext{#1}}
+
 \def\dedication#1{\gdef\@dedication{#1}}
 \def\epigraph#1{\gdef\@epigraph{#1}}
 \def\acknowledgements#1{\setboolean{ackpage}{true}\gdef\@acknowledgements{#1}}
@@ -861,6 +868,19 @@
    }%
    {}%
 }
+
+%public abstract page
+\newcommand{\pubabpg}{
+\vspace*{\uitchapadd}%
+{\singlespace\parindent \z@ \reset@font \normalsize \bfseries
+	 \centering PUBLIC ABSTRACT\par \nobreak \vskip 2\li }
+	\doublespace
+	\@pubabtext
+	\vfill
+	\singlespace\normalsize
+	\newpage
+}
+
 
 
 %
