@@ -383,6 +383,7 @@
 % This redefinition of the thebibliography environment ensures that
 % that there is at least 4 blank lines between the title and the
 % first entry, and that there is a full blank line between each entry
+
 \renewenvironment{thebibliography}[1]
      {\chapter*{\bibname
         \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}%
@@ -545,9 +546,10 @@
      \addtocontents{toc}{\vbox{\noindent \protect\hfill}}
 
      \ifthenelse{\boolean{tables}}{
-        \newpage
+        %\newpage
+        \cleardoublepage
         \phantomsection	% by Duckki
-        %\addcontentsline{toc}{listhead}{LIST OF TABLES}%
+        \addcontentsline{toc}{listhead}{LIST OF TABLES}%
         \addtocontents{lot}{\vspace{11mm}\vbox{\noindent Table \protect\hfill}}
         \listoftables
      }{}
@@ -557,6 +559,7 @@
         %\addcontentsline{toc}{listhead}{LIST OF FIGURES}%
         \addtocontents{lof}{\vspace{11mm}\vbox{\noindent Figure \protect\hfill}}
         \listoffigures
+        \makeatother
      }{}
 
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
