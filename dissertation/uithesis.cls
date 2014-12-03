@@ -405,6 +405,11 @@
    }
 
 
+
+
+  
+  
+
 %
 % Fix indention issues with algorithm list
 %
@@ -518,6 +523,20 @@
 \addcontentsline{toc}{blankhead}{APPENDIX}	% AJR fix
 }
 
+%%added by Ben
+%\newcommand{\nocontentsline}[2]{}
+%\newcommand{\tocless}[1]{\bgroup\let\addcontentsline=\nocontentsline#1\egroup}
+
+%\usepackage{tocloft}
+
+%\setcounter{tocdepth}{4}
+%\setcounter{secnumdepth}{4}
+%
+%\cftsetindents{section}{0.5in}{0.5in}
+%\cftsetindents{subsection}{0.5in}{0.5in}
+%\cftsetindents{subsubsection}{0.5in}{0.5in}
+%\cftsetindents{paragraph}{0.5in}{0.5in}
+
 \newcommand{\frontmatter}{
   \ifthenelse{\boolean{nofrontmatter}}{}%
   {
@@ -546,20 +565,24 @@
      \addtocontents{toc}{\vbox{\noindent \protect\hfill}}
 
      \ifthenelse{\boolean{tables}}{
-        %\newpage
+%        \newpage
         \cleardoublepage
-        \phantomsection	% by Duckki
-        \addcontentsline{toc}{listhead}{LIST OF TABLES}%
-        \addtocontents{lot}{\vspace{11mm}\vbox{\noindent Table \protect\hfill}}
+        %\phantomsection	% by Duckki
+%        \addcontentsline{toc}{listhead}{LIST OF TABLES}%
+%        \addcontentsline{toc}{lot}{LIST OF TABLES}%
+%\addtocontents{toc}{LIST OF TABLES}
+        %\addtocontents{lot}{\vspace{11mm}\vbox{\noindent Table \protect\hfill}}
         \listoftables
      }{}
      \ifthenelse{\boolean{figures}}{
-        \newpage
-        \phantomsection	% by Duckki
-        %\addcontentsline{toc}{listhead}{LIST OF FIGURES}%
-        \addtocontents{lof}{\vspace{11mm}\vbox{\noindent Figure \protect\hfill}}
+%        \newpage
+        \cleardoublepage
+        %\phantomsection	% by Duckki
+%        \addcontentsline{toc}{listhead}{LIST OF FIGURES}%
+%        \addcontentsline{toc}{lof}{LIST OF FIGURES}%
+%\addtocontents{toc}{LIST OF TABLES}
+        %\addtocontents{lof}{\vspace{11mm}\vbox{\noindent Figure \protect\hfill}}
         \listoffigures
-        \makeatother
      }{}
 
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -656,7 +679,8 @@
         \listtheorems{example,lem,thm}
      }{}
     \phantomsection
-    \addcontentsline{toc}{blankhead}{CHAPTER}
+%    \addtocontents{toc}{CHAPTER}
+    \addcontentsline{toc}{blankhead}{\hspace{2 em}CHAPTER}
 
   } % ifthenelse nofrontmatter
 
